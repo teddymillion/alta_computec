@@ -1,12 +1,12 @@
 import { ArrowRight, Play, ShieldCheck, Award, Users, CheckCircle2 } from 'lucide-react';
 
 const PARTNERS = [
-  { name: 'Dell',       img: null,           tier: 'Platinum Partner', exclusive: true },
-  { name: 'Cisco',      img: '/cisco.png',   tier: 'Premier Partner' },
-  { name: 'Oracle',     img: '/oracle.png',  tier: 'Gold Partner' },
-  { name: 'HP',         img: '/hp.png',      tier: 'Authorized' },
-  { name: 'Microsoft',  img: '/microsoft.png', tier: 'Partner' },
-  { name: 'Kaspersky',  img: null,           tier: 'Platinum Partner' },
+  { name: 'Dell',       img: '/dell.png',        tier: 'Platinum Partner', exclusive: true },
+  { name: 'Cisco',      img: '/cisco.png',        tier: 'Premier Partner' },
+  { name: 'Oracle',     img: '/oracle.png',       tier: 'Gold Partner' },
+  { name: 'HP',         img: '/hp.png',           tier: 'Authorized' },
+  { name: 'Microsoft',  img: '/microsoft.png',    tier: 'Partner' },
+  { name: 'Kaspersky',  img: '/kaspersky.png',    tier: 'Platinum Partner' },
 ];
 
 function ServerRackSVG() {
