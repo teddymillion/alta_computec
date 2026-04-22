@@ -175,11 +175,8 @@ export default function AIAssistant() {
       {/* FAB button */}
       <button
         onClick={() => setOpen((o) => !o)}
-        className="relative w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue focus-visible:ring-offset-2"
+        className="relative w-14 h-14 rounded-2xl overflow-hidden transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue focus-visible:ring-offset-2"
         style={{
-          background: open
-            ? 'linear-gradient(135deg, #1340B0, #0D2D8A)'
-            : 'linear-gradient(135deg, #1B4FD8, #1340B0)',
           boxShadow: open
             ? '0 8px 24px rgba(27,79,216,0.5)'
             : '0 8px 32px rgba(27,79,216,0.45), 0 0 0 1px rgba(27,79,216,0.3)',
@@ -190,26 +187,32 @@ export default function AIAssistant() {
         {/* Pulse ring when closed */}
         {!open && (
           <span
-            className="absolute inset-0 rounded-2xl animate-ping"
+            className="absolute inset-0 rounded-2xl animate-ping z-10"
             style={{ background: 'rgba(27,79,216,0.3)', animationDuration: '2.5s' }}
             aria-hidden="true"
           />
         )}
 
-        {/* Icon */}
-        <div className="relative z-10 transition-all duration-200 overflow-hidden" style={{ transform: open ? 'scale(0.9)' : 'scale(1)' }}>
-          {open ? (
-            <X size={20} className="text-white" />
-          ) : (
-            <img src="/alta_ai.jpg" alt="ALTA AI" className="w-8 h-8 rounded-xl object-cover" />
-          )}
-        </div>
+        {/* Full image */}
+        <img
+          src="/alta_ai.jpg"
+          alt="ALTA AI"
+          className="absolute inset-0 w-full h-full object-cover transition-all duration-200"
+          style={{ filter: open ? 'brightness(0.4)' : 'brightness(1)' }}
+        />
+
+        {/* X overlay when open */}
+        {open && (
+          <div className="absolute inset-0 flex items-center justify-center z-20">
+            <X size={22} className="text-white" />
+          </div>
+        )}
 
         {/* Online dot */}
         {!open && (
           <span
-            className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full border-2 border-white"
-            style={{ background: '#22C55E' }}
+            className="absolute top-1 right-1 w-3 h-3 rounded-full border-2 z-20"
+            style={{ background: '#22C55E', borderColor: 'rgba(10,22,40,0.8)' }}
             aria-hidden="true"
           />
         )}
