@@ -172,6 +172,15 @@ export default function AIAssistant() {
         </div>
       )}
 
+      {/* Pulse ring — outside button so overflow:hidden doesn't clip it */}
+      {!open && (
+        <span
+          className="absolute inset-0 rounded-2xl animate-ping pointer-events-none"
+          style={{ background: 'rgba(27,79,216,0.3)', animationDuration: '2.5s', zIndex: -1 }}
+          aria-hidden="true"
+        />
+      )}
+
       {/* FAB button */}
       <button
         onClick={() => setOpen((o) => !o)}
@@ -184,15 +193,6 @@ export default function AIAssistant() {
         aria-label={open ? 'Close AI assistant' : 'Open AI assistant'}
         aria-expanded={open}
       >
-        {/* Pulse ring when closed */}
-        {!open && (
-          <span
-            className="absolute inset-0 rounded-2xl animate-ping z-10"
-            style={{ background: 'rgba(27,79,216,0.3)', animationDuration: '2.5s' }}
-            aria-hidden="true"
-          />
-        )}
-
         {/* Full image */}
         <img
           src="/alta_ai.jpg"
