@@ -88,8 +88,8 @@ export default function AIAssistant() {
             style={{ borderColor: 'rgba(27,79,216,0.2)', background: 'rgba(27,79,216,0.08)' }}
           >
             <div className="flex items-center gap-2.5">
-              <div className="relative w-7 h-7 rounded-lg bg-alta-blue flex items-center justify-center flex-shrink-0">
-                <Sparkles size={13} className="text-white" />
+              <div className="relative w-7 h-7 rounded-lg overflow-hidden flex-shrink-0">
+                <img src="/alta_ai.jpg" alt="ALTA AI" className="w-full h-full object-cover" />
                 <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-alta-green-light border border-navy-900" />
               </div>
               <div>
@@ -197,11 +197,11 @@ export default function AIAssistant() {
         )}
 
         {/* Icon */}
-        <div className="relative z-10 transition-transform duration-200" style={{ transform: open ? 'rotate(180deg) scale(0.9)' : 'scale(1)' }}>
+        <div className="relative z-10 transition-all duration-200 overflow-hidden" style={{ transform: open ? 'scale(0.9)' : 'scale(1)' }}>
           {open ? (
             <X size={20} className="text-white" />
           ) : (
-            <Sparkles size={20} className="text-white" />
+            <img src="/alta_ai.jpg" alt="ALTA AI" className="w-8 h-8 rounded-xl object-cover" />
           )}
         </div>
 
