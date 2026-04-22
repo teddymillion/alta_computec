@@ -10,6 +10,7 @@ import CTABanner from './components/CTABanner';
 import Blog from './components/Blog';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import AIAssistant from './components/AIAssistant';
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+      <AIAssistant />
     </>
   );
 }
