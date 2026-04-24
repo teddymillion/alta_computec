@@ -1,4 +1,5 @@
 import { ArrowRight, TrendingUp, Building2, Wifi } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const CASE_STUDIES = [
   {
@@ -143,9 +144,9 @@ export default function CaseStudies() {
         </div>
 
         <div className="mt-10 text-center">
-          <a href="#contact" className="btn-outline inline-flex">
+          <Link to="/case-studies" className="btn-outline inline-flex">
             View All 640+ Projects <ArrowRight size={15} />
-          </a>
+          </Link>
         </div>
       </div>
     </section>

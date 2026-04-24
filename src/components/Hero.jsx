@@ -1,4 +1,5 @@
 import { ArrowRight, Play, ShieldCheck, Award, Users, CheckCircle2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const PARTNERS = [
   { name: 'Dell',       img: '/dell.png',        tier: 'Platinum Partner', exclusive: true },
@@ -157,14 +158,12 @@ export default function Hero() {
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-3">
-              <a href="#solutions" className="btn-primary text-[15px] px-7 py-3.5">
-                Explore Our Solutions
-                <ArrowRight size={15} />
-              </a>
-              <a href="#case-studies" className="btn-secondary text-[15px] px-7 py-3.5">
-                <Play size={14} className="fill-current" />
-                View Case Studies
-              </a>
+              <Link to="/solutions" className="btn-primary text-[15px] px-7 py-3.5">
+                Explore Our Solutions <ArrowRight size={15} />
+              </Link>
+              <Link to="/case-studies" className="btn-secondary text-[15px] px-7 py-3.5">
+                <Play size={14} className="fill-current" /> View Case Studies
+              </Link>
             </div>
 
             {/* Trust signals */}
@@ -199,33 +198,29 @@ export default function Hero() {
 
         {/* ── Partner Trust Bar ── */}
         <div className="mt-16 lg:mt-20 pt-8 border-t border-white/8">
-          <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-slate-600 mb-7 text-center">
+          <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-slate-600 mb-8 text-center">
             Official Technology Partnerships
           </p>
-          <div className="flex items-start justify-center gap-6 sm:gap-10 lg:gap-14 flex-wrap">
+          <div className="flex items-end justify-center gap-8 sm:gap-12 lg:gap-14 flex-wrap">
             {PARTNERS.map((p) => (
-              <div key={p.name} className="flex flex-col items-center gap-1.5 group cursor-default">
-                <div className="h-7 flex items-center justify-center">
+              <div key={p.name} className="flex flex-col items-center gap-2 group cursor-default">
+                <div className="h-14 w-28 flex items-center justify-center">
                   {p.img ? (
                     <img
                       src={p.img}
                       alt={`${p.name} logo`}
-                      className="max-h-7 max-w-[72px] object-contain brightness-0 invert opacity-50 group-hover:opacity-80 transition-opacity duration-200"
+                      className="max-h-14 max-w-[112px] w-full object-contain brightness-0 invert opacity-75 group-hover:opacity-100 transition-opacity duration-200"
                       loading="lazy"
                     />
                   ) : (
-                    <span className="text-white/50 font-bold text-[13px] tracking-wide group-hover:text-white/80 transition-colors duration-200">
-                      {p.name}
-                    </span>
+                    <span className="text-white/75 font-bold text-[15px] tracking-wide group-hover:text-white transition-colors duration-200">{p.name}</span>
                   )}
                 </div>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-1.5">
                   {p.exclusive && (
-                    <span className="text-[8px] font-black tracking-wider uppercase px-1.5 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/25">
-                      Exclusive
-                    </span>
+                    <span className="text-[9px] font-black tracking-wider uppercase px-1.5 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/25">Exclusive</span>
                   )}
-                  <span className="text-[10px] text-slate-600 font-medium">{p.tier}</span>
+                  <span className="text-[10px] text-slate-500 font-medium">{p.tier}</span>
                 </div>
               </div>
             ))}

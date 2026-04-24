@@ -1,4 +1,5 @@
 import { ArrowRight, Server, CreditCard, Cloud, ShieldCheck, Brain, Monitor } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const SOLUTIONS = [
   {
@@ -124,14 +125,14 @@ function SolutionCard({ solution }) {
       </div>
 
       {/* CTA */}
-      <a
-        href="#contact"
+      <Link
+        to="/solutions"
         className="flex items-center gap-1.5 text-[13px] font-semibold text-slate-500 group-hover:text-white transition-all duration-200 mt-auto"
         aria-label={`Explore ${solution.title}`}
       >
         Explore Solution
         <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform duration-200" />
-      </a>
+      </Link>
     </article>
   );
 }
@@ -158,9 +159,9 @@ export default function Solutions() {
               From infrastructure to intelligence — every solution engineered for Ethiopia's most demanding institutions.
             </p>
           </div>
-          <a href="#contact" className="btn-primary flex-shrink-0 self-start lg:self-auto">
+          <Link to="/contact" className="btn-primary flex-shrink-0 self-start lg:self-auto">
             Request a Proposal <ArrowRight size={15} />
-          </a>
+          </Link>
         </div>
 
         {/* Grid */}

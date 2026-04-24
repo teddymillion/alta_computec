@@ -1,26 +1,27 @@
 import { Linkedin, Twitter, Facebook, Youtube, ArrowRight, Phone, Mail, MapPin, Clock } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const FOOTER_LINKS = {
   Solutions: [
-    { label: 'IT Infrastructure & Networking', href: '#solutions' },
-    { label: 'Banking Automation & ATM', href: '#solutions' },
-    { label: 'Cloud & Virtualization', href: '#solutions' },
-    { label: 'Cybersecurity', href: '#solutions' },
-    { label: 'Smart Office & Collaboration', href: '#solutions' },
+    { label: 'IT Infrastructure & Networking', to: '/solutions#infrastructure' },
+    { label: 'Banking Automation & ATM', to: '/solutions#banking' },
+    { label: 'Cloud & Virtualization', to: '/solutions#cloud' },
+    { label: 'Cybersecurity', to: '/solutions#cybersecurity' },
+    { label: 'Smart Office & Collaboration', to: '/solutions#smartoffice' },
   ],
   Products: [
-    { label: 'Dell Servers & Storage', href: '#partners' },
-    { label: 'Cisco Networking', href: '#partners' },
-    { label: 'Oracle Software', href: '#partners' },
-    { label: 'HP Enterprise', href: '#partners' },
-    { label: 'View All Partners →', href: '#partners' },
+    { label: 'Dell Servers & Storage', to: '/products' },
+    { label: 'Cisco Networking', to: '/products' },
+    { label: 'Oracle Software', to: '/products' },
+    { label: 'HP Enterprise', to: '/products' },
+    { label: 'View All Partners →', to: '/products' },
   ],
   Company: [
-    { label: 'About Alta', href: '#about' },
-    { label: 'Our Team', href: '#about' },
-    { label: 'Case Studies', href: '#case-studies' },
-    { label: 'Careers', href: '#about' },
-    { label: 'Blog & Insights', href: '#blog' },
+    { label: 'About Alta', to: '/about' },
+    { label: 'Our Team', to: '/about' },
+    { label: 'Case Studies', to: '/case-studies' },
+    { label: 'Careers', to: '/careers' },
+    { label: 'Blog & Insights', to: '/blog' },
   ],
 };
 
@@ -42,7 +43,7 @@ export default function Footer() {
           {/* Brand column */}
           <div className="lg:col-span-1 flex flex-col gap-6">
             <div>
-              <div className="flex items-center gap-3 mb-4">
+              <Link to="/" className="flex items-center gap-3 mb-4 w-fit">
                 <div className="relative w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 shadow-md border border-white/10">
                   <img src="/alta_computec.jpg" alt="ALTA Computec PLC" className="w-full h-full object-cover" width="40" height="40" />
                 </div>
@@ -50,25 +51,16 @@ export default function Footer() {
                   <span className="font-black text-[16px] text-white tracking-tight">ALTA</span>
                   <span className="text-[9px] font-bold tracking-[0.18em] uppercase text-slate-600">Computec PLC</span>
                 </div>
-              </div>
-              <p className="text-[13px] text-slate-500 leading-relaxed">
-                Smart IT. Strategic Partnership. Scalable Success.
-              </p>
-              <p className="text-[12px] text-slate-700 mt-2">
-                Ethiopia's #1 Enterprise IT Partner since 1994.
-              </p>
+              </Link>
+              <p className="text-[13px] text-slate-500 leading-relaxed">Smart IT. Strategic Partnership. Scalable Success.</p>
+              <p className="text-[12px] text-slate-700 mt-2">Ethiopia's #1 Enterprise IT Partner since 1994.</p>
             </div>
 
             <div className="flex items-center gap-2.5">
               {SOCIAL.map(({ icon: Icon, label, href }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <a key={label} href={href} target="_blank" rel="noopener noreferrer"
                   className="w-9 h-9 rounded-xl bg-white/5 border border-white/8 flex items-center justify-center text-slate-600 hover:text-white hover:border-white/15 hover:bg-white/10 transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue"
-                  aria-label={label}
-                >
+                  aria-label={label}>
                   <Icon size={15} aria-hidden="true" />
                 </a>
               ))}
@@ -87,12 +79,9 @@ export default function Footer() {
               <ul className="flex flex-col gap-2.5">
                 {links.map((link) => (
                   <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-[13px] text-slate-600 hover:text-white transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue rounded"
-                    >
+                    <Link to={link.to} className="text-[13px] text-slate-600 hover:text-white transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue rounded">
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -120,9 +109,9 @@ export default function Footer() {
                 <span>Mon–Fri: 8:00 AM – 6:00 PM EAT</span>
               </div>
             </div>
-            <a href="#contact" className="flex items-center gap-1.5 text-[13px] font-semibold text-alta-green-light hover:text-green-400 transition-colors duration-150 mt-1">
+            <Link to="/contact" className="flex items-center gap-1.5 text-[13px] font-semibold text-alta-green-light hover:text-green-400 transition-colors duration-150 mt-1">
               Get a Quote <ArrowRight size={13} />
-            </a>
+            </Link>
           </div>
         </div>
       </div>

@@ -88,8 +88,8 @@ export default function AIAssistant() {
             style={{ borderColor: 'rgba(27,79,216,0.2)', background: 'rgba(27,79,216,0.08)' }}
           >
             <div className="flex items-center gap-2.5">
-              <div className="relative w-7 h-7 rounded-lg overflow-hidden flex-shrink-0">
-                <img src="/alta_ai.jpg" alt="ALTA AI" className="w-full h-full object-cover" />
+              <div className="relative w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-navy-800 flex items-center justify-center">
+                <img src="/alta_ai_icon.svg" alt="ALTA AI" className="w-full h-full object-contain" />
                 <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-alta-green-light border border-navy-900" />
               </div>
               <div>
@@ -172,11 +172,11 @@ export default function AIAssistant() {
         </div>
       )}
 
-      {/* Pulse ring — outside button so overflow:hidden doesn't clip it */}
+      {/* Pulse ring — outside button */}
       {!open && (
         <span
-          className="absolute inset-0 rounded-2xl animate-ping pointer-events-none"
-          style={{ background: 'rgba(27,79,216,0.3)', animationDuration: '2.5s', zIndex: -1 }}
+          className="absolute inset-0 rounded-full animate-ping pointer-events-none"
+          style={{ background: 'rgba(30,158,214,0.25)', animationDuration: '2.5s', zIndex: -1 }}
           aria-hidden="true"
         />
       )}
@@ -184,35 +184,34 @@ export default function AIAssistant() {
       {/* FAB button */}
       <button
         onClick={() => setOpen((o) => !o)}
-        className="relative w-14 h-14 rounded-2xl overflow-hidden transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue focus-visible:ring-offset-2"
+        className="relative w-14 h-14 rounded-full flex items-center justify-center transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue focus-visible:ring-offset-2"
         style={{
+          background: 'transparent',
           boxShadow: open
-            ? '0 8px 24px rgba(27,79,216,0.5)'
-            : '0 8px 32px rgba(27,79,216,0.45), 0 0 0 1px rgba(27,79,216,0.3)',
+            ? '0 8px 24px rgba(27,79,216,0.4)'
+            : '0 8px 32px rgba(27,79,216,0.35)',
         }}
         aria-label={open ? 'Close AI assistant' : 'Open AI assistant'}
         aria-expanded={open}
       >
-        {/* Full image */}
-        <img
-          src="/alta_ai.jpg"
-          alt="ALTA AI"
-          className="absolute inset-0 w-full h-full object-cover transition-all duration-200"
-          style={{ filter: open ? 'brightness(0.4)' : 'brightness(1)' }}
-        />
+        {!open && (
+          <img
+            src="/alta_ai_icon.svg"
+            alt="ALTA AI"
+            className="w-14 h-14 object-contain"
+          />
+        )}
 
-        {/* X overlay when open */}
         {open && (
-          <div className="absolute inset-0 flex items-center justify-center z-20">
+          <div className="w-14 h-14 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #0b5a8f 0%, #1e9ed6 100%)' }}>
             <X size={22} className="text-white" />
           </div>
         )}
 
-        {/* Online dot */}
         {!open && (
           <span
-            className="absolute top-1 right-1 w-3 h-3 rounded-full border-2 z-20"
-            style={{ background: '#22C55E', borderColor: 'rgba(10,22,40,0.8)' }}
+            className="absolute top-0 right-0 w-3.5 h-3.5 rounded-full border-2 z-20"
+            style={{ background: '#22C55E', borderColor: '#ffffff' }}
             aria-hidden="true"
           />
         )}

@@ -1,0 +1,296 @@
+import { useState, useEffect, useRef } from 'react';
+import { ChevronDown, Trophy, Shield, Layers, Users, Building2, Globe, ShieldCheck, Star, Zap, Handshake, MapPin, TrendingUp, Linkedin } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import PageLayout from '../components/PageLayout';
+import PageHero from '../components/PageHero';
+import CTABanner from '../components/CTABanner';
+
+const MILESTONES = [
+  { year: '1994', label: 'Founded', detail: 'Established in Addis Ababa with ETB 100,000 capital', active: false },
+  { year: '2000', label: 'First Banking Client', detail: 'First major banking infrastructure deployment', active: false },
+  { year: '2005', label: 'Dell Authorized', detail: 'Became an authorized Dell partner', active: false },
+  { year: '2010', label: 'Cisco Premier', detail: 'Achieved Cisco Premier Partner status', active: false },
+  { year: '2015', label: '100+ Clients', detail: 'Surpassed 100 enterprise clients milestone', active: false },
+  { year: '2020', label: 'Oracle Gold', detail: 'Awarded Oracle Gold Partner designation', active: false },
+  { year: '2024', label: 'Dell Platinum', detail: "Ethiopia's first and only Dell Platinum Partner", active: false },
+  { year: '2026', label: 'USD $25M Revenue', detail: '470+ clients, 640+ projects, 130+ engineers', active: true },
+];
+
+const DIFFERENTIATORS = [
+  { title: "Ethiopia's Only Dell Platinum Partner", body: "The highest tier in Dell's global partner program — awarded exclusively to ALTA Computec PLC in Ethiopia. No competitor holds this designation.", accent: 'text-amber-500', dot: 'bg-amber-400' },
+  { title: '30 Years of Uninterrupted Operation', body: 'Continuous operation since 1994 — through every phase of Ethiopia\'s technology evolution. No other Ethiopian IT company matches this track record.', accent: 'text-alta-blue', dot: 'bg-alta-blue' },
+  { title: '470+ Enterprise Clients Across All Sectors', body: 'Banks, government ministries, telecoms, universities, and energy companies trust ALTA for their most critical infrastructure.', accent: 'text-alta-indigo', dot: 'bg-alta-indigo' },
+  { title: 'End-to-End IT Partner — No Subcontracting', body: 'From hardware procurement to software development, deployment, and 24/7 support — all delivered by our 130+ in-house certified engineers.', accent: 'text-amber-500', dot: 'bg-amber-400' },
+];
+
+const DIFFERENTIATOR_CARDS = [
+  { icon: Trophy, title: "Ethiopia's Only Dell Platinum Partner", desc: "The highest tier in Dell's global partner program. No other Ethiopian company holds this status.", color: 'text-alta-amber', bg: 'bg-amber-50' },
+  { icon: Shield, title: '30-Year Local Track Record', desc: 'Continuous operation since 1994 — through every phase of Ethiopia\'s technology evolution.', color: 'text-alta-green', bg: 'bg-green-50' },
+  { icon: Layers, title: 'End-to-End IT Partnership', desc: 'From hardware procurement to software, deployment, and 24/7 support — all under one roof.', color: 'text-alta-blue', bg: 'bg-blue-50' },
+  { icon: Users, title: '130+ Certified Engineers', desc: 'Dell, Cisco, Oracle, and Kaspersky certified professionals on staff — no subcontracting.', color: 'text-alta-indigo', bg: 'bg-indigo-50' },
+  { icon: Building2, title: 'Government & Banking Trust', desc: "Trusted by Ethiopia's banks, ministries, and telecoms for mission-critical infrastructure.", color: 'text-alta-sky', bg: 'bg-sky-50' },
+  { icon: Globe, title: 'Global Brands, Local Service', desc: 'International vendor partnerships with on-the-ground Addis Ababa support and response.', color: 'text-alta-amber', bg: 'bg-amber-50' },
+];
+
+const TEAM = [
+  { name: 'Abduilkader Abdella', title: 'Managing Director', initials: 'AA' },
+  { name: 'Cherinet G/Giorgis', title: 'General Manager', initials: 'CG' },
+  { name: 'Kirubel Gebrehiwot', title: 'Software, AI and Cybersecurity Division Head', initials: 'KG' },
+  { name: 'Araya Belete', title: 'Business Strategy & Development Division Head', initials: 'AB' },
+  { name: 'Ashenafi Kebede', title: 'Human Resource Department Manager', initials: 'AK' },
+  { name: 'Getachew Mulatu', title: 'Import and Logistics Manager', initials: 'GM' },
+  { name: 'Lueye Abdulkadir', title: 'Mgr., Business Strategy & Development', initials: 'LA' },
+   { name: 'Amir Abdulkadir', title: 'Consultant-Business Process Optimization', initials: 'AM' },
+];
+
+const VALUES = [
+  { icon: ShieldCheck, name: 'Integrity', desc: 'We deliver on every promise to every client.', color: 'bg-alta-blue/15 text-alta-blue' },
+  { icon: Star, name: 'Excellence', desc: 'World-class standards in every project we touch.', color: 'bg-alta-green/15 text-alta-green' },
+  { icon: Zap, name: 'Innovation', desc: 'Continuously adopting emerging technologies for Ethiopian enterprises.', color: 'bg-alta-indigo/15 text-alta-indigo' },
+  { icon: Handshake, name: 'Partnership', desc: 'Long-term relationships, not transactional contracts.', color: 'bg-amber-500/15 text-amber-400' },
+  { icon: MapPin, name: 'Local Impact', desc: "Committed to Ethiopia's digital and economic growth.", color: 'bg-alta-sky/15 text-alta-sky' },
+  { icon: TrendingUp, name: 'Long-Term Thinking', desc: 'Building infrastructure that scales for the next 30 years.', color: 'bg-alta-green/15 text-alta-green' },
+];
+
+const STATS = [
+  { value: 30, suffix: '+', label: 'Years of Operation', color: 'text-alta-blue' },
+  { value: 640, suffix: '+', label: 'Projects Delivered', color: 'text-alta-green-light' },
+  { value: 470, suffix: '+', label: 'Enterprise Clients', color: 'text-alta-blue' },
+  { value: 130, suffix: '+', label: 'Professionals', color: 'text-amber-400' },
+];
+
+function useCountUp(target, duration = 900, start = false) {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (!start || !target) return;
+    let startTime = null;
+    const step = (ts) => {
+      if (!startTime) startTime = ts;
+      const p = Math.min((ts - startTime) / duration, 1);
+      setCount(Math.floor((1 - Math.pow(1 - p, 4)) * target));
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }, [start, target, duration]);
+  return count;
+}
+
+function StatItem({ stat, animate }) {
+  const count = useCountUp(stat.value, 900, animate);
+  return (
+    <div className="flex flex-col items-center gap-2 text-center">
+      <span className={`text-[48px] font-black leading-none tracking-tight ${stat.color}`}>{count}{stat.suffix}</span>
+      <span className="text-[13px] text-slate-400 font-medium">{stat.label}</span>
+    </div>
+  );
+}
+
+function AccordionItem({ item, isOpen, onToggle }) {
+  return (
+    <div className="border-b border-slate-100 last:border-0">
+      <button className="w-full flex items-center justify-between py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue rounded-lg px-1 group" onClick={onToggle} aria-expanded={isOpen}>
+        <div className="flex items-center gap-3 pr-4">
+          <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${item.dot} ${isOpen ? 'opacity-100' : 'opacity-40'} transition-opacity duration-200`} aria-hidden="true" />
+          <span className={`font-semibold text-[14px] transition-colors duration-150 ${isOpen ? item.accent : 'text-navy-900 group-hover:text-alta-blue'}`}>{item.title}</span>
+        </div>
+        <ChevronDown size={15} className={`text-slate-400 flex-shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
+      </button>
+      {isOpen && (
+        <div className="pb-4 pl-5 pr-1">
+          <p className="text-[13px] text-slate-500 leading-relaxed">{item.body}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default function AboutPage() {
+  const [openIndex, setOpenIndex] = useState(0);
+  const [animate, setAnimate] = useState(false);
+  const statsRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setAnimate(true); observer.disconnect(); } }, { threshold: 0.2 });
+    if (statsRef.current) observer.observe(statsRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <PageLayout>
+      <PageHero breadcrumb="About Us" title="30 Years of Technology Excellence in Africa" subtitle="From a ETB 100,000 startup in 1994 to a USD $25 million enterprise — ALTA Computec is Ethiopia's most trusted IT partner." />
+
+      {/* Section 1 — Company Story */}
+      <section className="section-padding bg-white">
+        <div className="section-container">
+          <div className="grid lg:grid-cols-[3fr_2fr] gap-12 lg:gap-16 items-start">
+            <div className="flex flex-col gap-8">
+              <div>
+                <p className="overline-tag mb-3">Our Story</p>
+                <h2 className="section-heading">Built in Ethiopia. Trusted Across Africa.</h2>
+              </div>
+              <div className="flex flex-col gap-4 text-[14px] text-slate-600 leading-[1.75]">
+                <p>ALTA Computec PLC was founded in 1994 in Addis Ababa with a single conviction: that Ethiopian enterprises deserve world-class technology infrastructure, delivered by people who understand the local context. Starting with ETB 100,000 in capital and a small team of engineers, we built the company project by project, client by client.</p>
+                <p>Over three decades, we have grown into Ethiopia's most decorated enterprise IT company — the country's only Dell Platinum Partner, a Cisco Premier Partner, Oracle Gold Partner, and Kaspersky Platinum Partner. Our 130+ engineers have delivered 640+ projects across banking, government, telecom, education, and energy sectors.</p>
+                <p>Our mission has never changed: to be the strategic technology partner that Ethiopian institutions trust with their most critical infrastructure — not just for a project, but for decades. Today, with USD $25 million in annual revenue and 470+ enterprise clients, we are proud to be the backbone of Ethiopia's digital economy.</p>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-400 mb-4">Why Choose ALTA?</p>
+                <div className="rounded-2xl border border-slate-200/80 overflow-hidden divide-y divide-slate-100" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+                  {DIFFERENTIATORS.map((item, i) => (
+                    <div key={item.title} className="px-4">
+                      <AccordionItem item={item} isOpen={openIndex === i} onToggle={() => setOpenIndex(openIndex === i ? null : i)} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Timeline */}
+            <div className="card-dark p-6 rounded-2xl">
+              <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500 mb-6">Company Timeline</p>
+              <div className="relative">
+                <div className="absolute left-[19px] top-5 bottom-5 w-px" style={{ background: 'linear-gradient(180deg, #1B4FD8, #22C55E)' }} aria-hidden="true" />
+                <div className="flex flex-col gap-5">
+                  {MILESTONES.map((m) => (
+                    <div key={m.year} className="flex items-start gap-4 relative">
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 z-10 border-2 ${m.active ? 'bg-alta-green border-alta-green' : 'bg-navy-800 border-alta-blue/50'}`}>
+                        <span className={`text-[10px] font-black ${m.active ? 'text-white' : 'text-alta-blue'}`}>{m.year.slice(2)}</span>
+                      </div>
+                      <div className="pt-2">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <span className="text-[11px] font-bold text-slate-500">{m.year}</span>
+                          <span className={`text-[13px] font-bold ${m.active ? 'text-alta-green-light' : 'text-white'}`}>{m.label}</span>
+                        </div>
+                        <p className="text-[12px] text-slate-500 leading-relaxed">{m.detail}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 2 — Stats Strip */}
+      <section className="py-16 bg-dark-section relative" ref={statsRef}>
+        <div className="absolute inset-0 bg-dot-pattern opacity-40" aria-hidden="true" />
+        <div className="section-container relative z-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+            {STATS.map((s) => <StatItem key={s.label} stat={s} animate={animate} />)}
+          </div>
+        </div>
+      </section>
+
+      {/* Section 3 — Differentiators */}
+      <section className="section-padding bg-slate-50/80">
+        <div className="section-container">
+          <div className="text-center mb-12">
+            <p className="overline-tag justify-center mb-3">Our Differentiators</p>
+            <h2 className="section-heading">What Sets Us Apart</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {DIFFERENTIATOR_CARDS.map((c) => {
+              const Icon = c.icon;
+              return (
+                <div key={c.title} className="card-light flex flex-col gap-4">
+                  <div className={`w-11 h-11 rounded-xl ${c.bg} flex items-center justify-center flex-shrink-0`}>
+                    <Icon size={20} className={c.color} aria-hidden="true" />
+                  </div>
+                  <div>
+                    <h3 className="text-[15px] font-bold text-navy-900 mb-1.5">{c.title}</h3>
+                    <p className="text-[13px] text-slate-500 leading-relaxed">{c.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Section 4 — Leadership */}
+      <section className="section-padding bg-white">
+        <div className="section-container">
+          <div className="text-center mb-12">
+            <p className="overline-tag justify-center mb-3">Our Team</p>
+            <h2 className="section-heading">The People Behind ALTA</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {TEAM.map((member) => (
+              <div key={member.name} className="card-light flex flex-col items-center gap-4 text-center">
+                <div className="w-[72px] h-[72px] rounded-full bg-navy-900 flex items-center justify-center flex-shrink-0">
+                  <span className="text-white font-black text-xl">{member.initials}</span>
+                </div>
+                <div>
+                  <p className="font-bold text-navy-900 text-[15px]">{member.name}</p>
+                  <p className="text-[13px] text-slate-500 mt-0.5">{member.title}</p>
+                </div>
+                <a href="#" className="flex items-center gap-1.5 text-[12px] text-slate-400 hover:text-alta-blue transition-colors duration-150" aria-label={`${member.name} on LinkedIn`}>
+                  <Linkedin size={14} aria-hidden="true" /> LinkedIn
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Section 5 — Core Values */}
+      <section className="section-padding relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #0A1628 0%, #03080F 100%)' }}>
+        <div className="absolute inset-0 bg-grid-fine opacity-60" aria-hidden="true" />
+        <div className="section-container relative z-10">
+          <div className="text-center mb-12">
+            <p className="overline-tag justify-center text-alta-blue mb-3">Our Values</p>
+            <h2 className="section-heading-light">What We Stand For</h2>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {VALUES.map((v) => {
+              const Icon = v.icon;
+              return (
+                <div key={v.name} className="card-dark flex flex-col gap-4">
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${v.color}`} style={{ background: 'rgba(255,255,255,0.06)' }}>
+                    <Icon size={18} aria-hidden="true" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-white text-[15px] mb-1">{v.name}</p>
+                    <p className="text-[13px] text-slate-400 leading-relaxed">{v.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Section 6 — Partners Strip */}
+      <section className="section-padding bg-white">
+        <div className="section-container">
+          <div className="text-center mb-10">
+            <p className="overline-tag justify-center mb-3">Official Certifications</p>
+            <h2 className="section-heading">Certified by the World's Leading Technology Brands</h2>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-10 lg:gap-14">
+            {[
+              { name: 'Dell', img: '/dell.png', badge: 'Platinum' },
+              { name: 'Cisco', img: '/cisco.png', badge: 'Premier' },
+              { name: 'Oracle', img: '/oracle.png', badge: 'Gold' },
+              { name: 'Kaspersky', img: '/kaspersky.png', badge: 'Platinum' },
+              { name: 'HP', img: '/hp.png', badge: 'Authorized' },
+              { name: 'Microsoft', img: '/microsoft.png', badge: 'Partner' },
+              { name: 'IBM', img: '/ibm.png', badge: 'Authorized' },
+              { name: 'Fortinet', img: '/fortinet.png', badge: 'Authorized' },
+            ].map((p) => (
+              <div key={p.name} className="flex flex-col items-center gap-2.5 group cursor-default">
+                <div className="h-14 w-28 flex items-center justify-center">
+                  <img src={p.img} alt={`${p.name} logo`} className="max-h-14 max-w-full object-contain grayscale group-hover:grayscale-0 transition-all duration-200" loading="lazy" />
+                </div>
+                <span className="text-[11px] font-semibold text-slate-400">{p.badge}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <CTABanner />
+    </PageLayout>
+  );
+}

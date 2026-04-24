@@ -1,4 +1,5 @@
 import { ArrowRight, Clock, BookOpen } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const FEATURED = {
   category: 'Cybersecurity',
@@ -43,9 +44,9 @@ export default function Blog() {
             <p className="overline-tag mb-3">Insights</p>
             <h2 className="section-heading">Technology Insights for<br className="hidden sm:block" /> Ethiopian Enterprise Leaders</h2>
           </div>
-          <a href="#blog" className="btn-ghost self-start sm:self-auto flex-shrink-0">
+          <Link to="/blog" className="btn-ghost self-start sm:self-auto flex-shrink-0">
             View All Insights <ArrowRight size={15} />
-          </a>
+          </Link>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-5">
@@ -71,9 +72,9 @@ export default function Blog() {
                 {FEATURED.title}
               </h3>
               <p className="text-[13.5px] text-slate-500 leading-relaxed flex-1">{FEATURED.excerpt}</p>
-              <a href="#blog" className="flex items-center gap-1.5 text-[13px] font-semibold text-alta-blue hover:underline underline-offset-2 mt-auto">
+              <Link to="/blog" className="flex items-center gap-1.5 text-[13px] font-semibold text-alta-blue hover:underline underline-offset-2 mt-auto">
                 Read Article <ArrowRight size={13} />
-              </a>
+              </Link>
             </div>
           </article>
 
@@ -98,9 +99,9 @@ export default function Blog() {
                 </h3>
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] text-slate-400">{article.date}</span>
-                  <a href="#blog" className="text-[12px] font-semibold text-alta-blue hover:underline underline-offset-2 flex items-center gap-1">
+                  <Link to="/blog" className="text-[12px] font-semibold text-alta-blue hover:underline underline-offset-2 flex items-center gap-1">
                     Read <ArrowRight size={11} />
-                  </a>
+                  </Link>
                 </div>
               </article>
             ))}

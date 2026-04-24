@@ -1,3 +1,5 @@
+import { Routes, Route } from 'react-router-dom';
+
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Statistics from './components/Statistics';
@@ -12,7 +14,16 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import AIAssistant from './components/AIAssistant';
 
-export default function App() {
+import AboutPage from './pages/AboutPage';
+import SolutionsPage from './pages/SolutionsPage';
+import IndustriesPage from './pages/IndustriesPage';
+import CaseStudiesPage from './pages/CaseStudiesPage';
+import ProductsPage from './pages/ProductsPage';
+import ContactPage from './pages/ContactPage';
+import CareersPage from './pages/CareersPage';
+import BlogPage from './pages/BlogPage';
+
+function HomePage() {
   return (
     <>
       <Navbar />
@@ -31,5 +42,21 @@ export default function App() {
       <Footer />
       <AIAssistant />
     </>
+  );
+}
+
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/solutions" element={<SolutionsPage />} />
+      <Route path="/industries" element={<IndustriesPage />} />
+      <Route path="/case-studies" element={<CaseStudiesPage />} />
+      <Route path="/products" element={<ProductsPage />} />
+      <Route path="/contact" element={<ContactPage />} />
+      <Route path="/careers" element={<CareersPage />} />
+      <Route path="/blog" element={<BlogPage />} />
+    </Routes>
   );
 }
