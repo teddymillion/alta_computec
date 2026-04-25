@@ -26,17 +26,24 @@ const TIER2 = [
 function Tier1Card({ p }) {
   return (
     <div
-      className="group relative flex flex-col items-center gap-5 p-8 rounded-2xl bg-white border border-slate-200/80 transition-all duration-250 ease-out hover:-translate-y-1 cursor-default overflow-hidden"
+      className="group relative flex flex-col items-center gap-5 p-8 rounded-2xl bg-white border border-slate-200 transition-all duration-250 ease-out hover:-translate-y-1 cursor-default"
       style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
       onMouseEnter={(e) => { e.currentTarget.style.boxShadow = `0 16px 40px ${p.glow}, 0 4px 8px rgba(0,0,0,0.06)`; }}
       onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)'; }}
     >
-      <div className="absolute top-0 inset-x-0 h-1 opacity-70 group-hover:opacity-100 transition-opacity duration-250" style={{ background: `linear-gradient(90deg, ${p.accentFrom}, ${p.accentTo})` }} aria-hidden="true" />
+      {/* Top accent bar */}
+      <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl opacity-70 group-hover:opacity-100 transition-opacity duration-250" style={{ background: `linear-gradient(90deg, ${p.accentFrom}, ${p.accentTo})` }} aria-hidden="true" />
 
-      {/* Logo — large and prominent */}
-      <div className="w-full h-24 flex items-center justify-center group-hover:scale-105 transition-transform duration-250 px-4">
+      {/* Logo */}
+      <div className="w-full flex items-center justify-center group-hover:scale-105 transition-transform duration-250" style={{ height: 96 }}>
         {p.img ? (
-          <img src={p.img} alt={`${p.name} logo`} className="max-w-full max-h-full object-contain" loading="lazy" />
+          <img
+            src={p.img}
+            alt={`${p.name} logo`}
+            style={{ maxWidth: 160, maxHeight: 96, minHeight: 48, width: 'auto', height: 'auto' }}
+            className="object-contain"
+            loading="lazy"
+          />
         ) : (
           <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${p.fallbackBg} flex items-center justify-center shadow-md`}>
             <span className="text-white font-black text-2xl">{p.fallback}</span>
@@ -55,13 +62,18 @@ function Tier1Card({ p }) {
 
 function Tier2Item({ p }) {
   return (
-    <div className="group flex flex-col items-center gap-3 p-5 rounded-xl bg-white border border-slate-100 hover:border-slate-300 hover:shadow-md transition-all duration-200 cursor-default">
-      {/* Logo — large enough to read clearly */}
-      <div className="w-full h-16 flex items-center justify-center group-hover:scale-105 transition-transform duration-200 px-2">
+    <div className="group flex flex-col items-center gap-3 p-5 rounded-xl bg-white border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all duration-200 cursor-default">
+      <div className="w-full flex items-center justify-center group-hover:scale-105 transition-transform duration-200" style={{ height: 56 }}>
         {p.img ? (
-          <img src={p.img} alt={`${p.name} logo`} className="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-200" loading="lazy" />
+          <img
+            src={p.img}
+            alt={`${p.name} logo`}
+            style={{ maxWidth: 110, maxHeight: 56, minHeight: 32, width: 'auto', height: 'auto' }}
+            className="object-contain grayscale group-hover:grayscale-0 transition-all duration-200"
+            loading="lazy"
+          />
         ) : (
-          <div className="w-14 h-14 rounded-xl bg-slate-100 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center">
             <span className="text-slate-500 font-bold text-sm">{p.name.slice(0, 3).toUpperCase()}</span>
           </div>
         )}

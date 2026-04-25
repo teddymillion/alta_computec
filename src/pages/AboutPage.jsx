@@ -280,8 +280,14 @@ export default function AboutPage() {
               { name: 'Fortinet', img: '/fortinet.png', badge: 'Authorized' },
             ].map((p) => (
               <div key={p.name} className="flex flex-col items-center gap-2.5 group cursor-default">
-                <div className="h-14 w-28 flex items-center justify-center">
-                  <img src={p.img} alt={`${p.name} logo`} className="max-h-14 max-w-full object-contain grayscale group-hover:grayscale-0 transition-all duration-200" loading="lazy" />
+                <div className="flex items-center justify-center" style={{ width: 112, height: 56 }}>
+                  <img
+                    src={p.img}
+                    alt={`${p.name} logo`}
+                    style={{ maxWidth: 110, maxHeight: 56, minHeight: 32, width: 'auto', height: 'auto' }}
+                    className="object-contain grayscale group-hover:grayscale-0 transition-all duration-200"
+                    loading="lazy"
+                  />
                 </div>
                 <span className="text-[11px] font-semibold text-slate-400">{p.badge}</span>
               </div>

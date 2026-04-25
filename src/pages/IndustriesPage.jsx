@@ -147,7 +147,10 @@ export default function IndustriesPage() {
                       <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500 mb-4">Key Technology Partners</p>
                       <div className="flex items-center gap-5 flex-wrap">
                         {ind.partners.map((img, i) => (
-                          <img key={i} src={img} alt={ind.partnerNames[i]} className="h-10 max-w-[80px] object-contain brightness-0 invert opacity-75 hover:opacity-100 transition-all duration-200" loading="lazy" />
+                          <img key={i} src={img} alt={ind.partnerNames[i]}
+                            style={{ height: 48, maxWidth: 96, width: 'auto', opacity: 1 }}
+                            className="object-contain hover:opacity-100 transition-opacity duration-200"
+                            loading="lazy" />
                         ))}
                       </div>
                     </div>

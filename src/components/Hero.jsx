@@ -201,22 +201,23 @@ export default function Hero() {
           <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-slate-600 mb-8 text-center">
             Official Technology Partnerships
           </p>
-          <div className="flex items-end justify-center gap-8 sm:gap-12 lg:gap-14 flex-wrap">
+          <div className="flex items-center justify-center gap-8 sm:gap-12 lg:gap-16 flex-wrap">
             {PARTNERS.map((p) => (
               <div key={p.name} className="flex flex-col items-center gap-2 group cursor-default">
-                <div className="h-14 w-28 flex items-center justify-center">
+                <div className="flex items-center justify-center" style={{ height: 56 }}>
                   {p.img ? (
                     <img
                       src={p.img}
                       alt={`${p.name} logo`}
-                      className="max-h-14 max-w-[112px] w-full object-contain brightness-0 invert opacity-75 group-hover:opacity-100 transition-opacity duration-200"
+                      style={{ maxHeight: 52, maxWidth: 110, width: 'auto', height: 'auto', opacity: 1 }}
+                      className="object-contain group-hover:opacity-100 transition-opacity duration-200"
                       loading="lazy"
                     />
                   ) : (
-                    <span className="text-white/75 font-bold text-[15px] tracking-wide group-hover:text-white transition-colors duration-200">{p.name}</span>
+                    <span className="text-white/70 font-bold text-[14px] tracking-wide">{p.name}</span>
                   )}
                 </div>
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1">
                   {p.exclusive && (
                     <span className="text-[9px] font-black tracking-wider uppercase px-1.5 py-0.5 rounded-full bg-amber-500/15 text-amber-400 border border-amber-500/25">Exclusive</span>
                   )}
