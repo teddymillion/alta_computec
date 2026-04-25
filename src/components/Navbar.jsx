@@ -33,10 +33,7 @@ const NAV_ITEMS = [
       },
     ],
   },
-  {
-    label: 'Products',
-    isProducts: true,
-  },
+  { label: 'Products', isProducts: true },
   {
     label: 'Industries',
     columns: [
@@ -101,10 +98,7 @@ const NAV_ITEMS = [
       },
     ],
   },
-  {
-    label: 'Group',
-    isGroup: true,
-  },
+  { label: 'Group', isGroup: true },
 ];
 
 export default function Navbar() {
@@ -158,7 +152,9 @@ export default function Navbar() {
               {NAV_ITEMS.map((item) => (
                 <div key={item.label} className="relative" onMouseEnter={() => openMenu(item.label)} onMouseLeave={closeMenu}>
                   <button
-                    className={`flex items-center gap-1 px-3.5 py-2 rounded-lg text-[13.5px] font-medium transition-all duration-150 ${linkBase} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue`}
+                    className={`flex items-center gap-1 px-3.5 py-2 rounded-lg text-[13.5px] font-medium transition-all duration-150 ${
+                      item.isGroup ? (scrolled ? 'text-amber-600 hover:text-amber-700' : 'text-amber-400 hover:text-amber-300') : linkBase
+                    } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue`}
                     aria-expanded={activeMenu === item.label}
                     aria-haspopup="true"
                   >
@@ -166,12 +162,9 @@ export default function Navbar() {
                     <ChevronDown size={13} className={`transition-transform duration-200 ${activeMenu === item.label ? 'rotate-180' : ''} ${scrolled ? 'text-slate-400' : 'text-slate-500'}`} />
                   </button>
 
+                  {/* Products mega menu */}
                   {activeMenu === item.label && item.isProducts && (
-                    <div
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 w-[680px] bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden"
-                      style={{ animation: 'slideDown 0.18s cubic-bezier(0.16,1,0.3,1)' }}
-                      role="region" aria-label="Products menu"
-                    >
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 w-[680px] bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden" style={{ animation: 'slideDown 0.18s cubic-bezier(0.16,1,0.3,1)' }} role="region" aria-label="Products menu">
                       <div className="h-0.5 bg-gradient-to-r from-alta-blue via-alta-sky to-alta-green-light" />
                       <div className="grid grid-cols-3 gap-0 p-5">
                         {[
@@ -184,10 +177,7 @@ export default function Navbar() {
                             <ul className="space-y-0.5">
                               {col.links.map(link => (
                                 <li key={link}>
-                                  <Link to="/products" onClick={() => setActiveMenu(null)}
-                                    className="block px-2 py-1.5 rounded-lg text-[13px] text-slate-600 hover:text-navy-900 hover:bg-slate-50 transition-colors duration-150">
-                                    {link}
-                                  </Link>
+                                  <Link to="/products" onClick={() => setActiveMenu(null)} className="block px-2 py-1.5 rounded-lg text-[13px] text-slate-600 hover:text-navy-900 hover:bg-slate-50 transition-colors duration-150">{link}</Link>
                                 </li>
                               ))}
                             </ul>
@@ -196,30 +186,25 @@ export default function Navbar() {
                       </div>
                       <div className="px-5 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
                         <span className="text-[11px] text-slate-400">Ethiopia's #1 Enterprise IT Partner since 1994</span>
-                        <Link to="/contact" onClick={() => setActiveMenu(null)} className="text-[11px] font-semibold text-alta-blue hover:underline underline-offset-2 flex items-center gap-1">
-                          Get a Quote <ArrowRight size={10} />
-                        </Link>
+                        <Link to="/contact" onClick={() => setActiveMenu(null)} className="text-[11px] font-semibold text-alta-blue hover:underline underline-offset-2 flex items-center gap-1">Get a Quote <ArrowRight size={10} /></Link>
                       </div>
                     </div>
                   )}
 
+                  {/* Group mega menu */}
                   {activeMenu === item.label && item.isGroup && (
-                    <div
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 w-[680px] bg-navy-900 rounded-2xl shadow-2xl border border-white/8 overflow-hidden"
-                      style={{ animation: 'slideDown 0.18s cubic-bezier(0.16,1,0.3,1)', backdropFilter: 'blur(20px)' }}
-                      role="region" aria-label="Group menu"
-                    >
-                      <div className="h-0.5 bg-gradient-to-r from-alta-blue via-alta-amber to-amber-400" />
+                    <div className="absolute top-full right-0 mt-1.5 w-[640px] bg-navy-900 rounded-2xl shadow-2xl border border-white/8 overflow-hidden" style={{ animation: 'slideDown 0.18s cubic-bezier(0.16,1,0.3,1)', backdropFilter: 'blur(20px)' }} role="region" aria-label="Group menu">
+                      <div className="h-0.5 bg-gradient-to-r from-alta-blue via-amber-400 to-amber-500" />
                       <div className="grid grid-cols-2 gap-0 p-5">
+                        {/* ALTA Computec */}
                         <div className="pr-5 border-r border-slate-700">
-                          <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-400 mb-1">Technology &amp; IT Solutions</p>
+                          <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-400 mb-1">Technology & IT Solutions</p>
                           <p className="text-white font-bold text-[17px] mb-0.5 tracking-tight">ALTA Computec PLC</p>
                           <p className="text-slate-400 text-[12px] mb-3 leading-snug">Ethiopia's #1 enterprise IT partner. Dell Platinum. 30 years.</p>
                           <ul className="space-y-1 mb-4">
                             {[{label:'Solutions',to:'/solutions'},{label:'Products',to:'/products'},{label:'Case Studies',to:'/case-studies'},{label:'Contact',to:'/contact'}].map(l => (
                               <li key={l.label}>
-                                <Link to={l.to} onClick={() => setActiveMenu(null)}
-                                  className="flex items-center gap-1.5 text-[13px] text-slate-300 hover:text-white transition-colors duration-150 py-1">
+                                <Link to={l.to} onClick={() => setActiveMenu(null)} className="flex items-center gap-1.5 text-[13px] text-slate-300 hover:text-white transition-colors duration-150 py-1">
                                   <ArrowRight size={11} className="text-slate-600" /> {l.label}
                                 </Link>
                               </li>
@@ -227,6 +212,7 @@ export default function Navbar() {
                           </ul>
                           <span className="text-[9px] font-black tracking-wider uppercase px-2 py-0.5 rounded-full bg-amber-500 text-white">Since 1994</span>
                         </div>
+                        {/* LATA */}
                         <div className="pl-5">
                           <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-amber-500 mb-1">Ethiopian Coffee Export</p>
                           <p className="text-white font-bold text-[17px] mb-0.5 tracking-tight">LATA Agri Export</p>
@@ -238,18 +224,16 @@ export default function Navbar() {
                           <ul className="space-y-1 mb-4">
                             {LATA_MEGA.map(l => (
                               <li key={l.label}>
-                                <a href={l.href} target="_blank" rel="noopener noreferrer"
-                                  className="flex items-center gap-1.5 text-[13px] text-amber-300 hover:text-amber-100 transition-colors duration-150 py-1">
+                                <a href={l.href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-[13px] text-amber-300 hover:text-amber-100 transition-colors duration-150 py-1">
                                   <ArrowRight size={11} className="text-amber-600" /> {l.label}
                                   <ArrowRight size={10} className="ml-auto opacity-50" />
                                 </a>
                               </li>
                             ))}
                           </ul>
-                          <a href="https://coffeelata.com/" target="_blank" rel="noopener noreferrer"
-                            className="text-amber-400 text-[12px] font-medium hover:text-amber-200 transition-colors">
-                            Visit coffeelata.com →
-                          </a>
+                          <Link to="/group" onClick={() => setActiveMenu(null)} className="text-amber-400 text-[12px] font-semibold hover:text-amber-200 transition-colors">
+                            View LATA Page →
+                          </Link>
                         </div>
                       </div>
                       <div className="px-5 py-2.5 border-t border-slate-700">
@@ -258,13 +242,9 @@ export default function Navbar() {
                     </div>
                   )}
 
+                  {/* Standard mega menu */}
                   {activeMenu === item.label && !item.isProducts && !item.isGroup && item.columns && (
-                    <div
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 w-[520px] bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden"
-                      style={{ animation: 'slideDown 0.18s cubic-bezier(0.16,1,0.3,1)' }}
-                      role="region"
-                      aria-label={`${item.label} menu`}
-                    >
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 w-[520px] bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden" style={{ animation: 'slideDown 0.18s cubic-bezier(0.16,1,0.3,1)' }} role="region" aria-label={`${item.label} menu`}>
                       <div className="h-0.5 bg-gradient-to-r from-alta-blue via-alta-sky to-alta-green-light" />
                       <div className="grid grid-cols-2 gap-0 p-5">
                         {item.columns.map((col, ci) => (
@@ -273,14 +253,9 @@ export default function Navbar() {
                             <ul className="space-y-0.5">
                               {col.links.map((link) => (
                                 <li key={link.label}>
-                                  <Link
-                                    to={link.to}
-                                    onClick={() => setActiveMenu(null)}
-                                    className={`group flex flex-col px-2 py-2 rounded-xl transition-all duration-150 ${link.highlight ? 'hover:bg-blue-50' : 'hover:bg-slate-50'}`}
-                                  >
+                                  <Link to={link.to} onClick={() => setActiveMenu(null)} className={`group flex flex-col px-2 py-2 rounded-xl transition-all duration-150 ${link.highlight ? 'hover:bg-blue-50' : 'hover:bg-slate-50'}`}>
                                     <span className={`flex items-center gap-1.5 text-[13px] font-medium ${link.highlight ? 'text-alta-blue font-semibold' : 'text-slate-700 group-hover:text-navy-900'}`}>
                                       {link.label}
-                                      {link.badge && <span className="text-[9px] font-bold tracking-wider uppercase px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 border border-amber-200">{link.badge}</span>}
                                       {link.highlight && <ArrowRight size={11} className="ml-auto opacity-60" />}
                                     </span>
                                     {link.desc && <span className="text-[11px] text-slate-400 mt-0.5 leading-tight">{link.desc}</span>}
@@ -293,9 +268,7 @@ export default function Navbar() {
                       </div>
                       <div className="px-5 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
                         <span className="text-[11px] text-slate-400">Ethiopia's #1 Enterprise IT Partner since 1994</span>
-                        <Link to="/contact" onClick={() => setActiveMenu(null)} className="text-[11px] font-semibold text-alta-blue hover:underline underline-offset-2 flex items-center gap-1">
-                          Get a Quote <ArrowRight size={10} />
-                        </Link>
+                        <Link to="/contact" onClick={() => setActiveMenu(null)} className="text-[11px] font-semibold text-alta-blue hover:underline underline-offset-2 flex items-center gap-1">Get a Quote <ArrowRight size={10} /></Link>
                       </div>
                     </div>
                   )}
@@ -353,7 +326,9 @@ export default function Navbar() {
             {NAV_ITEMS.map((item) => (
               <div key={item.label} className="border-b border-white/6">
                 {item.isGroup ? (
-                  <Link to="/group" className="flex items-center py-4 text-white font-semibold text-[15px]" onClick={() => setMobileOpen(false)}>Group</Link>
+                  <Link to="/group" className="flex items-center py-4 text-amber-400 font-semibold text-[15px]" onClick={() => setMobileOpen(false)}>
+                    ☕ Group
+                  </Link>
                 ) : item.isProducts ? (
                   <Link to="/products" className="flex items-center py-4 text-white font-semibold text-[15px]" onClick={() => setMobileOpen(false)}>Products</Link>
                 ) : (
@@ -372,12 +347,7 @@ export default function Navbar() {
                           <div key={col.heading}>
                             <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-600 mb-2 px-1">{col.heading}</p>
                             {col.links.map((link) => (
-                              <Link
-                                key={link.label}
-                                to={link.to}
-                                className={`flex items-center min-h-[48px] py-2.5 px-2 text-[14px] rounded-xl transition-colors duration-150 ${link.highlight ? 'text-alta-blue font-semibold' : 'text-slate-300 hover:text-white'}`}
-                                onClick={() => setMobileOpen(false)}
-                              >
+                              <Link key={link.label} to={link.to} className={`flex items-center min-h-[48px] py-2.5 px-2 text-[14px] rounded-xl transition-colors duration-150 ${link.highlight ? 'text-alta-blue font-semibold' : 'text-slate-300 hover:text-white'}`} onClick={() => setMobileOpen(false)}>
                                 {link.label}
                               </Link>
                             ))}
