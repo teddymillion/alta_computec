@@ -22,6 +22,7 @@ import ProductsPage from './pages/ProductsPage';
 import ContactPage from './pages/ContactPage';
 import CareersPage from './pages/CareersPage';
 import BlogPage from './pages/BlogPage';
+import GroupPage from './pages/GroupPage';
 
 function HomePage() {
   return (
@@ -57,6 +58,7 @@ export default function App() {
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/careers" element={<CareersPage />} />
       <Route path="/blog" element={<BlogPage />} />
+      <Route path="/group" element={<GroupPage />} />
     </Routes>
   );
 }

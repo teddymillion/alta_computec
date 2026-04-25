@@ -2,6 +2,13 @@ import { useState, useEffect, useRef } from 'react';
 import { ChevronDown, Menu, X, Phone, ArrowRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
+const LATA_MEGA = [
+  { label: 'About LATA',        href: 'https://coffeelata.com/about' },
+  { label: 'Coffee Types',      href: 'https://coffeelata.com/coffee' },
+  { label: 'Quality Assurance', href: 'https://coffeelata.com/quality' },
+  { label: 'Visit Website',     href: 'https://coffeelata.com/' },
+];
+
 const NAV_ITEMS = [
   {
     label: 'Solutions',
@@ -28,26 +35,7 @@ const NAV_ITEMS = [
   },
   {
     label: 'Products',
-    columns: [
-      {
-        heading: 'Hardware',
-        links: [
-          { label: 'Dell Servers & Storage', to: '/products', desc: 'PowerEdge, PowerStore, VxRail' },
-          { label: 'Cisco Networking', to: '/products', desc: 'Catalyst, Meraki, Nexus' },
-          { label: 'HP Enterprise', to: '/products', desc: 'ProLiant, Aruba, Nimble' },
-          { label: 'Huawei', to: '/products', desc: 'OceanStor, CloudEngine' },
-        ],
-      },
-      {
-        heading: 'Software & Security',
-        links: [
-          { label: 'Oracle Software', to: '/products', desc: 'Database, ERP, Analytics' },
-          { label: 'Microsoft', to: '/products', desc: 'Azure, M365, Dynamics' },
-          { label: 'Kaspersky Security', to: '/products', desc: 'EDR, SIEM, threat intel' },
-          { label: 'View All Brands', to: '/products', highlight: true },
-        ],
-      },
-    ],
+    isProducts: true,
   },
   {
     label: 'Industries',
@@ -113,6 +101,10 @@ const NAV_ITEMS = [
       },
     ],
   },
+  {
+    label: 'Group',
+    isGroup: true,
+  },
 ];
 
 export default function Navbar() {
@@ -174,7 +166,99 @@ export default function Navbar() {
                     <ChevronDown size={13} className={`transition-transform duration-200 ${activeMenu === item.label ? 'rotate-180' : ''} ${scrolled ? 'text-slate-400' : 'text-slate-500'}`} />
                   </button>
 
-                  {activeMenu === item.label && (
+                  {activeMenu === item.label && item.isProducts && (
+                    <div
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 w-[680px] bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden"
+                      style={{ animation: 'slideDown 0.18s cubic-bezier(0.16,1,0.3,1)' }}
+                      role="region" aria-label="Products menu"
+                    >
+                      <div className="h-0.5 bg-gradient-to-r from-alta-blue via-alta-sky to-alta-green-light" />
+                      <div className="grid grid-cols-3 gap-0 p-5">
+                        {[
+                          { heading: 'Client Products', links: ['Desktop','Laptop','Copier','Printer','Scanner','Projector','Toners','External Drive','Flash Drive','Accessories'] },
+                          { heading: 'Enterprise & Power', links: ['Server','Storage','Workstation','Switch','Router','Firewall','Server Rack','Backup Device','UPS','Surge Protector'] },
+                          { heading: 'Specialised', links: ['ATM','POS','Smart Screen','Headset','Infrastructure','Software','Service'] },
+                        ].map((col, ci) => (
+                          <div key={col.heading} className={ci === 0 ? 'pr-4 border-r border-slate-100' : ci === 1 ? 'px-4 border-r border-slate-100' : 'pl-4'}>
+                            <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-400 mb-3 px-2">{col.heading}</p>
+                            <ul className="space-y-0.5">
+                              {col.links.map(link => (
+                                <li key={link}>
+                                  <Link to="/products" onClick={() => setActiveMenu(null)}
+                                    className="block px-2 py-1.5 rounded-lg text-[13px] text-slate-600 hover:text-navy-900 hover:bg-slate-50 transition-colors duration-150">
+                                    {link}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="px-5 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                        <span className="text-[11px] text-slate-400">Ethiopia's #1 Enterprise IT Partner since 1994</span>
+                        <Link to="/contact" onClick={() => setActiveMenu(null)} className="text-[11px] font-semibold text-alta-blue hover:underline underline-offset-2 flex items-center gap-1">
+                          Get a Quote <ArrowRight size={10} />
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+
+                  {activeMenu === item.label && item.isGroup && (
+                    <div
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 w-[680px] bg-navy-900 rounded-2xl shadow-2xl border border-white/8 overflow-hidden"
+                      style={{ animation: 'slideDown 0.18s cubic-bezier(0.16,1,0.3,1)', backdropFilter: 'blur(20px)' }}
+                      role="region" aria-label="Group menu"
+                    >
+                      <div className="h-0.5 bg-gradient-to-r from-alta-blue via-alta-amber to-amber-400" />
+                      <div className="grid grid-cols-2 gap-0 p-5">
+                        <div className="pr-5 border-r border-slate-700">
+                          <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-400 mb-1">Technology &amp; IT Solutions</p>
+                          <p className="text-white font-bold text-[17px] mb-0.5 tracking-tight">ALTA Computec PLC</p>
+                          <p className="text-slate-400 text-[12px] mb-3 leading-snug">Ethiopia's #1 enterprise IT partner. Dell Platinum. 30 years.</p>
+                          <ul className="space-y-1 mb-4">
+                            {[{label:'Solutions',to:'/solutions'},{label:'Products',to:'/products'},{label:'Case Studies',to:'/case-studies'},{label:'Contact',to:'/contact'}].map(l => (
+                              <li key={l.label}>
+                                <Link to={l.to} onClick={() => setActiveMenu(null)}
+                                  className="flex items-center gap-1.5 text-[13px] text-slate-300 hover:text-white transition-colors duration-150 py-1">
+                                  <ArrowRight size={11} className="text-slate-600" /> {l.label}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                          <span className="text-[9px] font-black tracking-wider uppercase px-2 py-0.5 rounded-full bg-amber-500 text-white">Since 1994</span>
+                        </div>
+                        <div className="pl-5">
+                          <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-amber-500 mb-1">Ethiopian Coffee Export</p>
+                          <p className="text-white font-bold text-[17px] mb-0.5 tracking-tight">LATA Agri Export</p>
+                          <p className="text-slate-400 text-[12px] mb-3 leading-snug">World-class Ethiopian green coffee exported globally.</p>
+                          <div className="flex items-center gap-2 text-amber-400 text-[12px] mb-3">
+                            <span>☕</span>
+                            <span className="font-medium">Sidamo · Limmu · Specialty</span>
+                          </div>
+                          <ul className="space-y-1 mb-4">
+                            {LATA_MEGA.map(l => (
+                              <li key={l.label}>
+                                <a href={l.href} target="_blank" rel="noopener noreferrer"
+                                  className="flex items-center gap-1.5 text-[13px] text-amber-300 hover:text-amber-100 transition-colors duration-150 py-1">
+                                  <ArrowRight size={11} className="text-amber-600" /> {l.label}
+                                  <ArrowRight size={10} className="ml-auto opacity-50" />
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                          <a href="https://coffeelata.com/" target="_blank" rel="noopener noreferrer"
+                            className="text-amber-400 text-[12px] font-medium hover:text-amber-200 transition-colors">
+                            Visit coffeelata.com →
+                          </a>
+                        </div>
+                      </div>
+                      <div className="px-5 py-2.5 border-t border-slate-700">
+                        <span className="text-[11px] text-slate-500">Part of the ALTA Group — Addis Ababa, Ethiopia</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {activeMenu === item.label && !item.isProducts && !item.isGroup && item.columns && (
                     <div
                       className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 w-[520px] bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden"
                       style={{ animation: 'slideDown 0.18s cubic-bezier(0.16,1,0.3,1)' }}
@@ -268,32 +352,40 @@ export default function Navbar() {
           <nav className="px-4 py-2" aria-label="Mobile navigation">
             {NAV_ITEMS.map((item) => (
               <div key={item.label} className="border-b border-white/6">
-                <button
-                  className="w-full flex items-center justify-between py-4 text-white font-semibold text-[15px] focus-visible:outline-none"
-                  onClick={() => setMobileExpanded(mobileExpanded === item.label ? null : item.label)}
-                  aria-expanded={mobileExpanded === item.label}
-                >
-                  {item.label}
-                  <ChevronDown size={16} className={`text-slate-500 transition-transform duration-200 ${mobileExpanded === item.label ? 'rotate-180' : ''}`} />
-                </button>
-                {mobileExpanded === item.label && (
-                  <div className="pb-4 space-y-5">
-                    {item.columns.map((col) => (
-                      <div key={col.heading}>
-                        <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-600 mb-2 px-1">{col.heading}</p>
-                        {col.links.map((link) => (
-                          <Link
-                            key={link.label}
-                            to={link.to}
-                            className={`flex items-center min-h-[48px] py-2.5 px-2 text-[14px] rounded-xl transition-colors duration-150 ${link.highlight ? 'text-alta-blue font-semibold' : 'text-slate-300 hover:text-white'}`}
-                            onClick={() => setMobileOpen(false)}
-                          >
-                            {link.label}
-                          </Link>
+                {item.isGroup ? (
+                  <Link to="/group" className="flex items-center py-4 text-white font-semibold text-[15px]" onClick={() => setMobileOpen(false)}>Group</Link>
+                ) : item.isProducts ? (
+                  <Link to="/products" className="flex items-center py-4 text-white font-semibold text-[15px]" onClick={() => setMobileOpen(false)}>Products</Link>
+                ) : (
+                  <>
+                    <button
+                      className="w-full flex items-center justify-between py-4 text-white font-semibold text-[15px] focus-visible:outline-none"
+                      onClick={() => setMobileExpanded(mobileExpanded === item.label ? null : item.label)}
+                      aria-expanded={mobileExpanded === item.label}
+                    >
+                      {item.label}
+                      <ChevronDown size={16} className={`text-slate-500 transition-transform duration-200 ${mobileExpanded === item.label ? 'rotate-180' : ''}`} />
+                    </button>
+                    {mobileExpanded === item.label && item.columns && (
+                      <div className="pb-4 space-y-5">
+                        {item.columns.map((col) => (
+                          <div key={col.heading}>
+                            <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-600 mb-2 px-1">{col.heading}</p>
+                            {col.links.map((link) => (
+                              <Link
+                                key={link.label}
+                                to={link.to}
+                                className={`flex items-center min-h-[48px] py-2.5 px-2 text-[14px] rounded-xl transition-colors duration-150 ${link.highlight ? 'text-alta-blue font-semibold' : 'text-slate-300 hover:text-white'}`}
+                                onClick={() => setMobileOpen(false)}
+                              >
+                                {link.label}
+                              </Link>
+                            ))}
+                          </div>
                         ))}
                       </div>
-                    ))}
-                  </div>
+                    )}
+                  </>
                 )}
               </div>
             ))}

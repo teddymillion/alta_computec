@@ -1,4 +1,4 @@
-import { Linkedin, Twitter, Facebook, Youtube, ArrowRight, Phone, Mail, MapPin, Clock } from 'lucide-react';
+import { Linkedin, Twitter, Facebook, Youtube, ArrowRight, Phone, Mail, MapPin, Clock, Coffee } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const FOOTER_LINKS = {
@@ -69,6 +69,23 @@ export default function Footer() {
             <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-amber-500/8 border border-amber-500/15">
               <span className="text-amber-400 text-[11px] font-black">★</span>
               <span className="text-amber-400/80 text-[11px] font-semibold">Dell Platinum Partner</span>
+            </div>
+
+            {/* ALTA Group */}
+            <div className="border-t border-slate-800 pt-4">
+              <p className="text-[10px] font-bold tracking-wider uppercase text-slate-500 mb-2">ALTA Group</p>
+              <div className="flex items-center gap-1.5">
+                <Coffee size={12} className="text-amber-500 flex-shrink-0" aria-hidden="true" />
+                <span className="text-slate-600 text-xs">LATA Agri Export —</span>
+                <a
+                  href="https://coffeelata.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-amber-400 hover:text-amber-300 text-xs transition-colors duration-150"
+                >
+                  coffeelata.com
+                </a>
+              </div>
             </div>
           </div>
 
