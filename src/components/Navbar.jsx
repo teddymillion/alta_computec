@@ -168,9 +168,9 @@ export default function Navbar() {
                       <div className="h-0.5 bg-gradient-to-r from-alta-blue via-alta-sky to-alta-green-light" />
                       <div className="grid grid-cols-3 gap-0 p-5">
                         {[
-                          { heading: 'Client Products', links: ['Desktop','Laptop','Copier','Printer','Scanner','Projector','Toners','External Drive','Flash Drive','Accessories'] },
+                          { heading: 'Client Products', links: ['Desktop','Laptop','Copier','Printer','Scanner','Projector','Toners','External Drive','Flash Drive','Accessories','Spare Parts'] },
                           { heading: 'Enterprise & Power', links: ['Server','Storage','Workstation','Switch','Router','Firewall','Server Rack','Backup Device','UPS','Surge Protector'] },
-                          { heading: 'Specialised', links: ['ATM','POS','Smart Screen','Headset','Infrastructure','Software','Service'] },
+                          { heading: 'Specialised + Solutions', links: ['ATM','POS','Smart Screen','Headset','Infrastructure','Consultancy','Software','Technical Support'] },
                         ].map((col, ci) => (
                           <div key={col.heading} className={ci === 0 ? 'pr-4 border-r border-slate-100' : ci === 1 ? 'px-4 border-r border-slate-100' : 'pl-4'}>
                             <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-400 mb-3 px-2">{col.heading}</p>
