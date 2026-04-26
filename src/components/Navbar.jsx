@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ChevronDown, Menu, X, Phone, ArrowRight } from 'lucide-react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import ThemeToggle from './ThemeToggle';
 
 const LATA_MEGA = [
   { label: 'About LATA',        href: 'https://coffeelata.com/about' },
@@ -174,7 +175,7 @@ export default function Navbar() {
             </Link>
 
             {/* Desktop Nav */}
-            <nav className="hidden lg:flex items-center" aria-label="Main navigation">
+            <nav className="hidden lg:flex items-center min-w-0" aria-label="Main navigation">
               {NAV_ITEMS.map((item) => {
                 const active = isActive(item);
                 return (
@@ -342,14 +343,16 @@ export default function Navbar() {
             </nav>
 
             {/* Right Actions */}
-            <div className="hidden lg:flex items-center gap-2">
+            <div className="hidden lg:flex items-center gap-2 flex-shrink-0 whitespace-nowrap">
               <a href="tel:+251115502928" className="flex items-center gap-1.5 text-[13px] font-medium px-3 py-2 rounded-lg transition-colors duration-150 text-slate-300 hover:text-white" aria-label="Call ALTA Computec">
                 <Phone size={13} aria-hidden="true" />
                 <span className="hidden xl:inline">+251 11 550 2928</span>
               </a>
               <div className="w-px h-4 bg-white/15" aria-hidden="true" />
+              <ThemeToggle />
+              <div className="w-px h-4 bg-white/15" aria-hidden="true" />
               <button className="text-[12px] font-medium px-2 py-1.5 rounded-lg transition-colors duration-150 text-slate-300 hover:text-white" aria-label="Switch language">EN | AM</button>
-              <Link to="/contact" className="btn-primary !text-[13px] !px-4 !py-2.5 ml-1" style={{ minHeight: '38px' }}>
+              <Link to="/contact" className="btn-primary !text-[13px] !px-4 !py-2.5 ml-1 whitespace-nowrap" style={{ minHeight: '38px' }}>
                 Get a Quote <ArrowRight size={13} />
               </Link>
             </div>

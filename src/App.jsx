@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { ThemeProvider } from './context/ThemeContext';
 
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -73,7 +74,7 @@ export default function App() {
   }
 
   return (
-    <>
+    <ThemeProvider>
       <div id="scroll-progress" style={{ width: `${scrollProgress}%` }} aria-hidden="true" />
       <AnnouncementBanner />
       <Routes>
@@ -89,6 +90,6 @@ export default function App() {
         <Route path="/group" element={<GroupPage />} />
       </Routes>
       <CookieConsent />
-    </>
+    </ThemeProvider>
   );
 }
