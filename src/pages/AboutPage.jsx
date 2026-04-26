@@ -153,7 +153,9 @@ export default function AboutPage() {
                 <div className="flex flex-col gap-5">
                   {MILESTONES.map((m) => (
                     <div key={m.year} className="flex items-start gap-4 relative">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 z-10 border-2 ${m.active ? 'bg-alta-green border-alta-green' : 'bg-navy-800 border-alta-blue/50'}`}>
+                      <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 z-10 border-2 ${m.active ? 'bg-alta-green border-alta-green' : 'bg-navy-800 border-alta-blue/50'}`}
+                        style={m.active ? { boxShadow: '0 0 0 4px rgba(22,163,74,0.2), 0 0 16px rgba(22,163,74,0.35)' } : {}}
+                      >
                         <span className={`text-[10px] font-black ${m.active ? 'text-white' : 'text-alta-blue'}`}>{m.year.slice(2)}</span>
                       </div>
                       <div className="pt-2">
@@ -216,9 +218,20 @@ export default function AboutPage() {
             <h2 className="section-heading">The People Behind ALTA</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {TEAM.map((member) => (
+            {TEAM.map((member, i) => {
+              const gradients = [
+                'from-blue-600 to-alta-indigo',
+                'from-alta-green to-alta-sky',
+                'from-purple-600 to-blue-600',
+                'from-amber-500 to-orange-500',
+                'from-sky-500 to-blue-700',
+                'from-emerald-500 to-teal-600',
+                'from-red-500 to-rose-600',
+                'from-violet-600 to-purple-700',
+              ];
+              return (
               <div key={member.name} className="card-light flex flex-col items-center gap-4 text-center">
-                <div className="w-[72px] h-[72px] rounded-full bg-navy-900 flex items-center justify-center flex-shrink-0">
+                <div className={`w-[72px] h-[72px] rounded-full bg-gradient-to-br ${gradients[i % gradients.length]} flex items-center justify-center flex-shrink-0 shadow-md`}>
                   <span className="text-white font-black text-xl">{member.initials}</span>
                 </div>
                 <div>
@@ -229,7 +242,8 @@ export default function AboutPage() {
                   <Linkedin size={14} aria-hidden="true" /> LinkedIn
                 </a>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

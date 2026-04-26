@@ -1,36 +1,39 @@
 import { useEffect, useRef, useState } from 'react';
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp, Briefcase, Building2, Star } from 'lucide-react';
 
 const STATS = [
   {
     value: 30,
     suffix: '+',
     label: 'Years of Operation',
-    context: 'From a single Addis Ababa office to Ethiopia\'s premier IT institution',
-    accent: 'from-alta-blue to-alta-sky',
-    iconBg: 'bg-blue-50',
-    iconColor: 'text-alta-blue',
-    numColor: 'text-alta-blue',
+    context: "Serving Ethiopia's most demanding enterprises since 1994",
+    icon: TrendingUp,
+    iconClass: 'icon-wrap-blue',
+    numColor: '#1B4FD8',
+    accentFrom: '#1B4FD8',
+    accentTo: '#22C55E',
   },
   {
     value: 640,
     suffix: '+',
     label: 'Projects Delivered',
-    context: 'Data centers, cloud migrations, banking automation, and more',
-    accent: 'from-alta-green to-alta-sky',
-    iconBg: 'bg-green-50',
-    iconColor: 'text-alta-green',
-    numColor: 'text-alta-green',
+    context: 'Data centres, cloud migrations, ATM networks, and more',
+    icon: Briefcase,
+    iconClass: 'icon-wrap-green',
+    numColor: '#16A34A',
+    accentFrom: '#16A34A',
+    accentTo: '#0EA5E9',
   },
   {
     value: 470,
     suffix: '+',
     label: 'Enterprise Clients',
-    context: 'Banks, government ministries, telecoms, and universities',
-    accent: 'from-alta-blue to-alta-indigo',
-    iconBg: 'bg-blue-50',
-    iconColor: 'text-alta-blue',
-    numColor: 'text-alta-blue',
+    context: 'Banks, ministries, telecoms, universities, and NGOs',
+    icon: Building2,
+    iconClass: 'icon-wrap-blue',
+    numColor: '#1B4FD8',
+    accentFrom: '#1B4FD8',
+    accentTo: '#6366F1',
   },
   {
     value: null,
@@ -38,10 +41,12 @@ const STATS = [
     label: "Dell Platinum Partner",
     sublabel: "Ethiopia's Only",
     context: 'The highest tier Dell awards — held exclusively by ALTA Computec PLC',
-    accent: 'from-amber-400 to-orange-400',
-    iconBg: 'bg-amber-50',
-    iconColor: 'text-amber-600',
-    numColor: 'text-amber-500',
+    icon: Star,
+    iconClass: 'icon-wrap-amber',
+    numColor: '#F59E0B',
+    accentFrom: '#F59E0B',
+    accentTo: '#FB923C',
+    isAmber: true,
   },
 ];
 
@@ -64,21 +69,37 @@ function useCountUp(target, duration = 900, start = false) {
 
 function StatCard({ stat, animate, index }) {
   const count = useCountUp(stat.value, 900, animate);
+  const Icon = stat.icon;
 
   return (
     <div
       className="relative flex flex-col gap-4 p-7 rounded-2xl bg-white border border-slate-200/80 overflow-hidden transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1 group"
       style={{
-        boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
+        boxShadow: stat.isAmber
+          ? '0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(245,158,11,0.12), 0 0 20px rgba(245,158,11,0.06)'
+          : '0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)',
         animationDelay: `${index * 80}ms`,
       }}
     >
       {/* Top accent gradient bar */}
-      <div className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${stat.accent} opacity-70 group-hover:opacity-100 transition-opacity duration-300`} aria-hidden="true" />
+      <div
+        className="absolute top-0 left-0 right-0 opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+        style={{
+          height: 3,
+          background: `linear-gradient(90deg, ${stat.accentFrom}, ${stat.accentTo})`,
+        }}
+        aria-hidden="true"
+      />
 
       {/* Number */}
       <div className="flex items-end gap-1">
-        <span className={`text-[52px] font-black leading-none tracking-tight ${stat.numColor}`}>
+        <span
+          className="text-[52px] font-black leading-none tracking-tight"
+          style={{
+            color: stat.numColor,
+            textShadow: `0 2px 12px ${stat.numColor}33`,
+          }}
+        >
           {stat.display ? stat.display : `${count}${stat.suffix}`}
         </span>
       </div>
@@ -93,8 +114,8 @@ function StatCard({ stat, animate, index }) {
       </div>
 
       {/* Bottom right icon */}
-      <div className={`absolute bottom-5 right-5 w-9 h-9 rounded-xl ${stat.iconBg} flex items-center justify-center opacity-60 group-hover:opacity-100 transition-opacity duration-300`} aria-hidden="true">
-        <TrendingUp size={16} className={stat.iconColor} />
+      <div className={`absolute bottom-5 right-5 icon-wrap ${stat.iconClass} opacity-60 group-hover:opacity-100 transition-opacity duration-300`} aria-hidden="true">
+        <Icon size={16} />
       </div>
     </div>
   );
@@ -114,7 +135,7 @@ export default function Statistics() {
   }, []);
 
   return (
-    <section id="statistics" className="section-padding bg-slate-50/80" aria-label="Company statistics" ref={ref}>
+    <section id="statistics" className="section-padding section-depth-light" aria-label="Company statistics" ref={ref}>
       <div className="section-container">
         <div className="text-center mb-14">
           <p className="overline-tag justify-center mb-3">By The Numbers</p>
@@ -128,6 +149,9 @@ export default function Statistics() {
             <StatCard key={stat.label} stat={stat} animate={animate} index={i} />
           ))}
         </div>
+        <p className="text-center text-[11px] text-slate-400 mt-8">
+          All figures as of 2026. Independently verified.
+        </p>
       </div>
     </section>
   );

@@ -63,7 +63,8 @@ export default function BlogPage() {
           </div>
 
           {/* Featured */}
-          <div className="card-light border-l-4 border-l-alta-green p-7 mb-10 rounded-2xl">
+          <div className="relative card-light border-l-4 border-l-alta-green p-7 mb-10 rounded-2xl">
+            <span className="absolute top-4 right-4 text-[9px] font-black tracking-wider uppercase px-2 py-0.5 rounded-full bg-alta-green text-white">Featured</span>
             <span className="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full bg-green-100 text-green-700 inline-block mb-4">Industry Analysis</span>
             <h2 className="text-[22px] font-bold text-navy-900 mb-3 leading-snug">Why Ethiopian Enterprises Are Accelerating Cloud Adoption in 2026</h2>
             <p className="text-[14px] text-slate-600 leading-relaxed mb-4">As connectivity infrastructure matures across Ethiopia, enterprise IT directors are shifting from on-premise-only strategies to hybrid and private cloud architectures. Here is what is driving the change.</p>

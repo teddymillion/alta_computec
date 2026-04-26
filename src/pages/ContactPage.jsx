@@ -25,15 +25,32 @@ export default function ContactPage() {
         <div className="section-container">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-0">
             {[
-              { icon: Phone, label: 'Phone', value: '+251-115-50-29-28', sub: 'Mon–Fri, 8AM–6PM EAT', cta: 'Call Now', href: 'tel:+251115502928', iconBg: 'bg-blue-50', iconColor: 'text-alta-blue' },
-              { icon: Mail, label: 'Email', value: 'info@altacomputec.com', sub: 'We respond within 24 hours', cta: 'Send Email', href: 'mailto:info@altacomputec.com', iconBg: 'bg-green-50', iconColor: 'text-alta-green' },
-              { icon: MessageCircle, label: 'WhatsApp', value: 'Chat with us directly', sub: 'Quick responses on WhatsApp', cta: 'Open WhatsApp', href: 'https://wa.me/251115502928', iconBg: 'bg-green-50', iconColor: 'text-alta-green-light', external: true },
+              { icon: Phone, label: 'Phone', value: '+251 11 550 2928', sub: 'Mon–Fri, 8AM–6PM EAT', cta: 'Call Now', href: 'tel:+251115502928', iconBg: 'bg-blue-50', iconColor: 'text-alta-blue', responseTime: 'Immediate' },
+              { icon: Mail, label: 'Email', value: 'info@altacomputec.com', sub: 'Business inquiries welcome', cta: 'Send Email', href: 'mailto:info@altacomputec.com', iconBg: 'bg-green-50', iconColor: 'text-alta-green', responseTime: 'Within 24 hrs' },
+              { icon: MessageCircle, label: 'WhatsApp', value: 'Chat with us directly', sub: 'Quick responses on WhatsApp', cta: 'Open WhatsApp', href: 'https://wa.me/251115502928', iconBg: 'bg-green-50', iconColor: 'text-alta-green-light', external: true, responseTime: 'Same day' },
             ].map((item) => {
               const Icon = item.icon;
               return (
-                <div key={item.label} className="card-light flex flex-col gap-4">
-                  <div className={`w-11 h-11 rounded-xl ${item.iconBg} flex items-center justify-center flex-shrink-0`}>
-                    <Icon size={20} className={item.iconColor} aria-hidden="true" />
+                <div
+                  key={item.label}
+                  className="card-light flex flex-col gap-4 relative overflow-hidden group"
+                  style={{ '--accent': item.iconColor.includes('blue') ? '#1B4FD8' : '#16A34A' }}
+                >
+                  {/* Hover top border */}
+                  <div
+                    className="absolute top-0 left-0 right-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{ background: `linear-gradient(90deg, #1B4FD8, #22C55E)` }}
+                    aria-hidden="true"
+                  />
+                  <div className="flex items-center justify-between">
+                    <div className={`w-11 h-11 rounded-xl ${item.iconBg} flex items-center justify-center flex-shrink-0`}>
+                      <Icon size={20} className={item.iconColor} aria-hidden="true" />
+                    </div>
+                    {item.responseTime && (
+                      <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-alta-green/10 text-alta-green border border-alta-green/20">
+                        {item.responseTime}
+                      </span>
+                    )}
                   </div>
                   <div className="flex-1">
                     <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-400 mb-1">{item.label}</p>

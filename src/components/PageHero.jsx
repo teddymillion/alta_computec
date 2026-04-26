@@ -23,6 +23,7 @@ export default function PageHero({ breadcrumb, title, subtitle, ctaPrimary, ctaS
         </nav>
 
         <div className="max-w-3xl flex flex-col gap-5">
+          <p className="overline-tag">{breadcrumb}</p>
           <h1 className="section-heading-light text-[36px] sm:text-[44px] lg:text-[48px]">{title}</h1>
           {subtitle && <p className="section-subheading-light text-[16px] max-w-2xl">{subtitle}</p>}
 
@@ -42,6 +43,8 @@ export default function PageHero({ breadcrumb, title, subtitle, ctaPrimary, ctaS
           )}
         </div>
       </div>
+      {/* Gradient divider */}
+      <div className="absolute bottom-0 inset-x-0 h-px" style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(27,79,216,0.4) 30%, rgba(34,197,94,0.4) 70%, transparent 100%)' }} aria-hidden="true" />
     </section>
   );
 }

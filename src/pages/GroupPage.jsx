@@ -180,9 +180,9 @@ export default function GroupPage() {
           <div className="max-w-2xl">
             <div className="w-12 h-0.5 bg-amber-400 mb-6" aria-hidden="true" />
             <blockquote className="text-[28px] sm:text-[36px] font-black text-white leading-tight tracking-tight mb-6">
-              "Coffee is Ethiopia's gift to the world. We deliver it with the same excellence we bring to everything we do."
+              "Professional Service. Best Quality. Timely Delivery. Responsiveness."
             </blockquote>
-            <p className="text-amber-400 font-semibold text-[14px] tracking-wider uppercase">LATA Agri Export — Addis Ababa, Ethiopia</p>
+            <p className="text-amber-400 font-semibold text-[14px] tracking-wider uppercase">LATA Agri Export — coffeelata.com</p>
           </div>
         </div>
       </section>

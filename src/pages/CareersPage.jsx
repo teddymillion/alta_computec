@@ -100,7 +100,7 @@ export default function CareersPage() {
               const Icon = b.icon;
               return (
                 <div key={b.title} className="card-light flex flex-col gap-4">
-                  <div className={`w-11 h-11 rounded-xl ${b.bg} flex items-center justify-center flex-shrink-0`}>
+                  <div className={`icon-wrap ${b.color.replace('text-alta-blue','icon-wrap-blue').replace('text-alta-amber','icon-wrap-amber').replace('text-alta-green','icon-wrap-green').replace('text-alta-indigo','icon-wrap-indigo').replace('text-alta-sky','icon-wrap-sky')}`}>
                     <Icon size={20} className={b.color} aria-hidden="true" />
                   </div>
                   <div>
@@ -173,10 +173,19 @@ export default function CareersPage() {
           </div>
 
           <div className="flex flex-col gap-4">
-            {filtered.map((job) => (
+            {filtered.map((job, ji) => {
+              const isNew = JOBS.indexOf(job) < 2;
+              return (
               <div key={job.title} className="card-light flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5">
                 <div className="flex flex-col gap-2">
-                  <h3 className="font-bold text-navy-900 text-[16px]">{job.title}</h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-bold text-navy-900 text-[16px]">{job.title}</h3>
+                    {isNew && (
+                      <span className="text-[9px] font-black tracking-wider uppercase px-1.5 py-0.5 rounded-full bg-alta-green/15 text-alta-green border border-alta-green/25">
+                        New
+                      </span>
+                    )}
+                  </div>
                   <div className="flex flex-wrap items-center gap-2">
                     <span className={`text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full ${job.deptColor}`}>{job.dept}</span>
                     <span className="flex items-center gap-1 text-[12px] text-slate-400"><MapPin size={11} aria-hidden="true" />{job.location}</span>
@@ -190,7 +199,8 @@ export default function CareersPage() {
                   View & Apply <ArrowRight size={13} />
                 </button>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -202,11 +212,13 @@ export default function CareersPage() {
             <p className="overline-tag justify-center mb-3">How It Works</p>
             <h2 className="section-heading">Our Hiring Process</h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Dashed connecting line (desktop) */}
+            <div className="absolute top-10 left-[12.5%] right-[12.5%] h-px hidden lg:block" style={{ border: 'none', borderTop: '2px dashed rgba(27,79,216,0.2)' }} aria-hidden="true" />
             {PROCESS_STEPS.map((step, i) => {
               const Icon = step.icon;
               return (
-                <div key={step.title} className="card-light flex flex-col items-center gap-4 text-center">
+                <div key={step.title} className="card-light flex flex-col items-center gap-4 text-center relative z-10">
                   <div className="w-12 h-12 rounded-full bg-alta-green flex items-center justify-center">
                     <span className="text-white font-black text-[13px]">0{i + 1}</span>
                   </div>

@@ -64,7 +64,7 @@ const SOLUTIONS = [
   },
 ];
 
-function SolutionCard({ solution }) {
+function SolutionCard({ solution, index }) {
   const Icon = solution.icon;
   return (
     <article
@@ -87,10 +87,15 @@ function SolutionCard({ solution }) {
         e.currentTarget.style.boxShadow = 'none';
       }}
     >
+      {/* Card number */}
+      <span className="absolute top-4 right-4 text-[11px] font-black text-white/10 tabular-nums" aria-hidden="true">
+        {String(index + 1).padStart(2, '0')}
+      </span>
+
       {/* Left accent bar */}
       <div
         className="absolute left-0 top-0 bottom-0 w-[3px] rounded-r-full opacity-0 group-hover:opacity-100 transition-opacity duration-250"
-        style={{ background: `linear-gradient(180deg, ${solution.accentColor}, transparent)` }}
+        style={{ background: 'linear-gradient(180deg, #1B4FD8, #22C55E)' }}
         aria-hidden="true"
       />
 
@@ -158,6 +163,9 @@ export default function Solutions() {
             <p className="section-subheading-light mt-3">
               From infrastructure to intelligence — every solution engineered for Ethiopia's most demanding institutions.
             </p>
+            <p className="text-[13px] text-slate-500 mt-4">
+              Delivering across 6 solution domains to 470+ enterprise clients.
+            </p>
           </div>
           <Link to="/contact" className="btn-primary flex-shrink-0 self-start lg:self-auto">
             Request a Proposal <ArrowRight size={15} />
@@ -166,8 +174,8 @@ export default function Solutions() {
 
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {SOLUTIONS.map((solution) => (
-            <SolutionCard key={solution.title} solution={solution} />
+          {SOLUTIONS.map((solution, i) => (
+            <SolutionCard key={solution.title} solution={solution} index={i} />
           ))}
         </div>
 

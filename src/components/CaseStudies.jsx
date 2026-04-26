@@ -7,8 +7,9 @@ const CASE_STUDIES = [
     sectorColor: 'bg-blue-100 text-blue-700',
     icon: Building2,
     client: 'Commercial Bank of Ethiopia',
+    clientSince: 'Client since 2008',
     headline: 'Enterprise Data Center — 200-Node Infrastructure',
-    outcome: '99.9% uptime achieved across 200 server nodes',
+    outcome: '"ALTA delivered our entire data center on time and within budget. Their technical depth is unmatched in Ethiopia."',
     metrics: [
       { label: 'Uptime SLA', value: '99.9%' },
       { label: 'Server Nodes', value: '200+' },
@@ -23,8 +24,9 @@ const CASE_STUDIES = [
     sectorColor: 'bg-emerald-100 text-emerald-700',
     icon: TrendingUp,
     client: 'Ministry of Finance, Ethiopia',
+    clientSince: 'Client since 2012',
     headline: 'Nationwide Network Infrastructure Rollout',
-    outcome: '47 regional offices connected on secure WAN',
+    outcome: '"ALTA was the only vendor with the technical capability and local knowledge to execute at this scale."',
     metrics: [
       { label: 'Offices', value: '47' },
       { label: 'Uptime', value: '99.7%' },
@@ -39,8 +41,9 @@ const CASE_STUDIES = [
     sectorColor: 'bg-purple-100 text-purple-700',
     icon: Wifi,
     client: 'Ethio Telecom',
+    clientSince: 'Client since 2015',
     headline: 'Enterprise Cybersecurity Posture Overhaul',
-    outcome: 'Zero critical incidents in 18 months post-deployment',
+    outcome: '"ALTA\'s cybersecurity team transformed our security posture completely. Eighteen months, zero critical incidents."',
     metrics: [
       { label: 'Endpoints', value: '1,200+' },
       { label: 'Incidents', value: '0' },
@@ -61,6 +64,7 @@ function CaseStudyCard({ study }) {
       {/* Header image area */}
       <div className="relative h-44 overflow-hidden" style={{ background: study.headerGradient }}>
         <div className="absolute inset-0 bg-dot-pattern opacity-40" aria-hidden="true" />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.55) 100%)' }} aria-hidden="true" />
         {/* Accent line */}
         <div className="absolute top-0 inset-x-0 h-0.5" style={{ background: study.accentColor }} aria-hidden="true" />
         <div className="relative h-full flex flex-col justify-between p-5">
@@ -73,7 +77,8 @@ function CaseStudyCard({ study }) {
             </div>
           </div>
           <div>
-            <p className="text-[11px] text-slate-400 font-medium mb-1">{study.client}</p>
+            <p className="text-[11px] text-slate-400 font-medium mb-0.5">{study.client}</p>
+            <p className="text-[10px] text-slate-500 font-medium mb-1">{study.clientSince}</p>
             <h3 className="text-white font-bold text-[14px] leading-snug">{study.headline}</h3>
           </div>
         </div>
@@ -83,7 +88,10 @@ function CaseStudyCard({ study }) {
       <div className="grid grid-cols-3 divide-x divide-slate-100 border-b border-slate-100">
         {study.metrics.map((m) => (
           <div key={m.label} className="flex flex-col items-center py-3 px-2 text-center">
-            <span className="text-[15px] font-black text-navy-900">{m.value}</span>
+            <div className="flex items-center gap-1">
+              <TrendingUp size={10} className="text-alta-green flex-shrink-0" aria-hidden="true" />
+              <span className="text-[15px] font-black text-navy-900">{m.value}</span>
+            </div>
             <span className="text-[10px] text-slate-400 font-medium mt-0.5">{m.label}</span>
           </div>
         ))}
@@ -144,9 +152,12 @@ export default function CaseStudies() {
         </div>
 
         <div className="mt-10 text-center">
-          <Link to="/case-studies" className="btn-outline inline-flex">
+          <Link to="/case-studies" className="btn-primary inline-flex">
             View All 640+ Projects <ArrowRight size={15} />
           </Link>
+          <p className="text-[12px] text-slate-400 mt-4">
+            From single workstation deployments to multi-site enterprise rollouts — every project is backed by ALTA's in-house engineers.
+          </p>
         </div>
       </div>
     </section>

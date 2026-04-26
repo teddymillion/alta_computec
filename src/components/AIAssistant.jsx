@@ -1,7 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { X, Send, Minimize2 } from 'lucide-react';
+import { X, Send, Minimize2, Server, ShieldCheck, Cloud, FileText } from 'lucide-react';
 
-const CHIPS = ['IT Infrastructure', 'Cybersecurity', 'Cloud Setup', 'Get a Quote'];
+const CHIPS = [
+  { label: 'IT Infrastructure', icon: Server },
+  { label: 'Cybersecurity',     icon: ShieldCheck },
+  { label: 'Cloud Setup',       icon: Cloud },
+  { label: 'Get a Quote',       icon: FileText },
+];
 
 function AvatarIcon({ size = 32 }) {
   return (
@@ -74,21 +79,28 @@ export default function AIAssistant() {
     e.preventDefault();
   };
 
+  const now = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
   const handleSend = () => {
     if (!input.trim()) return;
-    setMessages((prev) => [...prev, { role: 'user', content: input.trim() }]);
+    setMessages((prev) => [...prev, { role: 'user', content: input.trim(), time: now() }]);
     setInput('');
+    setMessages((prev) => [...prev, { role: 'typing' }]);
     setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: 'assistant',
-          content:
-            'Thank you for your message. Our team will follow up shortly. ' +
-            'For immediate assistance, call +251-115-50-29-28 or visit /contact.',
-        },
-      ]);
-    }, 800);
+      setMessages((prev) => {
+        const filtered = prev.filter((m) => m.role !== 'typing');
+        return [
+          ...filtered,
+          {
+            role: 'assistant',
+            content:
+              'Thank you for your message. Our team will follow up shortly. ' +
+              'For immediate assistance, call +251 11 550 2928 or visit /contact.',
+            time: now(),
+          },
+        ];
+      });
+    }, 1200);
   };
 
   if (!initialized || pos.x === null) return null;
@@ -155,35 +167,51 @@ export default function AIAssistant() {
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-1.5 pl-9">
-                  {CHIPS.map((chip) => (
+                  {CHIPS.map(({ label, icon: ChipIcon }) => (
                     <button
-                      key={chip}
-                      onClick={() => setInput(chip)}
-                      className="text-[11px] font-medium px-2.5 py-1.5 rounded-full transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue"
+                      key={label}
+                      onClick={() => setInput(label)}
+                      className="flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1.5 rounded-full transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue"
                       style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(148,163,184,0.9)' }}
                       onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(27,79,216,0.25)'; e.currentTarget.style.borderColor = 'rgba(27,79,216,0.5)'; e.currentTarget.style.color = '#fff'; }}
                       onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'; e.currentTarget.style.color = 'rgba(148,163,184,0.9)'; }}
                     >
-                      {chip}
+                      <ChipIcon size={10} aria-hidden="true" />
+                      {label}
                     </button>
                   ))}
                 </div>
               </div>
             ) : (
               messages.map((msg, i) =>
-                msg.role === 'user' ? (
-                  <div key={i} className="flex justify-end">
+                msg.role === 'typing' ? (
+                  <div key={i} className="flex items-start gap-2">
+                    <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center mt-0.5">
+                      <AvatarIcon size={24} />
+                    </div>
+                    <div className="flex items-center gap-1 px-3.5 py-3 rounded-xl rounded-tl-sm" style={{ background: 'rgba(27,79,216,0.1)', border: '1px solid rgba(27,79,216,0.15)' }}>
+                      {[0,1,2].map((d) => (
+                        <span key={d} className="w-1.5 h-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: `${d * 150}ms` }} aria-hidden="true" />
+                      ))}
+                    </div>
+                  </div>
+                ) : msg.role === 'user' ? (
+                  <div key={i} className="flex flex-col items-end gap-0.5">
                     <div className="text-[13px] text-white px-3.5 py-2.5 rounded-xl rounded-br-sm max-w-[82%] leading-relaxed" style={{ background: 'linear-gradient(135deg, #1B4FD8, #1340B0)' }}>
                       {msg.content}
                     </div>
+                    {msg.time && <span className="text-[10px] text-slate-700 pr-1">{msg.time}</span>}
                   </div>
                 ) : (
                   <div key={i} className="flex items-start gap-2">
                     <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center mt-0.5">
                       <AvatarIcon size={24} />
                     </div>
-                    <div className="text-[13px] text-slate-300 px-3.5 py-2.5 rounded-xl rounded-tl-sm max-w-[82%] leading-relaxed" style={{ background: 'rgba(27,79,216,0.1)', border: '1px solid rgba(27,79,216,0.15)' }}>
-                      {msg.content}
+                    <div className="flex flex-col gap-0.5 max-w-[82%]">
+                      <div className="text-[13px] text-slate-300 px-3.5 py-2.5 rounded-xl rounded-tl-sm leading-relaxed" style={{ background: 'rgba(27,79,216,0.1)', border: '1px solid rgba(27,79,216,0.15)' }}>
+                        {msg.content}
+                      </div>
+                      {msg.time && <span className="text-[10px] text-slate-700 pl-1">{msg.time}</span>}
                     </div>
                   </div>
                 )
@@ -236,11 +264,11 @@ export default function AIAssistant() {
           </>
         )}
 
-        {/* ALTA AI label above */}
+        {/* FAB tooltip */}
         {!open && (
           <div className="absolute left-1/2 -translate-x-1/2 pointer-events-none" style={{ bottom: FAB + 8 }} aria-hidden="true">
-            <span className="whitespace-nowrap text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full" style={{ background: 'rgba(10,22,40,0.85)', border: '1px solid rgba(184,212,50,0.35)', color: 'rgba(184,212,50,0.9)', backdropFilter: 'blur(8px)' }}>
-              ALTA AI
+            <span className="whitespace-nowrap text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full" style={{ background: 'rgba(10,22,40,0.88)', border: '1px solid rgba(184,212,50,0.35)', color: 'rgba(184,212,50,0.9)', backdropFilter: 'blur(8px)', boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
+              Ask ALTA AI
             </span>
           </div>
         )}

@@ -24,12 +24,22 @@ const TIER2 = [
 ];
 
 function Tier1Card({ p }) {
+  const isAmberDell = p.name === 'Dell';
   return (
     <div
-      className="group relative flex flex-col items-center gap-5 p-8 rounded-2xl bg-white border border-slate-200 transition-all duration-250 ease-out hover:-translate-y-1 cursor-default"
-      style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
-      onMouseEnter={(e) => { e.currentTarget.style.boxShadow = `0 16px 40px ${p.glow}, 0 4px 8px rgba(0,0,0,0.06)`; }}
-      onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)'; }}
+      className="group relative flex flex-col items-center gap-5 p-8 rounded-2xl bg-white transition-all duration-250 ease-out hover:-translate-y-1 cursor-default"
+      style={{
+        border: isAmberDell ? '1px solid rgba(245,158,11,0.30)' : '1px solid rgba(226,232,240,1)',
+        boxShadow: isAmberDell ? '0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(245,158,11,0.08)' : '0 1px 3px rgba(0,0,0,0.06)',
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = `0 16px 40px ${p.glow}, 0 4px 8px rgba(0,0,0,0.06)`;
+        e.currentTarget.style.background = `radial-gradient(ellipse at center top, ${p.glow.replace('0.18', '0.06')} 0%, #fff 60%)`;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = isAmberDell ? '0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(245,158,11,0.08)' : '0 1px 3px rgba(0,0,0,0.06)';
+        e.currentTarget.style.background = '#fff';
+      }}
     >
       {/* Top accent bar */}
       <div className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl opacity-70 group-hover:opacity-100 transition-opacity duration-250" style={{ background: `linear-gradient(90deg, ${p.accentFrom}, ${p.accentTo})` }} aria-hidden="true" />
@@ -68,8 +78,8 @@ function Tier2Item({ p }) {
           <img
             src={p.img}
             alt={`${p.name} logo`}
-            style={{ maxWidth: 110, maxHeight: 56, minHeight: 32, width: 'auto', height: 'auto' }}
-            className="object-contain grayscale group-hover:grayscale-0 transition-all duration-200"
+            style={{ maxWidth: 110, maxHeight: 56, minHeight: 32, width: 'auto', height: 'auto', filter: 'grayscale(65%) brightness(0.85)', transition: 'filter 200ms' }}
+            className="object-contain group-hover:[filter:none]"
             loading="lazy"
           />
         ) : (
@@ -117,14 +127,31 @@ export default function Partners() {
         </div>
 
         {/* Dell exclusive callout */}
-        <div className="relative overflow-hidden rounded-2xl bg-navy-900 border border-navy-800 p-7 flex flex-col sm:flex-row items-center gap-6">
+        <div className="relative overflow-hidden rounded-2xl bg-navy-900 border border-navy-800 p-7 flex flex-col sm:flex-row items-center gap-6 mb-10">
           <div className="absolute inset-0 bg-dot-pattern opacity-30" aria-hidden="true" />
           <div className="relative flex-shrink-0 w-14 h-14 rounded-xl bg-amber-500/15 border border-amber-500/25 flex items-center justify-center">
             <span className="text-amber-400 font-black text-2xl leading-none">★</span>
           </div>
           <div className="relative text-center sm:text-left">
             <p className="text-white font-bold text-[16px] mb-1">Ethiopia's Only Dell Platinum Partner</p>
-            <p className="text-slate-400 text-[13px] leading-relaxed max-w-2xl">The highest tier in Dell's global partner program — exclusively held by ALTA Computec PLC. No other company in Ethiopia holds this designation. This means direct access to Dell's top-tier engineering support, pricing, and product roadmap.</p>
+            <p className="text-slate-400 text-[13px] leading-relaxed max-w-2xl">The highest tier in Dell's global partner program — exclusively held by ALTA Computec PLC. This designation means direct access to Dell's engineering team, preferential pricing, priority support SLAs, and first access to new product lines — advantages that translate directly to better value for our clients.</p>
+          </div>
+        </div>
+
+        {/* Credibility strip */}
+        <div className="rounded-2xl border border-slate-100 bg-slate-50/60 p-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+            {[
+              { value: '15+', label: 'Active OEM Partnerships', sub: 'Covering hardware, software & security' },
+              { value: '30+', label: 'Years of Certification', sub: 'Continuous re-certification maintained' },
+              { value: '100%', label: 'In-House Certified Engineers', sub: 'No outsourced implementation' },
+            ].map((item) => (
+              <div key={item.label} className="flex flex-col gap-1">
+                <span className="text-[28px] font-black text-navy-900 leading-none">{item.value}</span>
+                <span className="text-[13px] font-bold text-navy-900">{item.label}</span>
+                <span className="text-[11px] text-slate-400">{item.sub}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>

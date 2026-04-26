@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { ChevronDown, Menu, X, Phone, ArrowRight } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const LATA_MEGA = [
   { label: 'About LATA',        href: 'https://coffeelata.com/about' },
@@ -12,6 +12,7 @@ const LATA_MEGA = [
 const NAV_ITEMS = [
   {
     label: 'Solutions',
+    activeFor: ['/solutions'],
     columns: [
       {
         heading: 'By Service',
@@ -33,9 +34,10 @@ const NAV_ITEMS = [
       },
     ],
   },
-  { label: 'Products', isProducts: true },
+  { label: 'Products', isProducts: true, activeFor: ['/products'] },
   {
     label: 'Industries',
+    activeFor: ['/industries'],
     columns: [
       {
         heading: 'By Sector',
@@ -57,6 +59,7 @@ const NAV_ITEMS = [
   },
   {
     label: 'Case Studies',
+    activeFor: ['/case-studies'],
     columns: [
       {
         heading: 'By Sector',
@@ -78,6 +81,7 @@ const NAV_ITEMS = [
   },
   {
     label: 'Company',
+    activeFor: ['/about', '/careers', '/blog'],
     columns: [
       {
         heading: 'About',
@@ -98,8 +102,16 @@ const NAV_ITEMS = [
       },
     ],
   },
-  { label: 'Group', isGroup: true },
+  { label: 'Group', isGroup: true, activeFor: ['/group'] },
 ];
+
+const DARK_MEGA_STYLE = {
+  background: 'rgba(3,8,15,0.96)',
+  backdropFilter: 'blur(20px)',
+  WebkitBackdropFilter: 'blur(20px)',
+  border: '1px solid rgba(27,79,216,0.25)',
+  borderTop: '2px solid #1B4FD8',
+};
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -108,6 +120,7 @@ export default function Navbar() {
   const [mobileExpanded, setMobileExpanded] = useState(null);
   const timeoutRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -123,167 +136,219 @@ export default function Navbar() {
   const openMenu = (label) => { clearTimeout(timeoutRef.current); setActiveMenu(label); };
   const closeMenu = () => { timeoutRef.current = setTimeout(() => setActiveMenu(null), 120); };
 
-  const linkBase = scrolled ? 'text-slate-600 hover:text-navy-900' : 'text-slate-300 hover:text-white';
+  const isActive = (item) => item.activeFor?.some((path) => location.pathname.startsWith(path));
+
+  const scrolledBg = {
+    background: 'rgba(3,8,15,0.92)',
+    backdropFilter: 'blur(20px) saturate(180%)',
+    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+    borderBottom: '1px solid rgba(255,255,255,0.06)',
+    boxShadow: '0 4px 24px rgba(0,0,0,0.35)',
+  };
 
   return (
     <>
       <a href="#main-content" className="skip-link">Skip to main content</a>
 
       <header
-        className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${scrolled ? 'glass-light shadow-nav' : 'bg-transparent'}`}
+        className="fixed top-0 inset-x-0 z-30 transition-all duration-300"
+        style={scrolled ? scrolledBg : {}}
         role="banner"
       >
         <div className="section-container">
           <div className="flex items-center justify-between h-16 lg:h-[68px]">
 
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 rounded-xl p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue" aria-label="ALTA Computec PLC — Home">
+            <Link
+              to="/"
+              className="flex items-center gap-2.5 flex-shrink-0 rounded-xl p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue"
+              aria-label="ALTA Computec PLC — Home"
+            >
               <div className="relative w-9 h-9 rounded-lg overflow-hidden flex-shrink-0 shadow-md border border-white/10">
                 <img src="/alta_computec.jpg" alt="ALTA Computec PLC" className="w-full h-full object-cover" width="36" height="36" />
               </div>
               <div className="flex flex-col leading-none gap-0.5">
-                <span className={`font-black text-[15px] tracking-tight leading-none ${scrolled ? 'text-navy-900' : 'text-white'}`}>ALTA</span>
-                <span className={`text-[9px] font-bold tracking-[0.18em] uppercase leading-none ${scrolled ? 'text-slate-400' : 'text-slate-500'}`}>Computec PLC</span>
+                <span className="font-black text-[15px] tracking-tight leading-none text-white">ALTA</span>
+                <span className="text-[9px] font-bold tracking-[0.18em] uppercase leading-none text-slate-500">Computec PLC</span>
               </div>
             </Link>
 
             {/* Desktop Nav */}
             <nav className="hidden lg:flex items-center" aria-label="Main navigation">
-              {NAV_ITEMS.map((item) => (
-                <div key={item.label} className="relative" onMouseEnter={() => openMenu(item.label)} onMouseLeave={closeMenu}>
-                  <button
-                    className={`flex items-center gap-1 px-3.5 py-2 rounded-lg text-[13.5px] font-medium transition-all duration-150 ${
-                      item.isGroup ? (scrolled ? 'text-amber-600 hover:text-amber-700' : 'text-amber-400 hover:text-amber-300') : linkBase
-                    } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue`}
-                    aria-expanded={activeMenu === item.label}
-                    aria-haspopup="true"
-                  >
-                    {item.label}
-                    <ChevronDown size={13} className={`transition-transform duration-200 ${activeMenu === item.label ? 'rotate-180' : ''} ${scrolled ? 'text-slate-400' : 'text-slate-500'}`} />
-                  </button>
+              {NAV_ITEMS.map((item) => {
+                const active = isActive(item);
+                return (
+                  <div key={item.label} className="relative" onMouseEnter={() => openMenu(item.label)} onMouseLeave={closeMenu}>
+                    <button
+                      className={`relative flex items-center gap-1 px-3.5 py-2 rounded-lg text-[13.5px] font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue ${
+                        item.isGroup
+                          ? 'text-amber-400 hover:text-amber-300'
+                          : active
+                          ? 'text-white'
+                          : 'text-slate-300 hover:text-white'
+                      }`}
+                      aria-expanded={activeMenu === item.label}
+                      aria-haspopup="true"
+                    >
+                      {active && (
+                        <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-alta-green-light" aria-hidden="true" />
+                      )}
+                      {item.label}
+                      <ChevronDown
+                        size={13}
+                        className={`transition-transform duration-200 text-slate-500 ${activeMenu === item.label ? 'rotate-180' : ''}`}
+                      />
+                    </button>
 
-                  {/* Products mega menu */}
-                  {activeMenu === item.label && item.isProducts && (
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 w-[680px] bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden" style={{ animation: 'slideDown 0.18s cubic-bezier(0.16,1,0.3,1)' }} role="region" aria-label="Products menu">
-                      <div className="h-0.5 bg-gradient-to-r from-alta-blue via-alta-sky to-alta-green-light" />
-                      <div className="grid grid-cols-3 gap-0 p-5">
-                        {[
-                          { heading: 'Client Products', links: ['Desktop','Laptop','Copier','Printer','Scanner','Projector','Toners','External Drive','Flash Drive','Accessories','Spare Parts'] },
-                          { heading: 'Enterprise & Power', links: ['Server','Storage','Workstation','Switch','Router','Firewall','Server Rack','Backup Device','UPS','Surge Protector'] },
-                          { heading: 'Specialised + Solutions', links: ['ATM','POS','Smart Screen','Headset','Infrastructure','Consultancy','Software','Technical Support'] },
-                        ].map((col, ci) => (
-                          <div key={col.heading} className={ci === 0 ? 'pr-4 border-r border-slate-100' : ci === 1 ? 'px-4 border-r border-slate-100' : 'pl-4'}>
-                            <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-400 mb-3 px-2">{col.heading}</p>
-                            <ul className="space-y-0.5">
-                              {col.links.map(link => (
-                                <li key={link}>
-                                  <Link to="/products" onClick={() => setActiveMenu(null)} className="block px-2 py-1.5 rounded-lg text-[13px] text-slate-600 hover:text-navy-900 hover:bg-slate-50 transition-colors duration-150">{link}</Link>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="px-5 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-                        <span className="text-[11px] text-slate-400">Ethiopia's #1 Enterprise IT Partner since 1994</span>
-                        <Link to="/contact" onClick={() => setActiveMenu(null)} className="text-[11px] font-semibold text-alta-blue hover:underline underline-offset-2 flex items-center gap-1">Get a Quote <ArrowRight size={10} /></Link>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Group mega menu */}
-                  {activeMenu === item.label && item.isGroup && (
-                    <div className="absolute top-full right-0 mt-1.5 w-[640px] bg-navy-900 rounded-2xl shadow-2xl border border-white/8 overflow-hidden" style={{ animation: 'slideDown 0.18s cubic-bezier(0.16,1,0.3,1)', backdropFilter: 'blur(20px)' }} role="region" aria-label="Group menu">
-                      <div className="h-0.5 bg-gradient-to-r from-alta-blue via-amber-400 to-amber-500" />
-                      <div className="grid grid-cols-2 gap-0 p-5">
-                        {/* ALTA Computec */}
-                        <div className="pr-5 border-r border-slate-700">
-                          <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-400 mb-1">Technology & IT Solutions</p>
-                          <p className="text-white font-bold text-[17px] mb-0.5 tracking-tight">ALTA Computec PLC</p>
-                          <p className="text-slate-400 text-[12px] mb-3 leading-snug">Ethiopia's #1 enterprise IT partner. Dell Platinum. 30 years.</p>
-                          <ul className="space-y-1 mb-4">
-                            {[{label:'Solutions',to:'/solutions'},{label:'Products',to:'/products'},{label:'Case Studies',to:'/case-studies'},{label:'Contact',to:'/contact'}].map(l => (
-                              <li key={l.label}>
-                                <Link to={l.to} onClick={() => setActiveMenu(null)} className="flex items-center gap-1.5 text-[13px] text-slate-300 hover:text-white transition-colors duration-150 py-1">
-                                  <ArrowRight size={11} className="text-slate-600" /> {l.label}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                          <span className="text-[9px] font-black tracking-wider uppercase px-2 py-0.5 rounded-full bg-amber-500 text-white">Since 1994</span>
+                    {/* Products mega menu */}
+                    {activeMenu === item.label && item.isProducts && (
+                      <div
+                        className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 w-[680px] rounded-2xl shadow-2xl overflow-hidden"
+                        style={{ ...DARK_MEGA_STYLE, animation: 'slideDown 0.18s cubic-bezier(0.16,1,0.3,1)' }}
+                        role="region"
+                        aria-label="Products menu"
+                      >
+                        <div className="grid grid-cols-3 gap-0 p-5">
+                          {[
+                            { heading: 'Client Products', links: ['Desktop','Laptop','Copier','Printer','Scanner','Projector','Toners','External Drive','Flash Drive','Accessories','Spare Parts'] },
+                            { heading: 'Enterprise & Power', links: ['Server','Storage','Workstation','Switch','Router','Firewall','Server Rack','Backup Device','UPS','Surge Protector'] },
+                            { heading: 'Specialised + Solutions', links: ['ATM','POS','Smart Screen','Headset','Infrastructure','Consultancy','Software','Technical Support'] },
+                          ].map((col, ci) => (
+                            <div key={col.heading} className={ci === 0 ? 'pr-4 border-r border-white/8' : ci === 1 ? 'px-4 border-r border-white/8' : 'pl-4'}>
+                              <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500 mb-3 px-2">{col.heading}</p>
+                              <ul className="space-y-0.5">
+                                {col.links.map(link => (
+                                  <li key={link}>
+                                    <Link
+                                      to="/products"
+                                      onClick={() => setActiveMenu(null)}
+                                      className="block px-2 py-1.5 rounded-lg text-[13px] text-slate-400 hover:text-white hover:bg-white/6 transition-colors duration-150"
+                                    >
+                                      {link}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ))}
                         </div>
-                        {/* LATA */}
-                        <div className="pl-5">
-                          <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-amber-500 mb-1">Ethiopian Coffee Export</p>
-                          <p className="text-white font-bold text-[17px] mb-0.5 tracking-tight">LATA Agri Export</p>
-                          <p className="text-slate-400 text-[12px] mb-3 leading-snug">World-class Ethiopian green coffee exported globally.</p>
-                          <div className="flex items-center gap-2 text-amber-400 text-[12px] mb-3">
-                            <span>☕</span>
-                            <span className="font-medium">Sidamo · Limmu · Specialty</span>
-                          </div>
-                          <ul className="space-y-1 mb-4">
-                            {LATA_MEGA.map(l => (
-                              <li key={l.label}>
-                                <a href={l.href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-[13px] text-amber-300 hover:text-amber-100 transition-colors duration-150 py-1">
-                                  <ArrowRight size={11} className="text-amber-600" /> {l.label}
-                                  <ArrowRight size={10} className="ml-auto opacity-50" />
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                          <Link to="/group" onClick={() => setActiveMenu(null)} className="text-amber-400 text-[12px] font-semibold hover:text-amber-200 transition-colors">
-                            View LATA Page →
+                        <div className="px-5 py-3 border-t border-white/6 flex items-center justify-between" style={{ background: 'rgba(255,255,255,0.03)' }}>
+                          <span className="text-[11px] text-slate-500">Ethiopia's #1 Enterprise IT Partner since 1994</span>
+                          <Link to="/contact" onClick={() => setActiveMenu(null)} className="text-[11px] font-semibold text-alta-blue hover:underline underline-offset-2 flex items-center gap-1">
+                            Get a Quote <ArrowRight size={10} />
                           </Link>
                         </div>
                       </div>
-                      <div className="px-5 py-2.5 border-t border-slate-700">
-                        <span className="text-[11px] text-slate-500">Part of the ALTA Group — Addis Ababa, Ethiopia</span>
-                      </div>
-                    </div>
-                  )}
+                    )}
 
-                  {/* Standard mega menu */}
-                  {activeMenu === item.label && !item.isProducts && !item.isGroup && item.columns && (
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 w-[520px] bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden" style={{ animation: 'slideDown 0.18s cubic-bezier(0.16,1,0.3,1)' }} role="region" aria-label={`${item.label} menu`}>
-                      <div className="h-0.5 bg-gradient-to-r from-alta-blue via-alta-sky to-alta-green-light" />
-                      <div className="grid grid-cols-2 gap-0 p-5">
-                        {item.columns.map((col, ci) => (
-                          <div key={col.heading} className={ci === 0 ? 'pr-4 border-r border-slate-100' : 'pl-4'}>
-                            <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-400 mb-3 px-2">{col.heading}</p>
-                            <ul className="space-y-0.5">
-                              {col.links.map((link) => (
-                                <li key={link.label}>
-                                  <Link to={link.to} onClick={() => setActiveMenu(null)} className={`group flex flex-col px-2 py-2 rounded-xl transition-all duration-150 ${link.highlight ? 'hover:bg-blue-50' : 'hover:bg-slate-50'}`}>
-                                    <span className={`flex items-center gap-1.5 text-[13px] font-medium ${link.highlight ? 'text-alta-blue font-semibold' : 'text-slate-700 group-hover:text-navy-900'}`}>
-                                      {link.label}
-                                      {link.highlight && <ArrowRight size={11} className="ml-auto opacity-60" />}
-                                    </span>
-                                    {link.desc && <span className="text-[11px] text-slate-400 mt-0.5 leading-tight">{link.desc}</span>}
+                    {/* Group mega menu */}
+                    {activeMenu === item.label && item.isGroup && (
+                      <div
+                        className="absolute top-full right-0 mt-1.5 w-[640px] rounded-2xl shadow-2xl overflow-hidden"
+                        style={{ ...DARK_MEGA_STYLE, borderTop: '2px solid #F59E0B', animation: 'slideDown 0.18s cubic-bezier(0.16,1,0.3,1)' }}
+                        role="region"
+                        aria-label="Group menu"
+                      >
+                        <div className="grid grid-cols-2 gap-0 p-5">
+                          {/* ALTA Computec */}
+                          <div className="pr-5 border-r border-white/8">
+                            <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500 mb-1">Technology & IT Solutions</p>
+                            <p className="text-white font-bold text-[17px] mb-0.5 tracking-tight">ALTA Computec PLC</p>
+                            <p className="text-slate-400 text-[12px] mb-3 leading-snug">Ethiopia's #1 enterprise IT partner. Dell Platinum. 30 years.</p>
+                            <ul className="space-y-1 mb-4">
+                              {[{label:'Solutions',to:'/solutions'},{label:'Products',to:'/products'},{label:'Case Studies',to:'/case-studies'},{label:'Contact',to:'/contact'}].map(l => (
+                                <li key={l.label}>
+                                  <Link to={l.to} onClick={() => setActiveMenu(null)} className="flex items-center gap-1.5 text-[13px] text-slate-300 hover:text-white transition-colors duration-150 py-1">
+                                    <ArrowRight size={11} className="text-slate-600" /> {l.label}
                                   </Link>
                                 </li>
                               ))}
                             </ul>
+                            <span className="text-[9px] font-black tracking-wider uppercase px-2 py-0.5 rounded-full bg-amber-500 text-white">Since 1994</span>
                           </div>
-                        ))}
+                          {/* LATA */}
+                          <div className="pl-5">
+                            <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-amber-500 mb-1">Ethiopian Coffee Export</p>
+                            <p className="text-white font-bold text-[17px] mb-0.5 tracking-tight">LATA Agri Export</p>
+                            <p className="text-slate-400 text-[12px] mb-3 leading-snug">World-class Ethiopian green coffee exported globally.</p>
+                            <div className="flex items-center gap-2 text-amber-400 text-[12px] mb-3">
+                              <span>☕</span>
+                              <span className="font-medium">Sidamo · Limmu · Specialty</span>
+                            </div>
+                            <ul className="space-y-1 mb-4">
+                              {LATA_MEGA.map(l => (
+                                <li key={l.label}>
+                                  <a href={l.href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-[13px] text-amber-300 hover:text-amber-100 transition-colors duration-150 py-1">
+                                    <ArrowRight size={11} className="text-amber-600" /> {l.label}
+                                    <ArrowRight size={10} className="ml-auto opacity-50" />
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                            <Link to="/group" onClick={() => setActiveMenu(null)} className="text-amber-400 text-[12px] font-semibold hover:text-amber-200 transition-colors">
+                              View LATA Page →
+                            </Link>
+                          </div>
+                        </div>
+                        <div className="px-5 py-2.5 border-t border-white/6" style={{ background: 'rgba(255,255,255,0.02)' }}>
+                          <span className="text-[11px] text-slate-500">Part of the ALTA Group — Addis Ababa, Ethiopia</span>
+                        </div>
                       </div>
-                      <div className="px-5 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-                        <span className="text-[11px] text-slate-400">Ethiopia's #1 Enterprise IT Partner since 1994</span>
-                        <Link to="/contact" onClick={() => setActiveMenu(null)} className="text-[11px] font-semibold text-alta-blue hover:underline underline-offset-2 flex items-center gap-1">Get a Quote <ArrowRight size={10} /></Link>
+                    )}
+
+                    {/* Standard mega menu */}
+                    {activeMenu === item.label && !item.isProducts && !item.isGroup && item.columns && (
+                      <div
+                        className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 w-[520px] rounded-2xl shadow-2xl overflow-hidden"
+                        style={{ ...DARK_MEGA_STYLE, animation: 'slideDown 0.18s cubic-bezier(0.16,1,0.3,1)' }}
+                        role="region"
+                        aria-label={`${item.label} menu`}
+                      >
+                        <div className="grid grid-cols-2 gap-0 p-5">
+                          {item.columns.map((col, ci) => (
+                            <div key={col.heading} className={ci === 0 ? 'pr-4 border-r border-white/8' : 'pl-4'}>
+                              <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500 mb-3 px-2">{col.heading}</p>
+                              <ul className="space-y-0.5">
+                                {col.links.map((link) => (
+                                  <li key={link.label}>
+                                    <Link
+                                      to={link.to}
+                                      onClick={() => setActiveMenu(null)}
+                                      className={`group flex flex-col px-2 py-2 rounded-xl transition-all duration-150 ${link.highlight ? 'hover:bg-alta-blue/10' : 'hover:bg-white/5'}`}
+                                    >
+                                      <span className={`flex items-center gap-1.5 text-[13px] font-medium ${link.highlight ? 'text-alta-blue font-semibold' : 'text-slate-300 group-hover:text-white'}`}>
+                                        {link.label}
+                                        {link.highlight && <ArrowRight size={11} className="ml-auto opacity-60" />}
+                                      </span>
+                                      {link.desc && <span className="text-[11px] text-slate-500 mt-0.5 leading-tight">{link.desc}</span>}
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="px-5 py-3 border-t border-white/6 flex items-center justify-between" style={{ background: 'rgba(255,255,255,0.02)' }}>
+                          <span className="text-[11px] text-slate-500">Ethiopia's #1 Enterprise IT Partner since 1994</span>
+                          <Link to="/contact" onClick={() => setActiveMenu(null)} className="text-[11px] font-semibold text-alta-blue hover:underline underline-offset-2 flex items-center gap-1">
+                            Get a Quote <ArrowRight size={10} />
+                          </Link>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                </div>
-              ))}
+                    )}
+                  </div>
+                );
+              })}
             </nav>
 
             {/* Right Actions */}
             <div className="hidden lg:flex items-center gap-2">
-              <a href="tel:+251115502928" className={`flex items-center gap-1.5 text-[13px] font-medium px-3 py-2 rounded-lg transition-colors duration-150 ${linkBase}`} aria-label="Call ALTA Computec">
+              <a href="tel:+251115502928" className="flex items-center gap-1.5 text-[13px] font-medium px-3 py-2 rounded-lg transition-colors duration-150 text-slate-300 hover:text-white" aria-label="Call ALTA Computec">
                 <Phone size={13} aria-hidden="true" />
-                <span className="hidden xl:inline">+251-115-50-29-28</span>
+                <span className="hidden xl:inline">+251 11 550 2928</span>
               </a>
-              <div className={`w-px h-4 ${scrolled ? 'bg-slate-200' : 'bg-white/15'}`} aria-hidden="true" />
-              <button className={`text-[12px] font-medium px-2 py-1.5 rounded-lg transition-colors duration-150 ${linkBase}`} aria-label="Switch language">EN | AM</button>
+              <div className="w-px h-4 bg-white/15" aria-hidden="true" />
+              <button className="text-[12px] font-medium px-2 py-1.5 rounded-lg transition-colors duration-150 text-slate-300 hover:text-white" aria-label="Switch language">EN | AM</button>
               <Link to="/contact" className="btn-primary !text-[13px] !px-4 !py-2.5 ml-1" style={{ minHeight: '38px' }}>
                 Get a Quote <ArrowRight size={13} />
               </Link>
@@ -291,7 +356,7 @@ export default function Navbar() {
 
             {/* Mobile Hamburger */}
             <button
-              className={`lg:hidden p-2 rounded-xl transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue ${scrolled ? 'text-navy-900 hover:bg-slate-100' : 'text-white hover:bg-white/10'}`}
+              className="lg:hidden p-2 rounded-xl transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue text-white hover:bg-white/10"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={mobileOpen}
@@ -301,12 +366,24 @@ export default function Navbar() {
           </div>
         </div>
 
-        {activeMenu && <div className="hidden lg:block fixed inset-0 top-[68px] bg-navy-950/20 backdrop-blur-[2px] -z-10" onMouseEnter={() => setActiveMenu(null)} />}
+        {activeMenu && (
+          <div className="hidden lg:block fixed inset-0 top-[68px] bg-navy-950/20 backdrop-blur-[2px] -z-10" onMouseEnter={() => setActiveMenu(null)} />
+        )}
       </header>
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-40 bg-navy-950 overflow-y-auto lg:hidden" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+        <div
+          className="fixed inset-0 z-40 overflow-y-auto lg:hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile navigation"
+          style={{
+            background: 'rgba(3,8,15,0.97)',
+            backdropFilter: 'blur(24px)',
+            WebkitBackdropFilter: 'blur(24px)',
+          }}
+        >
           <div className="flex items-center justify-between h-16 px-4 border-b border-white/8">
             <Link to="/" className="flex items-center gap-3" onClick={() => setMobileOpen(false)}>
               <div className="relative w-9 h-9 rounded-lg overflow-hidden flex-shrink-0 border border-white/10">
@@ -317,7 +394,11 @@ export default function Navbar() {
                 <span className="text-[9px] font-bold tracking-[0.18em] uppercase text-slate-500">Computec PLC</span>
               </div>
             </Link>
-            <button className="p-2 text-slate-400 hover:text-white rounded-xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue" onClick={() => setMobileOpen(false)} aria-label="Close menu">
+            <button
+              className="p-2 text-slate-400 hover:text-white rounded-xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue"
+              onClick={() => setMobileOpen(false)}
+              aria-label="Close menu"
+            >
               <X size={22} />
             </button>
           </div>
@@ -347,7 +428,12 @@ export default function Navbar() {
                           <div key={col.heading}>
                             <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-600 mb-2 px-1">{col.heading}</p>
                             {col.links.map((link) => (
-                              <Link key={link.label} to={link.to} className={`flex items-center min-h-[48px] py-2.5 px-2 text-[14px] rounded-xl transition-colors duration-150 ${link.highlight ? 'text-alta-blue font-semibold' : 'text-slate-300 hover:text-white'}`} onClick={() => setMobileOpen(false)}>
+                              <Link
+                                key={link.label}
+                                to={link.to}
+                                className={`flex items-center min-h-[48px] py-2.5 px-2 text-[14px] rounded-xl transition-colors duration-150 ${link.highlight ? 'text-alta-blue font-semibold' : 'text-slate-300 hover:text-white'}`}
+                                onClick={() => setMobileOpen(false)}
+                              >
                                 {link.label}
                               </Link>
                             ))}
@@ -365,7 +451,7 @@ export default function Navbar() {
                 Get a Quote <ArrowRight size={16} />
               </Link>
               <a href="tel:+251115502928" className="flex items-center justify-center gap-2 text-slate-400 text-sm py-3 min-h-[48px] hover:text-white transition-colors">
-                <Phone size={15} /> +251-115-50-29-28
+                <Phone size={15} /> +251 11 550 2928
               </a>
             </div>
           </nav>

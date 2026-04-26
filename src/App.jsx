@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import Navbar from './components/Navbar';
@@ -13,6 +14,11 @@ import Blog from './components/Blog';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import AIAssistant from './components/AIAssistant';
+import TrustBadges from './components/TrustBadges';
+import BackToTop from './components/BackToTop';
+import AnnouncementBanner from './components/AnnouncementBanner';
+import LoadingScreen from './components/LoadingScreen';
+import CookieConsent from './components/CookieConsent';
 
 import AboutPage from './pages/AboutPage';
 import SolutionsPage from './pages/SolutionsPage';
@@ -33,6 +39,7 @@ function HomePage() {
         <Statistics />
         <Solutions />
         <Partners />
+        <TrustBadges />
         <CaseStudies />
         <About />
         <Testimonials />
@@ -42,23 +49,46 @@ function HomePage() {
       </main>
       <Footer />
       <AIAssistant />
+      <BackToTop />
     </>
   );
 }
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const scrolled = window.scrollY;
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(total > 0 ? (scrolled / total) * 100 : 0);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  if (loading) {
+    return <LoadingScreen onDone={() => setLoading(false)} />;
+  }
+
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/about" element={<AboutPage />} />
-      <Route path="/solutions" element={<SolutionsPage />} />
-      <Route path="/industries" element={<IndustriesPage />} />
-      <Route path="/case-studies" element={<CaseStudiesPage />} />
-      <Route path="/products" element={<ProductsPage />} />
-      <Route path="/contact" element={<ContactPage />} />
-      <Route path="/careers" element={<CareersPage />} />
-      <Route path="/blog" element={<BlogPage />} />
-      <Route path="/group" element={<GroupPage />} />
-    </Routes>
+    <>
+      <div id="scroll-progress" style={{ width: `${scrollProgress}%` }} aria-hidden="true" />
+      <AnnouncementBanner />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/solutions" element={<SolutionsPage />} />
+        <Route path="/industries" element={<IndustriesPage />} />
+        <Route path="/case-studies" element={<CaseStudiesPage />} />
+        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/careers" element={<CareersPage />} />
+        <Route path="/blog" element={<BlogPage />} />
+        <Route path="/group" element={<GroupPage />} />
+      </Routes>
+      <CookieConsent />
+    </>
   );
 }

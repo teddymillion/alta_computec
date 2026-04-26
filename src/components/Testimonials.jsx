@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { ChevronLeft, ChevronRight, Star, ArrowRight, Quote } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { ChevronLeft, ChevronRight, Star, ArrowRight } from 'lucide-react';
 
 const TESTIMONIALS = [
   {
@@ -44,13 +44,13 @@ const TESTIMONIALS = [
   },
 ];
 
-const CLIENT_LOGOS = [
-  'Commercial Bank of Ethiopia',
-  'Ministry of Finance',
-  'Ethio Telecom',
-  'Addis Ababa University',
-  'Ethiopian Electric Power',
-  'Development Bank of Ethiopia',
+const CLIENT_TRUST = [
+  { name: 'Commercial Bank of Ethiopia', initials: 'CB', color: 'from-blue-600 to-blue-800' },
+  { name: 'Ministry of Finance',         initials: 'MF', color: 'from-emerald-600 to-emerald-800' },
+  { name: 'Ethio Telecom',               initials: 'ET', color: 'from-purple-600 to-purple-800' },
+  { name: 'Addis Ababa University',      initials: 'AA', color: 'from-amber-600 to-amber-800' },
+  { name: 'Ethiopian Electric Power',    initials: 'EE', color: 'from-red-600 to-red-800' },
+  { name: 'Development Bank of Ethiopia',initials: 'DB', color: 'from-sky-600 to-sky-800' },
 ];
 
 function Stars() {
@@ -65,16 +65,26 @@ function Stars() {
 
 function TestimonialCard({ t, featured }) {
   return (
-    <article className={`flex flex-col gap-5 p-6 rounded-2xl border transition-all duration-300 ${
-      featured
-        ? 'bg-white border-slate-200/80 shadow-xl'
-        : 'border-white/6 hover:border-white/10'
-    }`}
-    style={!featured ? { background: 'rgba(13,30,56,0.6)', backdropFilter: 'blur(8px)' } : {}}
+    <article
+      className={`relative flex flex-col gap-5 p-6 rounded-2xl border transition-all duration-300 ${
+        featured
+          ? 'bg-white border-l-4 border-l-alta-green border-t border-r border-b border-slate-200/80 shadow-xl'
+          : 'border-white/6 hover:border-white/10'
+      }`}
+      style={!featured ? { background: 'rgba(13,30,56,0.6)', backdropFilter: 'blur(8px)' } : {}}
     >
+      {featured && (
+        <span
+          className="absolute top-4 right-5 text-[72px] font-black leading-none select-none pointer-events-none"
+          style={{ color: 'rgba(27,79,216,0.06)', lineHeight: 1 }}
+          aria-hidden="true"
+        >
+          "
+        </span>
+      )}
+
       <div className="flex items-start justify-between gap-3">
         <Stars />
-        <Quote size={18} className={featured ? 'text-slate-200' : 'text-white/10'} aria-hidden="true" />
       </div>
 
       <blockquote className={`text-[13.5px] leading-[1.7] flex-1 ${featured ? 'text-slate-700' : 'text-slate-400'}`}>
@@ -87,7 +97,7 @@ function TestimonialCard({ t, featured }) {
         </div>
         <div className="min-w-0">
           <p className={`font-bold text-[13px] truncate ${featured ? 'text-navy-900' : 'text-white'}`}>{t.name}</p>
-          <p className={`text-[11px] truncate ${featured ? 'text-slate-500' : 'text-slate-500'}`}>{t.title}</p>
+          <p className={`text-[11px] truncate text-slate-500`}>{t.title}</p>
           <p className={`text-[11px] font-semibold truncate ${featured ? 'text-alta-blue' : 'text-alta-blue/70'}`}>{t.company}</p>
         </div>
       </div>
@@ -104,9 +114,37 @@ function TestimonialCard({ t, featured }) {
 
 export default function Testimonials() {
   const [current, setCurrent] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [progress, setProgress] = useState(0);
   const len = TESTIMONIALS.length;
-  const prev = () => setCurrent((c) => (c === 0 ? len - 1 : c - 1));
-  const next = () => setCurrent((c) => (c === len - 1 ? 0 : c + 1));
+  const intervalRef = useRef(null);
+  const progressRef = useRef(null);
+
+  const prev = () => { setCurrent((c) => (c === 0 ? len - 1 : c - 1)); setProgress(0); };
+  const next = () => { setCurrent((c) => (c === len - 1 ? 0 : c + 1)); setProgress(0); };
+
+  useEffect(() => {
+    if (paused) return;
+    setProgress(0);
+    let start = Date.now();
+    const DURATION = 6000;
+
+    progressRef.current = setInterval(() => {
+      const elapsed = Date.now() - start;
+      setProgress(Math.min((elapsed / DURATION) * 100, 100));
+    }, 50);
+
+    intervalRef.current = setTimeout(() => {
+      setCurrent((c) => (c === len - 1 ? 0 : c + 1));
+      setProgress(0);
+    }, DURATION);
+
+    return () => {
+      clearTimeout(intervalRef.current);
+      clearInterval(progressRef.current);
+    };
+  }, [current, paused, len]);
+
   const visible = [TESTIMONIALS[current], TESTIMONIALS[(current + 1) % len], TESTIMONIALS[(current + 2) % len]];
 
   return (
@@ -115,6 +153,8 @@ export default function Testimonials() {
       className="section-padding relative overflow-hidden"
       style={{ background: 'linear-gradient(180deg, #03080F 0%, #0A1628 100%)' }}
       aria-label="Client testimonials"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
     >
       <div className="absolute inset-0 bg-dot-pattern opacity-40" aria-hidden="true" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-alta-blue/5 rounded-full blur-[100px] pointer-events-none" aria-hidden="true" />
@@ -140,6 +180,19 @@ export default function Testimonials() {
           <TestimonialCard t={TESTIMONIALS[current]} featured />
         </div>
 
+        {/* Progress bar */}
+        <div className="w-full max-w-xs mx-auto h-0.5 bg-white/8 rounded-full mb-4 overflow-hidden">
+          <div
+            className="h-full rounded-full transition-none"
+            style={{
+              width: `${progress}%`,
+              background: 'linear-gradient(90deg, #1B4FD8, #22C55E)',
+              transition: paused ? 'none' : 'width 50ms linear',
+            }}
+            aria-hidden="true"
+          />
+        </div>
+
         {/* Controls */}
         <div className="flex items-center justify-center gap-4">
           <button
@@ -153,7 +206,7 @@ export default function Testimonials() {
             {TESTIMONIALS.map((_, i) => (
               <button
                 key={i}
-                onClick={() => setCurrent(i)}
+                onClick={() => { setCurrent(i); setProgress(0); }}
                 className={`rounded-full transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue ${
                   i === current ? 'w-6 h-2 bg-alta-green-light' : 'w-2 h-2 bg-white/15 hover:bg-white/25'
                 }`}
@@ -177,11 +230,16 @@ export default function Testimonials() {
           <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-slate-700 mb-6 text-center">
             Trusted By
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-6 lg:gap-10">
-            {CLIENT_LOGOS.map((name) => (
-              <span key={name} className="text-slate-700 font-semibold text-[12px] tracking-wide hover:text-slate-500 transition-colors duration-150 cursor-default">
-                {name}
-              </span>
+          <div className="flex flex-wrap items-center justify-center gap-5 lg:gap-8">
+            {CLIENT_TRUST.map((c) => (
+              <div key={c.name} className="flex items-center gap-2.5 group cursor-default">
+                <div className={`w-7 h-7 rounded-full bg-gradient-to-br ${c.color} flex items-center justify-center flex-shrink-0 shadow-sm`}>
+                  <span className="text-white font-bold text-[9px]">{c.initials}</span>
+                </div>
+                <span className="text-slate-600 font-semibold text-[12px] tracking-wide group-hover:text-slate-400 transition-colors duration-150">
+                  {c.name}
+                </span>
+              </div>
             ))}
           </div>
         </div>

@@ -26,17 +26,19 @@ const FOOTER_LINKS = {
 };
 
 const SOCIAL = [
-  { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com' },
-  { icon: Twitter, label: 'Twitter / X', href: 'https://twitter.com' },
-  { icon: Facebook, label: 'Facebook', href: 'https://facebook.com' },
-  { icon: Youtube, label: 'YouTube', href: 'https://youtube.com' },
+  { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/company/alta-computec' },
+  { icon: Twitter,  label: 'Twitter / X', href: 'https://twitter.com/altacomputec' },
+  { icon: Facebook, label: 'Facebook', href: 'https://facebook.com/altacomputec' },
+  { icon: Youtube,  label: 'YouTube', href: 'https://youtube.com/@altacomputec' },
 ];
 
 export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer id="footer" className="bg-navy-950 border-t border-white/6" role="contentinfo" aria-label="Site footer">
+    <footer id="footer" className="bg-navy-950" role="contentinfo" aria-label="Site footer">
+      {/* Gradient separator */}
+      <div className="h-px w-full" style={{ background: 'linear-gradient(90deg, transparent 0%, #1B4FD8 30%, #22C55E 70%, transparent 100%)' }} aria-hidden="true" />
       <div className="section-container py-16 lg:py-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">
 
@@ -92,7 +94,7 @@ export default function Footer() {
           {/* Link columns */}
           {Object.entries(FOOTER_LINKS).map(([heading, links]) => (
             <div key={heading} className="flex flex-col gap-4">
-              <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500">{heading}</p>
+              <p className="overline-tag !text-slate-500">{heading}</p>
               <ul className="flex flex-col gap-2.5">
                 {links.map((link) => (
                   <li key={link.label}>
@@ -107,7 +109,7 @@ export default function Footer() {
 
           {/* Contact column */}
           <div className="flex flex-col gap-4">
-            <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500">Contact</p>
+            <p className="overline-tag !text-slate-500">Contact</p>
             <div className="flex flex-col gap-3.5">
               <a href="tel:+251115502928" className="flex items-start gap-3 text-[13px] text-slate-600 hover:text-white transition-colors duration-150 group" aria-label="Call ALTA Computec">
                 <Phone size={14} className="text-alta-blue flex-shrink-0 mt-0.5 group-hover:text-white transition-colors" aria-hidden="true" />
@@ -133,6 +135,29 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* Trust badge pills */}
+      <div className="border-t border-white/6">
+        <div className="section-container py-4">
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {[
+              { label: 'Dell Platinum Partner', color: 'rgba(245,158,11,0.12)', border: 'rgba(245,158,11,0.25)', text: '#F59E0B' },
+              { label: 'ISO 9001 Certified',    color: 'rgba(27,79,216,0.10)',  border: 'rgba(27,79,216,0.25)',  text: '#60A5FA' },
+              { label: 'Cisco Premier',          color: 'rgba(14,165,233,0.10)', border: 'rgba(14,165,233,0.25)', text: '#38BDF8' },
+              { label: '30+ Years in Business',  color: 'rgba(22,163,74,0.10)',  border: 'rgba(22,163,74,0.25)',  text: '#4ADE80' },
+              { label: 'Govt. Registered',       color: 'rgba(99,102,241,0.10)', border: 'rgba(99,102,241,0.25)', text: '#A5B4FC' },
+            ].map((b) => (
+              <span
+                key={b.label}
+                className="text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full"
+                style={{ background: b.color, border: `1px solid ${b.border}`, color: b.text }}
+              >
+                {b.label}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Bottom bar */}
       <div className="border-t border-white/6">
         <div className="section-container py-5">
@@ -140,12 +165,19 @@ export default function Footer() {
             <p className="text-[12px] text-slate-700 text-center sm:text-left">
               © {year} ALTA Computec PLC. All rights reserved.
             </p>
-            <div className="flex items-center gap-5 flex-wrap justify-center">
-              {['Privacy Policy', 'Terms of Use', 'WCAG Compliance'].map((item) => (
+            <div className="flex items-center gap-2 flex-wrap justify-center">
+              {['Privacy Policy', 'Terms of Use'].map((item) => (
                 <a key={item} href="#" className="text-[12px] text-slate-700 hover:text-slate-400 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue rounded">
                   {item}
                 </a>
               ))}
+              <span className="text-slate-800 text-[12px]">·</span>
+              <span
+                className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full"
+                style={{ background: 'rgba(27,79,216,0.10)', border: '1px solid rgba(27,79,216,0.2)', color: '#60A5FA' }}
+              >
+                WCAG 2.1 AA
+              </span>
             </div>
           </div>
         </div>

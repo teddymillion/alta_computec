@@ -1,5 +1,62 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { ChevronDown, Play, ArrowRight, CheckCircle2 } from 'lucide-react';
+
+function CompanyVideoPlayer() {
+  const videoRef = useRef(null);
+  const [playing, setPlaying] = useState(false);
+
+  const handlePlay = () => {
+    if (videoRef.current) {
+      videoRef.current.play();
+      setPlaying(true);
+    }
+  };
+
+  return (
+    <div
+      className="relative rounded-2xl overflow-hidden bg-navy-950 aspect-video group"
+      style={{ boxShadow: '0 8px 40px rgba(0,0,0,0.35), 0 0 0 1px rgba(27,79,216,0.12)' }}
+    >
+      <video
+        ref={videoRef}
+        src="/Alta video.mp4"
+        poster="/alta tumbnail.png"
+        className="w-full h-full object-cover"
+        onPause={() => setPlaying(false)}
+        onEnded={() => setPlaying(false)}
+        preload="metadata"
+        playsInline
+        controls={playing}
+        aria-label="ALTA Computec Company Story video"
+      />
+
+      {!playing && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-navy-800/60 to-navy-950/85">
+          <div className="absolute inset-0 bg-dot-pattern opacity-20" aria-hidden="true" />
+          <button
+            onClick={handlePlay}
+            className="relative z-10 w-20 h-20 rounded-full flex items-center justify-center shadow-xl focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-alta-green/40 transition-transform duration-200 group-hover:scale-110"
+            style={{
+              background: 'linear-gradient(135deg, #16A34A, #22C55E)',
+              boxShadow: '0 0 0 8px rgba(34,197,94,0.12), 0 8px 32px rgba(22,163,74,0.4)',
+            }}
+            aria-label="Play ALTA Computec company story video"
+          >
+            <Play size={26} className="text-white fill-white ml-1.5" aria-hidden="true" />
+          </button>
+          <div className="relative z-10 text-center">
+            <p className="text-white font-bold text-[15px] tracking-tight">ALTA Computec — Company Story</p>
+            <p className="text-slate-400 text-[12px] mt-1">30 Years of Enterprise IT Excellence in Ethiopia</p>
+          </div>
+          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between z-10">
+            <span className="text-[11px] font-semibold text-slate-400 bg-navy-950/80 px-2.5 py-1 rounded-lg backdrop-blur-sm border border-white/5">Company Story</span>
+            <span className="text-[11px] font-semibold text-alta-green bg-navy-950/80 px-2.5 py-1 rounded-lg backdrop-blur-sm border border-alta-green/20">▶ Play Video</span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 const DIFFERENTIATORS = [
   {
@@ -113,28 +170,8 @@ export default function About() {
 
           {/* Right */}
           <div className="flex flex-col gap-8">
-            {/* Video placeholder */}
-            <div className="relative rounded-2xl overflow-hidden bg-navy-900 border border-navy-800 aspect-video group cursor-pointer" style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.2)' }}>
-              <div className="absolute inset-0 bg-dot-pattern opacity-30" aria-hidden="true" />
-              <div className="absolute inset-0 bg-gradient-to-br from-navy-800/50 to-navy-950/80" aria-hidden="true" />
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
-                <button
-                  className="relative w-16 h-16 rounded-full bg-alta-green flex items-center justify-center shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-alta-green/30 transition-all duration-200 group-hover:scale-110 group-hover:shadow-glow-green"
-                  aria-label="Play ALTA Computec company video"
-                >
-                  <span className="absolute inset-0 rounded-full bg-alta-green-light opacity-0 group-hover:opacity-20 transition-opacity duration-200" />
-                  <Play size={22} className="text-white fill-white ml-1" aria-hidden="true" />
-                </button>
-                <div className="text-center">
-                  <p className="text-white font-semibold text-[14px]">ALTA Computec — Company Story</p>
-                  <p className="text-slate-400 text-[12px] mt-1">30 Years of Enterprise IT Excellence in Ethiopia</p>
-                </div>
-              </div>
-              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                <span className="text-[11px] text-slate-500 bg-navy-950/80 px-2.5 py-1 rounded-lg backdrop-blur-sm">4:32 min</span>
-                <span className="text-[11px] text-slate-500 bg-navy-950/80 px-2.5 py-1 rounded-lg backdrop-blur-sm">YouTube</span>
-              </div>
-            </div>
+            {/* Company Story Video */}
+            <CompanyVideoPlayer />
 
             {/* Timeline */}
             <div className="rounded-2xl border border-slate-200/80 p-6" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
