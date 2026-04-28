@@ -1,6 +1,6 @@
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
-const str = (max = 500) => z.string().trim().max(max).optional();
+const str = (max = 500) => z.string().trim().max(max).optional().or(z.literal(''));
 
 export const contactSchema = z.object({
   firstName: z.string().trim().min(1).max(500),
