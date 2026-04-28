@@ -252,7 +252,7 @@ export default function CaseStudiesPage() {
                 <p className="font-bold text-navy-900 text-[15px]">{step.title}</p>
                 <p className="text-[13px] text-slate-500 leading-relaxed">{step.desc}</p>
               </div>
-            ))}}
+            ))}
           </div>
           <div className="text-center">
             <Link to="/contact" className="btn-primary inline-flex">

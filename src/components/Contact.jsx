@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Phone, Mail, MapPin, Clock, ArrowRight, Send } from 'lucide-react';
 
 const CONTACT_ITEMS = [
@@ -11,6 +12,31 @@ const inputClass = "form-input";
 const labelClass = "form-label";
 
 export default function Contact() {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    const body = Object.fromEntries(new FormData(e.target));
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Submission failed');
+      setSuccess(true);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <section id="contact" className="section-padding bg-white dark:bg-navy-950" aria-label="Contact ALTA Computec">
       <div className="section-container">
@@ -67,31 +93,40 @@ export default function Contact() {
               <p className="text-[13px] text-slate-500 mt-1">Fill in your details and we'll get back to you within 24 hours.</p>
             </div>
 
-            <form className="flex flex-col gap-5" onSubmit={(e) => e.preventDefault()} noValidate aria-label="Contact form">
+            {success ? (
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mb-4">
+                  <ArrowRight size={24} className="text-alta-green" />
+                </div>
+                <h3 className="text-[18px] font-bold text-navy-900 mb-2">Request Received!</h3>
+                <p className="text-slate-500 text-[14px]">Thank you! We've received your request and will respond within 24 hours.</p>
+              </div>
+            ) : (
+            <form className="flex flex-col gap-5" onSubmit={handleSubmit} noValidate aria-label="Contact form">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="firstName" className={labelClass}>First Name <span className="text-red-400" aria-hidden="true">*</span></label>
-                  <input id="firstName" type="text" required autoComplete="given-name" placeholder="Tadesse" className={inputClass} aria-required="true" />
+                  <input id="firstName" name="firstName" type="text" required autoComplete="given-name" placeholder="Tadesse" className={inputClass} aria-required="true" />
                 </div>
                 <div>
                   <label htmlFor="lastName" className={labelClass}>Last Name <span className="text-red-400" aria-hidden="true">*</span></label>
-                  <input id="lastName" type="text" required autoComplete="family-name" placeholder="Bekele" className={inputClass} aria-required="true" />
+                  <input id="lastName" name="lastName" type="text" required autoComplete="family-name" placeholder="Bekele" className={inputClass} aria-required="true" />
                 </div>
               </div>
 
               <div>
                 <label htmlFor="email" className={labelClass}>Work Email <span className="text-red-400" aria-hidden="true">*</span></label>
-                <input id="email" type="email" required autoComplete="email" placeholder="tadesse@organization.com" className={inputClass} aria-required="true" />
+                <input id="email" name="email" type="email" required autoComplete="email" placeholder="tadesse@organization.com" className={inputClass} aria-required="true" />
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="company" className={labelClass}>Organization <span className="text-red-400" aria-hidden="true">*</span></label>
-                  <input id="company" type="text" required autoComplete="organization" placeholder="Commercial Bank of Ethiopia" className={inputClass} aria-required="true" />
+                  <input id="company" name="organisation" type="text" required autoComplete="organization" placeholder="Commercial Bank of Ethiopia" className={inputClass} aria-required="true" />
                 </div>
                 <div>
                   <label htmlFor="sector" className={labelClass}>Sector</label>
-                  <select id="sector" className={inputClass}>
+                  <select id="sector" name="sector" className={inputClass}>
                     <option value="">Select sector</option>
                     <option>Banking & Finance</option>
                     <option>Government</option>
@@ -105,7 +140,7 @@ export default function Contact() {
 
               <div>
                 <label htmlFor="solution" className={labelClass}>Solution of Interest</label>
-                <select id="solution" className={inputClass}>
+                <select id="solution" name="solutionInterest" className={inputClass}>
                   <option value="">Select a solution</option>
                   <option>IT Infrastructure & Networking</option>
                   <option>Banking Automation & ATM</option>
@@ -120,21 +155,25 @@ export default function Contact() {
                 <label htmlFor="message" className={labelClass}>Project Brief</label>
                 <textarea
                   id="message"
+                  name="message"
                   rows={4}
                   placeholder="Describe your project requirements, timeline, and any specific technology needs..."
                   className={`${inputClass} resize-none`}
                 />
               </div>
 
-              <button type="submit" className="btn-primary w-full justify-center text-[15px] py-4">
+              {error && <p className="text-red-500 text-[13px]">{error}</p>}
+
+              <button type="submit" disabled={loading} className="btn-primary w-full justify-center text-[15px] py-4">
                 <Send size={15} aria-hidden="true" />
-                Submit Request
+                {loading ? 'Sending...' : 'Submit Request'}
               </button>
 
               <p className="text-[11px] text-slate-400 text-center leading-relaxed">
                 By submitting, you agree to our Privacy Policy. We respond within 24 business hours.
               </p>
             </form>
+            )}
           </div>
         </div>
       </div>

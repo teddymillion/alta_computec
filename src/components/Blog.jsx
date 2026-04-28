@@ -122,7 +122,7 @@ export default function Blog() {
                   </Link>
                 </div>
               </article>
-            ))}}
+            ))}
           </div>
         </div>
       </div>

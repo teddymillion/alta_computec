@@ -15,6 +15,30 @@ const FAQS = [
 
 export default function ContactPage() {
   const [openFaq, setOpenFaq] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState('');
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    const body = Object.fromEntries(new FormData(e.target));
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Submission failed');
+      setSuccess(true);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <PageLayout>
@@ -90,18 +114,24 @@ export default function ContactPage() {
             <div className="card-light p-8 rounded-2xl">
               <p className="overline-tag mb-3">Get In Touch</p>
               <h2 className="section-heading mb-6">Request a Consultation</h2>
-              <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()} noValidate>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div><label className="form-label">First Name *</label><input type="text" required autoComplete="given-name" className="form-input" placeholder="Tadesse" /></div>
-                  <div><label className="form-label">Last Name *</label><input type="text" required autoComplete="family-name" className="form-input" placeholder="Bekele" /></div>
+              {success ? (
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <h3 className="text-[18px] font-bold text-navy-900 mb-2">Request Received!</h3>
+                  <p className="text-slate-500 text-[14px]">Thank you! We've received your request and will respond within 24 hours.</p>
                 </div>
-                <div><label className="form-label">Work Email *</label><input type="email" required autoComplete="email" className="form-input" placeholder="tadesse@organization.com" /></div>
-                <div><label className="form-label">Organisation *</label><input type="text" required autoComplete="organization" className="form-input" placeholder="Commercial Bank of Ethiopia" /></div>
+              ) : (
+              <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <div><label className="form-label">Job Title</label><input type="text" className="form-input" placeholder="IT Director" /></div>
+                  <div><label className="form-label">First Name *</label><input name="firstName" type="text" required autoComplete="given-name" className="form-input" placeholder="Tadesse" /></div>
+                  <div><label className="form-label">Last Name *</label><input name="lastName" type="text" required autoComplete="family-name" className="form-input" placeholder="Bekele" /></div>
+                </div>
+                <div><label className="form-label">Work Email *</label><input name="email" type="email" required autoComplete="email" className="form-input" placeholder="tadesse@organization.com" /></div>
+                <div><label className="form-label">Organisation *</label><input name="organisation" type="text" required autoComplete="organization" className="form-input" placeholder="Commercial Bank of Ethiopia" /></div>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div><label className="form-label">Job Title</label><input name="jobTitle" type="text" className="form-input" placeholder="IT Director" /></div>
                   <div>
                     <label className="form-label">Industry</label>
-                    <select className="form-input">
+                    <select name="industry" className="form-input">
                       <option value="">Select industry</option>
                       {['Banking', 'Government', 'Telecom', 'Education', 'Energy', 'Manufacturing', 'SME', 'Other'].map((i) => <option key={i}>{i}</option>)}
                     </select>
@@ -109,21 +139,22 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <label className="form-label">Solution of Interest</label>
-                  <select className="form-input">
+                  <select name="solutionInterest" className="form-input">
                     <option value="">Select a solution</option>
                     {['IT Infrastructure', 'Banking & ATM', 'Cloud', 'Cybersecurity', 'Software & AI', 'Smart Office', 'Enterprise Apps', 'Consulting', 'Products', 'General'].map((s) => <option key={s}>{s}</option>)}
                   </select>
                 </div>
-                <div><label className="form-label">Project Brief</label><textarea rows={4} className="form-input resize-none" placeholder="Describe your project requirements, timeline, and any specific technology needs..." /></div>
+                <div><label className="form-label">Project Brief</label><textarea name="message" rows={4} className="form-input resize-none" placeholder="Describe your project requirements, timeline, and any specific technology needs..." /></div>
                 <div>
                   <label className="form-label">How did you hear about us?</label>
-                  <select className="form-input">
+                  <select name="hearAboutUs" className="form-input">
                     <option value="">Select</option>
                     {['Google', 'Referral', 'LinkedIn', 'Existing Client', 'Event', 'Other'].map((s) => <option key={s}>{s}</option>)}
                   </select>
                 </div>
-                <button type="submit" className="btn-primary w-full justify-center text-[15px] py-4 mt-1">
-                  <Send size={15} aria-hidden="true" /> Send Request
+                {error && <p className="text-red-500 text-[13px]">{error}</p>}
+                <button type="submit" disabled={loading} className="btn-primary w-full justify-center text-[15px] py-4 mt-1">
+                  <Send size={15} aria-hidden="true" /> {loading ? 'Sending...' : 'Send Request'}
                 </button>
                 <div className="flex flex-wrap items-center justify-center gap-4 pt-1">
                   {['Free consultation', 'Response within 24 hours', 'No commitment required'].map((item) => (
@@ -134,6 +165,7 @@ export default function ContactPage() {
                   ))}
                 </div>
               </form>
+              )}
             </div>
 
             {/* Office Info */}

@@ -384,6 +384,8 @@ function ConfiguratorForm({ subcategory, accent }) {
   const [formData, setFormData] = useState({});
   const [errors,   setErrors]   = useState({});
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [apiError, setApiError] = useState('');
 
   // Reset form when subcategory changes
   const key = subcategory; // we also use it as a key on the outer div
@@ -393,7 +395,7 @@ function ConfiguratorForm({ subcategory, accent }) {
     setErrors(prev  => ({ ...prev, [id]: false }));
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const config = FORM_CONFIGS[subcategory] || getGenericConfig(subcategory);
     const newErrors = {};
@@ -401,7 +403,29 @@ function ConfiguratorForm({ subcategory, accent }) {
       if (f.required && !formData[f.id]) newErrors[f.id] = true;
     }));
     if (Object.keys(newErrors).length) { setErrors(newErrors); return; }
-    setSubmitted(true);
+    setLoading(true);
+    setApiError('');
+    try {
+      const res = await fetch('/api/quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          subcategory,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone || '',
+          specs: formData,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Submission failed');
+      setSubmitted(true);
+    } catch (err) {
+      setApiError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (submitted) {
@@ -460,8 +484,9 @@ function ConfiguratorForm({ subcategory, accent }) {
 
         {/* Submit area */}
         <div className="bg-slate-50 rounded-xl p-5 mt-7">
-          <button type="submit" className="btn-primary w-full justify-center text-[14px] py-3.5">
-            Submit Configuration Request <ArrowRight size={15} />
+          {apiError && <p className="text-red-500 text-[13px] mb-3">{apiError}</p>}
+          <button type="submit" disabled={loading} className="btn-primary w-full justify-center text-[14px] py-3.5">
+            {loading ? 'Sending...' : 'Submit Configuration Request'} <ArrowRight size={15} />
           </button>
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-4">
             {['Our team responds within 24 hours', 'Free consultation included', 'No commitment required'].map(r => (
@@ -586,6 +611,30 @@ function Sidebar({ activeSub, onSelectSub }) {
 export default function ProductsPage() {
   const [activeSub,  setActiveSub]  = useState(null);
   const [activeCat,  setActiveCat]  = useState(null);
+  const [rfqLoading, setRfqLoading] = useState(false);
+  const [rfqSuccess, setRfqSuccess] = useState(false);
+  const [rfqError,   setRfqError]   = useState('');
+
+  async function handleRfqSubmit(e) {
+    e.preventDefault();
+    setRfqLoading(true);
+    setRfqError('');
+    const body = Object.fromEntries(new FormData(e.target));
+    try {
+      const res = await fetch('/api/rfq', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Submission failed');
+      setRfqSuccess(true);
+    } catch (err) {
+      setRfqError(err.message);
+    } finally {
+      setRfqLoading(false);
+    }
+  }
 
   const handleSelectSub = (sub, cat) => {
     setActiveSub(sub);
@@ -817,37 +866,45 @@ export default function ProductsPage() {
             <p className="section-subheading-light mx-auto text-center">Used by government procurement offices and enterprise buyers across Ethiopia.</p>
           </div>
           <div className="max-w-2xl mx-auto bg-white rounded-2xl p-8" style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.2)' }}>
-            <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()} noValidate>
+            {rfqSuccess ? (
+              <div className="text-center py-8">
+                <h3 className="text-[18px] font-bold text-navy-900 mb-2">RFQ Submitted!</h3>
+                <p className="text-slate-500 text-[14px]">Our sales team will respond with a formal quotation within 24 hours.</p>
+              </div>
+            ) : (
+            <form className="flex flex-col gap-4" onSubmit={handleRfqSubmit} noValidate>
               <div className="grid sm:grid-cols-2 gap-4">
-                <div><label className="form-label">Full Name *</label><input type="text" required className="form-input" placeholder="Tadesse Bekele" /></div>
-                <div><label className="form-label">Organisation *</label><input type="text" required className="form-input" placeholder="Commercial Bank of Ethiopia" /></div>
+                <div><label className="form-label">Full Name *</label><input name="fullName" type="text" required className="form-input" placeholder="Tadesse Bekele" /></div>
+                <div><label className="form-label">Organisation *</label><input name="organisation" type="text" required className="form-input" placeholder="Commercial Bank of Ethiopia" /></div>
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
-                <div><label className="form-label">Email *</label><input type="email" required className="form-input" placeholder="tadesse@org.com" /></div>
-                <div><label className="form-label">Phone</label><input type="tel" className="form-input" placeholder="+251 911 000 000" /></div>
+                <div><label className="form-label">Email *</label><input name="email" type="email" required className="form-input" placeholder="tadesse@org.com" /></div>
+                <div><label className="form-label">Phone</label><input name="phone" type="tel" className="form-input" placeholder="+251 911 000 000" /></div>
               </div>
               <div>
                 <label className="form-label">Product Category</label>
-                <select className="form-input">
+                <select name="productCategory" className="form-input">
                   <option value="">Select category</option>
                   {CATEGORIES.map(c => <option key={c.name}>{c.name}</option>)}
                 </select>
               </div>
-              <div><label className="form-label">Products of Interest</label><textarea rows={3} className="form-input resize-none" placeholder="List the specific products or models you need…" /></div>
+              <div><label className="form-label">Products of Interest</label><textarea name="productsOfInterest" rows={3} className="form-input resize-none" placeholder="List the specific products or models you need…" /></div>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="form-label">Quantity Estimate</label>
-                  <input type="text" className="form-input" placeholder="e.g. 10 units" />
+                  <input name="quantityEstimate" type="text" className="form-input" placeholder="e.g. 10 units" />
                 </div>
                 <div>
                   <label className="form-label">Additional Notes</label>
-                  <input type="text" className="form-input" placeholder="Delivery timeline, budget, etc." />
+                  <input name="additionalNotes" type="text" className="form-input" placeholder="Delivery timeline, budget, etc." />
                 </div>
               </div>
-              <button type="submit" className="btn-primary w-full justify-center text-[15px] py-4 mt-2">
-                Submit RFQ <ArrowRight size={15} />
+              {rfqError && <p className="text-red-500 text-[13px]">{rfqError}</p>}
+              <button type="submit" disabled={rfqLoading} className="btn-primary w-full justify-center text-[15px] py-4 mt-2">
+                {rfqLoading ? 'Sending...' : 'Submit RFQ'} <ArrowRight size={15} />
               </button>
             </form>
+            )}
           </div>
         </div>
       </section>

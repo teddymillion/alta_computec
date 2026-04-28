@@ -76,6 +76,31 @@ const PROCESS_STEPS = [
 export default function CareersPage() {
   const [activeRole, setActiveRole] = useState('All');
   const [selectedJob, setSelectedJob] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [applyError, setApplyError] = useState('');
+  const [applySuccess, setApplySuccess] = useState(false);
+
+  const handleApply = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setApplyError('');
+    const formData = new FormData(e.target);
+    formData.set('jobTitle', selectedJob.title);
+    formData.set('department', selectedJob.dept);
+    try {
+      const res = await fetch('/api/apply', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (!res.ok) {
+        const firstError = Object.values(data.errors || {})[0]?.[0] || data.message;
+        throw new Error(firstError);
+      }
+      setApplySuccess(true);
+    } catch (err) {
+      setApplyError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filtered = activeRole === 'All' ? JOBS : JOBS.filter((j) => j.dept === activeRole);
 
@@ -212,7 +237,7 @@ export default function CareersPage() {
                   </div>
                 </div>
                 <button
-                  onClick={() => setSelectedJob(job)}
+                  onClick={() => { setSelectedJob(job); setApplySuccess(false); setApplyError(''); }}
                   className="btn-outline flex-shrink-0 !text-[13px]"
                 >
                   View & Apply <ArrowRight size={13} />
@@ -321,16 +346,24 @@ export default function CareersPage() {
                   ))}
                 </ul>
               </div>
-              <form className="flex flex-col gap-4 pt-2 border-t border-slate-100" onSubmit={(e) => e.preventDefault()} noValidate>
+              {applySuccess ? (
+                <div className="text-center py-6 border-t border-slate-100">
+                  <h3 className="font-bold text-navy-900 text-[16px] mb-2">Application Submitted!</h3>
+                  <p className="text-slate-500 text-[13px]">Our HR team will contact you within 5 business days.</p>
+                </div>
+              ) : (
+              <form className="flex flex-col gap-4 pt-2 border-t border-slate-100" onSubmit={handleApply} noValidate>
                 <p className="font-bold text-navy-900 text-[14px]">Apply Now</p>
-                <div><label className="form-label">Full Name *</label><input type="text" required className="form-input" placeholder="Your full name" /></div>
-                <div><label className="form-label">Email *</label><input type="email" required className="form-input" placeholder="your@email.com" /></div>
-                <div><label className="form-label">CV / Resume *</label><input type="file" accept=".pdf,.doc,.docx" required className="form-input !py-2" /></div>
-                <div><label className="form-label">Cover Note</label><textarea rows={3} className="form-input resize-none" placeholder="Tell us why you're a great fit..." /></div>
-                <button type="submit" className="btn-primary w-full justify-center">
-                  Submit Application <ArrowRight size={15} />
+                <div><label className="form-label">Full Name *</label><input name="fullName" type="text" required className="form-input" placeholder="Your full name" /></div>
+                <div><label className="form-label">Email *</label><input name="email" type="email" required className="form-input" placeholder="your@email.com" /></div>
+                <div><label className="form-label">CV / Resume *</label><input name="cvFile" type="file" accept=".pdf,.doc,.docx" required className="form-input !py-2" /></div>
+                <div><label className="form-label">Cover Note</label><textarea name="coverNote" rows={3} className="form-input resize-none" placeholder="Tell us why you're a great fit..." /></div>
+                {applyError && <p className="text-red-500 text-[13px]">{applyError}</p>}
+                <button type="submit" disabled={loading} className="btn-primary w-full justify-center">
+                  {loading ? 'Submitting...' : 'Submit Application'} <ArrowRight size={15} />
                 </button>
               </form>
+              )}
             </div>
           </div>
         </div>

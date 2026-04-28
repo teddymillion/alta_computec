@@ -22,6 +22,8 @@ export default function BlogPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
+  const [newsletterLoading, setNewsletterLoading] = useState(false);
+  const [newsletterError, setNewsletterError] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
   const filtered = ARTICLES.filter((a) => {
@@ -127,10 +129,29 @@ export default function BlogPage() {
         <div className="section-container relative z-10 text-center">
           <h2 className="text-[28px] font-black text-white mb-3">Stay Ahead of Ethiopia's Technology Landscape</h2>
           <p className="text-slate-400 text-[15px] mb-7">Join 2,000+ IT professionals. Weekly digest. No spam.</p>
+          {newsletterError && <p className="text-red-400 text-[13px] mt-2">{newsletterError}</p>}
           {!newsletterSubmitted ? (
             <form
               className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
-              onSubmit={(e) => { e.preventDefault(); setNewsletterSubmitted(true); }}
+              onSubmit={async (e) => {
+                e.preventDefault();
+                setNewsletterLoading(true);
+                setNewsletterError('');
+                try {
+                  const res = await fetch('/api/newsletter', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: newsletterEmail }),
+                  });
+                  const data = await res.json();
+                  if (!res.ok) throw new Error(data.errors?.email?.[0] || data.message || 'Subscription failed');
+                  setNewsletterSubmitted(true);
+                } catch (err) {
+                  setNewsletterError(err.message);
+                } finally {
+                  setNewsletterLoading(false);
+                }
+              }}
             >
               <input
                 type="email"
@@ -141,8 +162,8 @@ export default function BlogPage() {
                 className="flex-1 px-4 py-3 rounded-xl border border-white/15 bg-white/8 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-alta-blue/30 focus:border-alta-blue text-[14px]"
                 aria-label="Email address"
               />
-              <button type="submit" className="btn-primary !text-[14px] px-6 py-3">
-                Subscribe <ArrowRight size={14} />
+              <button type="submit" disabled={newsletterLoading} className="btn-primary !text-[14px] px-6 py-3">
+                {newsletterLoading ? 'Subscribing...' : 'Subscribe'} <ArrowRight size={14} />
               </button>
             </form>
           ) : (
