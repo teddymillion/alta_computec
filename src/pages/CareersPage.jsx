@@ -5,12 +5,12 @@ import PageLayout from '../components/PageLayout';
 import PageHero from '../components/PageHero';
 
 const BENEFITS = [
-  { icon: Briefcase, title: 'Competitive Compensation', desc: 'Market-leading salaries with performance bonuses and benefits.', color: 'text-alta-blue', bg: 'bg-blue-50' },
-  { icon: Award, title: 'Global Certifications', desc: 'Dell, Cisco, Oracle, and Kaspersky certification programs fully sponsored.', color: 'text-alta-amber', bg: 'bg-amber-50' },
-  { icon: TrendingUp, title: 'Career Growth', desc: 'Clear progression paths from junior engineer to technical lead in 3–5 years.', color: 'text-alta-green', bg: 'bg-green-50' },
-  { icon: Users, title: 'Collaborative Culture', desc: '130+ professionals across engineering, sales, design, and operations.', color: 'text-alta-indigo', bg: 'bg-indigo-50' },
-  { icon: Globe, title: 'Meaningful Impact', desc: "Build the infrastructure powering Ethiopia's banks, government, and enterprises.", color: 'text-alta-sky', bg: 'bg-sky-50' },
-  { icon: Monitor, title: 'Modern Tools', desc: 'Work with the latest Dell, Cisco, Oracle, and Microsoft enterprise technology.', color: 'text-alta-green', bg: 'bg-green-50' },
+  { icon: Briefcase, title: 'Competitive Compensation', desc: 'Market-leading salaries with performance bonuses and benefits.', accent: '#1B4FD8', accentLight: 'rgba(27,79,216,0.12)', accentBorder: 'rgba(27,79,216,0.35)' },
+  { icon: Award, title: 'Global Certifications', desc: 'Dell, Cisco, Oracle, and Kaspersky certification programs fully sponsored.', accent: '#F59E0B', accentLight: 'rgba(245,158,11,0.12)', accentBorder: 'rgba(245,158,11,0.35)' },
+  { icon: TrendingUp, title: 'Career Growth', desc: 'Clear progression paths from junior engineer to technical lead in 3–5 years.', accent: '#16A34A', accentLight: 'rgba(22,163,74,0.12)', accentBorder: 'rgba(22,163,74,0.35)' },
+  { icon: Users, title: 'Collaborative Culture', desc: '130+ professionals across engineering, sales, design, and operations.', accent: '#6366F1', accentLight: 'rgba(99,102,241,0.12)', accentBorder: 'rgba(99,102,241,0.35)' },
+  { icon: Globe, title: 'Meaningful Impact', desc: "Build the infrastructure powering Ethiopia's banks, government, and enterprises.", accent: '#0EA5E9', accentLight: 'rgba(14,165,233,0.12)', accentBorder: 'rgba(14,165,233,0.35)' },
+  { icon: Monitor, title: 'Modern Tools', desc: 'Work with the latest Dell, Cisco, Oracle, and Microsoft enterprise technology.', accent: '#22C55E', accentLight: 'rgba(34,197,94,0.12)', accentBorder: 'rgba(34,197,94,0.35)' },
 ];
 
 const EMPLOYEE_QUOTES = [
@@ -89,22 +89,35 @@ export default function CareersPage() {
       />
 
       {/* Why Work at ALTA */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container">
           <div className="text-center mb-12">
             <p className="overline-tag justify-center mb-3">Life at ALTA</p>
-            <h2 className="section-heading">Why Join Our Team</h2>
+            <h2 className="section-heading dark:section-heading-light">Why Join Our Team</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {BENEFITS.map((b) => {
               const Icon = b.icon;
               return (
-                <div key={b.title} className="card-light flex flex-col gap-4">
-                  <div className={`icon-wrap ${b.color.replace('text-alta-blue','icon-wrap-blue').replace('text-alta-amber','icon-wrap-amber').replace('text-alta-green','icon-wrap-green').replace('text-alta-indigo','icon-wrap-indigo').replace('text-alta-sky','icon-wrap-sky')}`}>
-                    <Icon size={20} className={b.color} aria-hidden="true" />
+                <div
+                  key={b.title}
+                  className="group relative flex flex-col gap-4 p-6 rounded-2xl bg-white dark:bg-navy-900 border-2 transition-all duration-250 hover:-translate-y-1 overflow-hidden"
+                  style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = b.accent;
+                    e.currentTarget.style.boxShadow = `0 12px 32px ${b.accentLight.replace('0.12', '0.25')}, 0 0 0 1px ${b.accentBorder}`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(226,232,240,0.8)';
+                    e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+                  }}
+                >
+                  <div className="absolute top-0 left-0 right-0 h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-250" style={{ background: `linear-gradient(90deg, ${b.accent}, ${b.accent}88)` }} aria-hidden="true" />
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-250" style={{ background: b.accentLight, border: `1px solid ${b.accentBorder}` }}>
+                    <Icon size={20} style={{ color: b.accent }} aria-hidden="true" />
                   </div>
                   <div>
-                    <h3 className="text-[15px] font-bold text-navy-900 mb-1.5">{b.title}</h3>
+                    <h3 className="text-[15px] font-bold text-navy-900 dark:text-white mb-1.5">{b.title}</h3>
                     <p className="text-[13px] text-slate-500 leading-relaxed">{b.desc}</p>
                   </div>
                 </div>
@@ -151,11 +164,11 @@ export default function CareersPage() {
       </section>
 
       {/* Open Positions */}
-      <section id="positions" className="section-padding bg-white">
+      <section id="positions" className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container">
           <div className="text-center mb-10">
             <p className="overline-tag justify-center mb-3">Open Roles</p>
-            <h2 className="section-heading">Current Opportunities</h2>
+            <h2 className="section-heading dark:section-heading-light">Current Opportunities</h2>
           </div>
 
           <div className="flex flex-wrap gap-2 mb-8 justify-center">
@@ -176,7 +189,13 @@ export default function CareersPage() {
             {filtered.map((job, ji) => {
               const isNew = JOBS.indexOf(job) < 2;
               return (
-              <div key={job.title} className="card-light flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5">
+              <div key={job.title} className="group relative flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-white border-2 transition-all duration-250 hover:-translate-y-1 overflow-hidden" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }} onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#1B4FD8';
+                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(27,79,216,0.25), 0 0 0 1px rgba(27,79,216,0.35)';
+                }} onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(226,232,240,0.8)';
+                  e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+                }}>
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-2">
                     <h3 className="font-bold text-navy-900 text-[16px]">{job.title}</h3>
@@ -188,8 +207,8 @@ export default function CareersPage() {
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
                     <span className={`text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full ${job.deptColor}`}>{job.dept}</span>
-                    <span className="flex items-center gap-1 text-[12px] text-slate-400"><MapPin size={11} aria-hidden="true" />{job.location}</span>
-                    <span className="flex items-center gap-1 text-[12px] text-slate-400"><Clock size={11} aria-hidden="true" />{job.type}</span>
+                    <span className="flex items-center gap-1 text-[12px] text-slate-500"><MapPin size={11} aria-hidden="true" />{job.location}</span>
+                    <span className="flex items-center gap-1 text-[12px] text-slate-500"><Clock size={11} aria-hidden="true" />{job.type}</span>
                   </div>
                 </div>
                 <button
@@ -206,11 +225,11 @@ export default function CareersPage() {
       </section>
 
       {/* Hiring Process */}
-      <section className="section-padding bg-slate-50/80">
+      <section className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container">
           <div className="text-center mb-12">
             <p className="overline-tag justify-center mb-3">How It Works</p>
-            <h2 className="section-heading">Our Hiring Process</h2>
+            <h2 className="section-heading dark:section-heading-light">Our Hiring Process</h2>
           </div>
           <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Dashed connecting line (desktop) */}
@@ -218,11 +237,18 @@ export default function CareersPage() {
             {PROCESS_STEPS.map((step, i) => {
               const Icon = step.icon;
               return (
-                <div key={step.title} className="card-light flex flex-col items-center gap-4 text-center relative z-10">
-                  <div className="w-12 h-12 rounded-full bg-alta-green flex items-center justify-center">
+                <div key={step.title} className="group relative flex flex-col items-center gap-4 text-center relative z-10 p-5 rounded-2xl bg-white border-2 transition-all duration-250 hover:-translate-y-1 overflow-hidden" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }} onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#16A34A';
+                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(22,163,74,0.25), 0 0 0 1px rgba(22,163,74,0.35)';
+                }} onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(226,232,240,0.8)';
+                  e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+                }}>
+                  <div className="absolute top-0 left-0 right-0 h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-250" style={{ background: 'linear-gradient(90deg, #16A34A, #16A34A88)' }} aria-hidden="true" />
+                  <div className="w-12 h-12 rounded-full bg-alta-green flex items-center justify-center group-hover:scale-110 transition-transform duration-250">
                     <span className="text-white font-black text-[13px]">0{i + 1}</span>
                   </div>
-                  <Icon size={20} className="text-alta-blue" aria-hidden="true" />
+                  <Icon size={20} className="text-alta-green" aria-hidden="true" />
                   <div>
                     <p className="font-bold text-navy-900 text-[14px] mb-1">{step.title}</p>
                     <p className="text-[12px] text-slate-500 leading-relaxed">{step.desc}</p>

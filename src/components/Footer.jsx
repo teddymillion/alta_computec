@@ -26,10 +26,10 @@ const FOOTER_LINKS = {
 };
 
 const SOCIAL = [
-  { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/company/alta-computec' },
-  { icon: Twitter,  label: 'Twitter / X', href: 'https://twitter.com/altacomputec' },
-  { icon: Facebook, label: 'Facebook', href: 'https://facebook.com/altacomputec' },
-  { icon: Youtube,  label: 'YouTube', href: 'https://youtube.com/@altacomputec' },
+  { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/company/alta-computec', color: '#0A66C2', bg: 'rgba(10,102,194,0.12)', border: 'rgba(10,102,194,0.25)' },
+  { icon: Twitter,  label: 'Twitter / X', href: 'https://twitter.com/altacomputec', color: '#1DA1F2', bg: 'rgba(29,161,242,0.12)', border: 'rgba(29,161,242,0.25)' },
+  { icon: Facebook, label: 'Facebook', href: 'https://facebook.com/altacomputec', color: '#1877F2', bg: 'rgba(24,119,242,0.12)', border: 'rgba(24,119,242,0.25)' },
+  { icon: Youtube,  label: 'YouTube', href: 'https://youtube.com/@altacomputec', color: '#FF0000', bg: 'rgba(255,0,0,0.12)', border: 'rgba(255,0,0,0.25)' },
 ];
 
 export default function Footer() {
@@ -45,27 +45,45 @@ export default function Footer() {
           {/* Brand column */}
           <div className="lg:col-span-1 flex flex-col gap-6">
             <div>
-              <Link to="/" className="flex items-center gap-3 mb-4 w-fit">
-                <div className="relative w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 shadow-md border border-white/10">
-                  <img src="/alta_computec.jpg" alt="ALTA Computec PLC" className="w-full h-full object-cover" width="40" height="40" />
-                </div>
-                <div className="flex flex-col leading-none gap-0.5">
-                  <span className="font-black text-[16px] text-white tracking-tight">ALTA</span>
-                  <span className="text-[9px] font-bold tracking-[0.18em] uppercase text-slate-600">Computec PLC</span>
-                </div>
+              <Link to="/" className="flex items-center mb-4 w-fit">
+                <img src="/alta_logo_light.svg" alt="ALTA Computec PLC" className="h-14 w-auto" width="190" height="56" />
               </Link>
               <p className="text-[13px] text-slate-500 leading-relaxed">Smart IT. Strategic Partnership. Scalable Success.</p>
               <p className="text-[12px] text-slate-700 mt-2">Ethiopia's #1 Enterprise IT Partner since 1994.</p>
             </div>
 
-            <div className="flex items-center gap-2.5">
-              {SOCIAL.map(({ icon: Icon, label, href }) => (
-                <a key={label} href={href} target="_blank" rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-xl bg-white/5 border border-white/8 flex items-center justify-center text-slate-600 hover:text-white hover:border-white/15 hover:bg-white/10 transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue"
-                  aria-label={label}>
-                  <Icon size={15} aria-hidden="true" />
-                </a>
-              ))}
+            <div>
+              <p className="text-[10px] font-bold tracking-wider uppercase text-slate-500 mb-3">Follow Us</p>
+              <div className="flex items-center gap-3">
+                {SOCIAL.map(({ icon: Icon, label, href, color, bg, border }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue"
+                    style={{ 
+                      background: bg, 
+                      border: `1px solid ${border}`,
+                      '--hover-bg': color,
+                      '--hover-shadow': color
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = color;
+                      e.currentTarget.style.borderColor = color;
+                      e.currentTarget.style.boxShadow = `0 8px 20px -4px ${color}80`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = bg;
+                      e.currentTarget.style.borderColor = border;
+                      e.currentTarget.style.boxShadow = 'none';
+                    }}
+                    aria-label={label}
+                  >
+                    <Icon size={18} style={{ color }} className="transition-colors duration-300 group-hover:!text-white" aria-hidden="true" />
+                  </a>
+                ))}
+              </div>
             </div>
 
             <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-amber-500/8 border border-amber-500/15">

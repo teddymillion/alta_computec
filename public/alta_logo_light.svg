@@ -1,0 +1,9 @@
+<svg width="380" height="160" viewBox="0 0 190 80" xmlns="http://www.w3.org/2000/svg">
+  <text x="0"  y="52" font-family="'Arial Black',Arial,sans-serif" font-size="50" font-weight="900" fill="#1a6fa8">A</text>
+  <text x="34" y="52" font-family="'Arial Black',Arial,sans-serif" font-size="50" font-weight="900" fill="#1a6fa8">L</text>
+  <circle cx="67" cy="28" r="5" fill="#2bbd8e"/>
+  <text x="74" y="52" font-family="'Arial Black',Arial,sans-serif" font-size="50" font-weight="900" fill="#1a6fa8">T</text>
+  <text x="108" y="52" font-family="'Arial Black',Arial,sans-serif" font-size="50" font-weight="900" fill="#1a6fa8">A</text>
+  <text x="1"  y="67" font-family="'Arial Black',Arial,sans-serif" font-size="12.5" font-weight="700" fill="#7ac143" letter-spacing="4.5">COMPUTEC</text>
+  <text x="1"  y="79" font-family="Arial,sans-serif" font-size="9" fill="#999999" letter-spacing="1.1">The ICT solution center</text>
+</svg>

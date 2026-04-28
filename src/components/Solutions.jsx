@@ -8,9 +8,7 @@ const SOLUTIONS = [
     title: 'IT Infrastructure & Networking',
     description: 'Enterprise-grade data centers, structured cabling, LAN/WAN design, and server deployment for mission-critical operations.',
     tags: ['Banking', 'Government', 'Telecom'],
-    accentColor: 'rgba(27,79,216,0.6)',
-    iconBg: 'rgba(27,79,216,0.12)',
-    iconBorder: 'rgba(27,79,216,0.2)',
+    accent: '#1B4FD8', accentLight: 'rgba(27,79,216,0.12)', accentBorder: 'rgba(27,79,216,0.35)',
   },
   {
     icon: CreditCard,
@@ -18,9 +16,7 @@ const SOLUTIONS = [
     title: 'Banking Automation & ATM',
     description: 'End-to-end ATM deployment, cash management systems, and banking automation solutions for Ethiopia\'s financial sector.',
     tags: ['Banking', 'Financial Services'],
-    accentColor: 'rgba(14,165,233,0.6)',
-    iconBg: 'rgba(14,165,233,0.12)',
-    iconBorder: 'rgba(14,165,233,0.2)',
+    accent: '#0EA5E9', accentLight: 'rgba(14,165,233,0.12)', accentBorder: 'rgba(14,165,233,0.35)',
   },
   {
     icon: Cloud,
@@ -28,9 +24,7 @@ const SOLUTIONS = [
     title: 'Cloud & Virtualization',
     description: 'Private cloud architecture, VMware virtualization, hybrid cloud migrations, and cloud-native infrastructure design.',
     tags: ['Enterprise', 'Government', 'Education'],
-    accentColor: 'rgba(99,102,241,0.6)',
-    iconBg: 'rgba(99,102,241,0.12)',
-    iconBorder: 'rgba(99,102,241,0.2)',
+    accent: '#6366F1', accentLight: 'rgba(99,102,241,0.12)', accentBorder: 'rgba(99,102,241,0.35)',
   },
   {
     icon: ShieldCheck,
@@ -38,9 +32,7 @@ const SOLUTIONS = [
     title: 'Cybersecurity',
     description: 'Comprehensive security posture management, endpoint protection, network security, and SOC services powered by Kaspersky and Fortinet.',
     tags: ['Banking', 'Telecom', 'Government'],
-    accentColor: 'rgba(22,163,74,0.6)',
-    iconBg: 'rgba(22,163,74,0.12)',
-    iconBorder: 'rgba(22,163,74,0.2)',
+    accent: '#16A34A', accentLight: 'rgba(22,163,74,0.12)', accentBorder: 'rgba(22,163,74,0.35)',
   },
   {
     icon: Brain,
@@ -48,9 +40,7 @@ const SOLUTIONS = [
     title: 'Enterprise Software & AI',
     description: 'Oracle ERP implementations, Microsoft enterprise licensing, AI-powered analytics, and custom software integration.',
     tags: ['Enterprise', 'Government'],
-    accentColor: 'rgba(245,158,11,0.6)',
-    iconBg: 'rgba(245,158,11,0.1)',
-    iconBorder: 'rgba(245,158,11,0.2)',
+    accent: '#F59E0B', accentLight: 'rgba(245,158,11,0.12)', accentBorder: 'rgba(245,158,11,0.35)',
   },
   {
     icon: Monitor,
@@ -58,9 +48,7 @@ const SOLUTIONS = [
     title: 'Smart Office & Collaboration',
     description: 'SHARP display systems, unified communications, video conferencing, and intelligent workspace technology for modern enterprises.',
     tags: ['Corporate', 'Education', 'Government'],
-    accentColor: 'rgba(14,165,233,0.6)',
-    iconBg: 'rgba(14,165,233,0.1)',
-    iconBorder: 'rgba(14,165,233,0.2)',
+    accent: '#0EA5E9', accentLight: 'rgba(14,165,233,0.12)', accentBorder: 'rgba(14,165,233,0.35)',
   },
 ];
 
@@ -68,56 +56,53 @@ function SolutionCard({ solution, index }) {
   const Icon = solution.icon;
   return (
     <article
-      className="group relative flex flex-col gap-5 p-6 rounded-2xl overflow-hidden transition-all duration-250 ease-out cursor-default"
+      className="group relative flex flex-col gap-5 p-6 rounded-2xl overflow-hidden transition-all duration-250 ease-out cursor-default border-2 bg-white dark:bg-navy-900"
       style={{
-        background: 'rgba(13, 30, 56, 0.6)',
-        border: '1px solid rgba(255,255,255,0.06)',
-        backdropFilter: 'blur(8px)',
+        borderColor: 'rgba(226,232,240,0.8)',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.background = 'rgba(18, 36, 68, 0.8)';
-        e.currentTarget.style.borderColor = `${solution.accentColor.replace('0.6', '0.3')}`;
+        e.currentTarget.style.borderColor = solution.accent;
+        e.currentTarget.style.boxShadow = `0 12px 32px ${solution.accentLight.replace('0.12', '0.25')}, 0 0 0 1px ${solution.accentBorder}`;
         e.currentTarget.style.transform = 'translateY(-3px)';
-        e.currentTarget.style.boxShadow = '0 20px 48px rgba(0,0,0,0.35)';
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.background = 'rgba(13, 30, 56, 0.6)';
-        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)';
+        e.currentTarget.style.borderColor = 'rgba(226,232,240,0.8)';
+        e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
         e.currentTarget.style.transform = 'translateY(0)';
-        e.currentTarget.style.boxShadow = 'none';
       }}
     >
-      {/* Card number */}
-      <span className="absolute top-4 right-4 text-[11px] font-black text-white/10 tabular-nums" aria-hidden="true">
-        {String(index + 1).padStart(2, '0')}
-      </span>
-
-      {/* Left accent bar */}
+      {/* Top accent bar */}
       <div
-        className="absolute left-0 top-0 bottom-0 w-[3px] rounded-r-full opacity-0 group-hover:opacity-100 transition-opacity duration-250"
-        style={{ background: 'linear-gradient(180deg, #1B4FD8, #22C55E)' }}
+        className="absolute top-0 left-0 right-0 h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-250"
+        style={{ background: `linear-gradient(90deg, ${solution.accent}, ${solution.accent}88)` }}
         aria-hidden="true"
       />
+
+      {/* Card number */}
+      <span className="absolute top-4 right-4 text-[11px] font-black text-slate-200 dark:text-white/10 tabular-nums" aria-hidden="true">
+        {String(index + 1).padStart(2, '0')}
+      </span>
 
       {/* Icon + category */}
       <div className="flex items-center gap-3">
         <div
           className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-250 group-hover:scale-110"
-          style={{ background: solution.iconBg, border: `1px solid ${solution.iconBorder}` }}
+          style={{ background: solution.accentLight, border: `1px solid ${solution.accentBorder}` }}
         >
-          <Icon size={19} style={{ color: solution.accentColor.replace('0.6', '1') }} aria-hidden="true" />
+          <Icon size={19} style={{ color: solution.accent }} aria-hidden="true" />
         </div>
-        <span className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500">
+        <span className="text-[10px] font-bold tracking-[0.12em] uppercase" style={{ color: solution.accent }}>
           {solution.category}
         </span>
       </div>
 
       {/* Content */}
       <div className="flex flex-col gap-2.5 flex-1">
-        <h3 className="text-[15px] font-bold text-white leading-snug group-hover:text-white transition-colors duration-200">
+        <h3 className="text-[15px] font-bold text-navy-900 dark:text-white leading-snug group-hover:text-current transition-colors duration-200" style={{ color: solution.accent }}>
           {solution.title}
         </h3>
-        <p className="text-[13px] text-slate-500 leading-relaxed line-clamp-3 group-hover:text-slate-400 transition-colors duration-200">
+        <p className="text-[13px] text-slate-500 dark:text-slate-500 leading-relaxed line-clamp-3 group-hover:text-slate-600 dark:group-hover:text-slate-400 transition-colors duration-200">
           {solution.description}
         </p>
       </div>
@@ -125,19 +110,20 @@ function SolutionCard({ solution, index }) {
       {/* Tags */}
       <div className="flex flex-wrap gap-1.5">
         {solution.tags.map((tag) => (
-          <span key={tag} className="industry-tag">{tag}</span>
+          <span key={tag} className="text-[10px] font-semibold px-2 py-0.5 rounded-full" style={{ background: solution.accentLight, color: solution.accent, border: `1px solid ${solution.accentBorder}` }}>{tag}</span>
         ))}
       </div>
 
       {/* CTA */}
-      <Link
-        to="/solutions"
-        className="flex items-center gap-1.5 text-[13px] font-semibold text-slate-500 group-hover:text-white transition-all duration-200 mt-auto"
+      <a
+        href="#"
+        className="flex items-center gap-1.5 text-[13px] font-semibold transition-all duration-200 mt-auto group-hover:translate-x-1"
+        style={{ color: solution.accent }}
         aria-label={`Explore ${solution.title}`}
       >
         Explore Solution
-        <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform duration-200" />
-      </Link>
+        <ArrowRight size={13} />
+      </a>
     </article>
   );
 }

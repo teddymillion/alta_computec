@@ -62,25 +62,25 @@ const DIFFERENTIATORS = [
   {
     title: "Ethiopia's Only Dell Platinum Partner",
     body: "The highest tier in Dell's global partner program — awarded exclusively to ALTA Computec PLC in Ethiopia. This designation requires demonstrated technical expertise, certified engineers, and a proven track record of enterprise deployments.",
-    accent: 'text-amber-500',
+    accent: '#F59E0B', accentLight: 'rgba(245,158,11,0.12)', accentBorder: 'rgba(245,158,11,0.35)',
     dot: 'bg-amber-400',
   },
   {
     title: '130+ Engineers On-Staff',
     body: 'Our team of 130+ certified technology professionals spans networking, cloud, cybersecurity, software, and infrastructure disciplines — providing end-to-end delivery without subcontracting.',
-    accent: 'text-alta-blue',
+    accent: '#1B4FD8', accentLight: 'rgba(27,79,216,0.12)', accentBorder: 'rgba(27,79,216,0.35)',
     dot: 'bg-alta-blue',
   },
   {
     title: '30-Year Local Market Knowledge',
     body: "Founded in Addis Ababa in 1994, ALTA has navigated every phase of Ethiopia's technology evolution. We understand local procurement, regulatory requirements, and institutional relationships that no foreign vendor can replicate.",
-    accent: 'text-alta-green',
+    accent: '#16A34A', accentLight: 'rgba(22,163,74,0.12)', accentBorder: 'rgba(22,163,74,0.35)',
     dot: 'bg-alta-green',
   },
   {
     title: 'Multi-Vendor Certified — No Lock-In',
     body: 'With official partnerships across Dell, Cisco, Oracle, Microsoft, HP, Kaspersky, IBM, and more, we architect solutions using the best technology for each requirement — not the technology we\'re incentivized to sell.',
-    accent: 'text-alta-indigo',
+    accent: '#6366F1', accentLight: 'rgba(99,102,241,0.12)', accentBorder: 'rgba(99,102,241,0.35)',
     dot: 'bg-alta-indigo',
   },
 ];
@@ -100,14 +100,14 @@ function AccordionItem({ item, isOpen, onToggle }) {
         aria-expanded={isOpen}
       >
         <div className="flex items-center gap-3 pr-4">
-          <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${item.dot} ${isOpen ? 'opacity-100' : 'opacity-40'} transition-opacity duration-200`} aria-hidden="true" />
-          <span className={`font-semibold text-[14px] transition-colors duration-150 ${isOpen ? item.accent : 'text-navy-900 group-hover:text-alta-blue'}`}>
+          <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: item.accent, opacity: isOpen ? 1 : 0.4 }} aria-hidden="true" />
+          <span className="font-semibold text-[14px] transition-colors duration-150" style={{ color: isOpen ? item.accent : '#0A1628' }}>
             {item.title}
           </span>
         </div>
         <ChevronDown
           size={15}
-          className={`text-slate-400 flex-shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          className={`text-slate-500 flex-shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
           aria-hidden="true"
         />
       </button>
@@ -124,7 +124,7 @@ export default function About() {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
-    <section id="about" className="section-padding bg-white" aria-label="About ALTA Computec">
+    <section id="about" className="section-padding bg-white dark:bg-navy-950" aria-label="About ALTA Computec">
       <div className="section-container">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
 
@@ -132,10 +132,10 @@ export default function About() {
           <div className="flex flex-col gap-8">
             <div>
               <p className="overline-tag mb-3">Our Story</p>
-              <h2 className="section-heading">30 Years Building Ethiopia's Digital Infrastructure</h2>
+              <h2 className="section-heading dark:section-heading-light">30 Years Building Ethiopia's Digital Infrastructure</h2>
             </div>
 
-            <div className="flex flex-col gap-4 text-[14px] text-slate-600 leading-[1.75]">
+            <div className="flex flex-col gap-4 text-[14px] text-slate-600 dark:text-slate-400 leading-[1.75]">
               <p>
                 ALTA Computec PLC was founded in 1994 in Addis Ababa with a single conviction: that Ethiopian enterprises deserve world-class technology infrastructure, delivered by people who understand the local context. Starting with ETB 100,000 in capital, we built the company project by project, client by client.
               </p>
@@ -149,10 +149,22 @@ export default function About() {
 
             {/* Why Alta accordion */}
             <div>
-              <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-400 mb-4">Why Alta?</p>
-              <div className="rounded-2xl border border-slate-200/80 overflow-hidden divide-y divide-slate-100" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+              <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500 mb-4">Why Alta?</p>
+              <div className="rounded-2xl border-2 overflow-hidden divide-y divide-slate-100 bg-white transition-all duration-250" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
                 {DIFFERENTIATORS.map((item, i) => (
-                  <div key={item.title} className="px-4">
+                  <div key={item.title} className="px-4 group" onMouseEnter={(e) => {
+                    const parent = e.currentTarget.closest('.rounded-2xl');
+                    if (parent) {
+                      parent.style.borderColor = item.accent;
+                      parent.style.boxShadow = `0 12px 32px ${item.accentLight.replace('0.12', '0.25')}, 0 0 0 1px ${item.accentBorder}`;
+                    }
+                  }} onMouseLeave={(e) => {
+                    const parent = e.currentTarget.closest('.rounded-2xl');
+                    if (parent) {
+                      parent.style.borderColor = 'rgba(226,232,240,0.8)';
+                      parent.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+                    }
+                  }}>
                     <AccordionItem
                       item={item}
                       isOpen={openIndex === i}
@@ -163,7 +175,7 @@ export default function About() {
               </div>
             </div>
 
-            <a href="#contact" className="btn-outline self-start">
+            <a href="#contact" className="btn-primary dark:btn-primary self-start">
               Learn Our Full Story <ArrowRight size={15} />
             </a>
           </div>
@@ -174,8 +186,8 @@ export default function About() {
             <CompanyVideoPlayer />
 
             {/* Timeline */}
-            <div className="rounded-2xl border border-slate-200/80 p-6" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
-              <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-400 mb-6">Company Milestones</p>
+            <div className="rounded-2xl border-2 p-6 bg-white transition-all duration-250" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+              <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500 mb-6">Company Milestones</p>
               <div className="relative">
                 <div className="absolute left-[19px] top-5 bottom-5 w-px bg-gradient-to-b from-alta-blue via-slate-200 to-alta-green" aria-hidden="true" />
                 <div className="flex flex-col gap-6">
@@ -184,7 +196,7 @@ export default function About() {
                       <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 z-10 border-2 transition-all duration-200 ${
                         m.active
                           ? 'bg-alta-green border-alta-green shadow-glow-green'
-                          : 'bg-white border-alta-blue'
+                          : 'bg-slate-100 dark:bg-navy-900 border-alta-blue'
                       }`}>
                         <span className={`text-[10px] font-black ${m.active ? 'text-white' : 'text-alta-blue'}`}>
                           {m.year.slice(2)}
@@ -193,7 +205,7 @@ export default function About() {
                       <div className="pt-2">
                         <div className="flex items-center gap-2 mb-0.5">
                           <span className="text-[11px] font-bold text-slate-400">{m.year}</span>
-                          <span className="text-[14px] font-bold text-navy-900">{m.label}</span>
+                          <span className={`text-[14px] font-bold ${m.active ? 'text-alta-green' : 'text-navy-900 dark:text-white'}`}>{m.label}</span>
                         </div>
                         <p className="text-[12px] text-slate-500 leading-relaxed">{m.detail}</p>
                       </div>

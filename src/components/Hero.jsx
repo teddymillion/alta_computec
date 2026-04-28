@@ -1,13 +1,14 @@
 import { ArrowRight, Play, ShieldCheck, Award, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import PartnerLogo from './PartnerLogo';
 
 const PARTNERS = [
-  { name: 'Dell',       img: '/dell.png',        tier: 'Platinum Partner', exclusive: true },
-  { name: 'Cisco',      img: '/cisco.png',        tier: 'Premier Partner' },
-  { name: 'Oracle',     img: '/oracle.png',       tier: 'Gold Partner' },
-  { name: 'HP',         img: '/hp.png',           tier: 'Authorized' },
-  { name: 'Microsoft',  img: '/microsoft.png',    tier: 'Partner' },
-  { name: 'Kaspersky',  img: '/kaspersky.png',    tier: 'Platinum Partner' },
+  { name: 'Dell',      tier: 'Platinum Partner', exclusive: true },
+  { name: 'Cisco',     tier: 'Premier Partner' },
+  { name: 'Oracle',    tier: 'Gold Partner' },
+  { name: 'HP',        tier: 'Authorized' },
+  { name: 'Microsoft', tier: 'Partner' },
+  { name: 'Kaspersky', tier: 'Platinum Partner' },
 ];
 
 function ServerRackSVG() {
@@ -186,26 +187,8 @@ export default function Hero() {
           <div className="flex items-center justify-center gap-8 sm:gap-12 lg:gap-16 flex-wrap">
             {PARTNERS.map((p) => (
               <div key={p.name} className="flex flex-col items-center gap-2 group cursor-default">
-                <div className="flex items-center justify-center" style={{ height: 56 }}>
-                  {p.img ? (
-                    <img
-                      src={p.img}
-                      alt={`${p.name} logo`}
-                      style={{
-                        maxHeight: 52,
-                        maxWidth: 110,
-                        width: 'auto',
-                        height: 'auto',
-                        opacity: p.exclusive ? 1 : 0.65,
-                        filter: p.exclusive ? 'none' : 'grayscale(40%) brightness(0.9)',
-                        transition: 'opacity 200ms, filter 200ms',
-                      }}
-                      className="object-contain group-hover:opacity-100 group-hover:filter-none"
-                      loading="lazy"
-                    />
-                  ) : (
-                    <span className="text-white/70 font-bold text-[14px] tracking-wide">{p.name}</span>
-                  )}
+                <div className="flex items-center justify-center group-hover:scale-110 transition-transform duration-200" style={{ height: 56 }}>
+                  <PartnerLogo name={p.name} size={52} />
                 </div>
                 <div className="flex items-center gap-1">
                   {p.exclusive && (

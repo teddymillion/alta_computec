@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Shield, Globe, CheckCircle, ExternalLink, ArrowRight, Coffee, Star, Leaf, Award } from 'lucide-react';
 import PageLayout from '../components/PageLayout';
+import LataTickerBar from '../components/LataTickerBar';
 
 const COFFEE_IMG = 'https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1600&q=90&auto=format&fit=crop';
 const BEANS_IMG  = 'https://images.unsplash.com/photo-1611854779393-1b2da9d400fe?w=800&q=85&auto=format&fit=crop';
@@ -23,16 +24,16 @@ const ORIGINS = [
 const MARKETS = ['🇺🇸 USA', '🇩🇪 Europe', '🇯🇵 Japan', '🇰🇷 South Korea', '🇸🇦 Middle East'];
 
 const SHARED_VALUES = [
-  { icon: MapPin,  color: 'text-alta-green',  bg: 'bg-green-50',  title: 'One Address',  desc: 'ALTA Building, Mexico Square, Addis Ababa — both companies, one roof.' },
-  { icon: Shield,  color: 'text-alta-blue',   bg: 'bg-blue-50',   title: 'One Standard', desc: '"Professional Service, Best Quality, Timely Delivery" — the motto that defines both brands.' },
-  { icon: Globe,   color: 'text-amber-600',   bg: 'bg-amber-50',  title: 'Global Reach', desc: 'Enterprise IT across Ethiopia. Ethiopian coffee across four continents.' },
+  { icon: MapPin,  accent: '#16A34A', accentLight: 'rgba(22,163,74,0.12)', accentBorder: 'rgba(22,163,74,0.35)',  title: 'One Address',  desc: 'ALTA Building, Mexico Square, Addis Ababa — both companies, one roof.' },
+  { icon: Shield,  accent: '#1B4FD8', accentLight: 'rgba(27,79,216,0.12)', accentBorder: 'rgba(27,79,216,0.35)',  title: 'One Standard', desc: '"Professional Service, Best Quality, Timely Delivery" — the motto that defines both brands.' },
+  { icon: Globe,   accent: '#F59E0B', accentLight: 'rgba(245,158,11,0.12)', accentBorder: 'rgba(245,158,11,0.35)', title: 'Global Reach', desc: 'Enterprise IT across Ethiopia. Ethiopian coffee across four continents.' },
 ];
 
 export default function GroupPage() {
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
   return (
-    <PageLayout>
+    <PageLayout ticker={<LataTickerBar />}>
 
       {/* ── HERO — Full-bleed cinematic coffee banner ── */}
       <section className="relative h-screen min-h-[600px] max-h-[820px] overflow-hidden flex items-end" aria-label="ALTA Group hero">
@@ -267,13 +268,26 @@ export default function GroupPage() {
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-6 mb-12">
-            {SHARED_VALUES.map(({ icon: Icon, color, bg, title, desc }) => (
-              <div key={title} className="card-light flex flex-col gap-4 p-7">
-                <div className={`w-12 h-12 rounded-2xl ${bg} flex items-center justify-center flex-shrink-0`}>
-                  <Icon size={24} className={color} aria-hidden="true" />
+            {SHARED_VALUES.map(({ icon: Icon, accent, accentLight, accentBorder, title, desc }) => (
+              <div
+                key={title}
+                className="group relative flex flex-col gap-4 p-7 rounded-2xl border-2 bg-white dark:bg-navy-900 transition-all duration-250 hover:-translate-y-1 overflow-hidden"
+                style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = accent;
+                  e.currentTarget.style.boxShadow = `0 12px 32px ${accentLight.replace('0.12', '0.25')}, 0 0 0 1px ${accentBorder}`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(226,232,240,0.8)';
+                  e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+                }}
+              >
+                <div className="absolute top-0 left-0 right-0 h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-250" style={{ background: `linear-gradient(90deg, ${accent}, ${accent}88)` }} aria-hidden="true" />
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-250" style={{ background: accentLight, border: `1px solid ${accentBorder}` }}>
+                  <Icon size={24} style={{ color: accent }} aria-hidden="true" />
                 </div>
                 <div>
-                  <h3 className="text-[16px] font-bold text-navy-900 mb-2">{title}</h3>
+                  <h3 className="text-[16px] font-bold text-navy-900 dark:text-white mb-2">{title}</h3>
                   <p className="text-slate-500 text-[13px] leading-relaxed">{desc}</p>
                 </div>
               </div>

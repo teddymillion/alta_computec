@@ -6,6 +6,7 @@ import {
 import { Link } from 'react-router-dom';
 import PageLayout from '../components/PageLayout';
 import PageHero from '../components/PageHero';
+import PartnerLogo from '../components/PartnerLogo';
 import { CATEGORIES, PRODUCTS } from '../data/products';
 
 // ─── Icon map (category icon strings → Lucide components) ─────────────────
@@ -13,27 +14,27 @@ const ICON_MAP = { Monitor, Server, Zap, CreditCard, Video, Layers, Package };
 
 // ─── Tier partner data (unchanged from original) ───────────────────────────
 const TIER1 = [
-  { name: 'Dell',      img: '/dell.png',      tier: 'Platinum Partner', badge: 'tier-platinum', note: "Ethiopia's Only", glow: 'rgba(37,99,235,0.15)',  accent: '#2563EB', desc: "Highest tier in Dell's global partner program — exclusive to ALTA in Ethiopia." },
-  { name: 'Cisco',     img: '/cisco.png',     tier: 'Premier Partner',  badge: 'tier-premier',  note: 'Certified',      glow: 'rgba(2,132,199,0.15)',   accent: '#0284C7', desc: 'Enterprise networking, SD-WAN, and security solutions.' },
-  { name: 'Oracle',    img: '/oracle.png',    tier: 'Gold Partner',     badge: 'tier-gold',     note: 'Certified',      glow: 'rgba(220,38,38,0.12)',   accent: '#DC2626', desc: 'ERP, HCM, analytics, and database solutions.' },
-  { name: 'Kaspersky', img: '/kaspersky.png', tier: 'Platinum Partner', badge: 'tier-platinum', note: 'Certified',      glow: 'rgba(22,163,74,0.15)',   accent: '#16A34A', desc: 'Enterprise endpoint security and threat intelligence.' },
+  { name: 'Dell',      tier: 'Platinum Partner', badge: 'tier-platinum', note: "Ethiopia's Only", glow: 'rgba(37,99,235,0.15)',  accent: '#2563EB', desc: "Highest tier in Dell's global partner program — exclusive to ALTA in Ethiopia." },
+  { name: 'Cisco',     tier: 'Premier Partner',  badge: 'tier-premier',  note: 'Certified',      glow: 'rgba(2,132,199,0.15)',   accent: '#0284C7', desc: 'Enterprise networking, SD-WAN, and security solutions.' },
+  { name: 'Oracle',    tier: 'Gold Partner',     badge: 'tier-gold',     note: 'Certified',      glow: 'rgba(220,38,38,0.12)',   accent: '#DC2626', desc: 'ERP, HCM, analytics, and database solutions.' },
+  { name: 'Kaspersky', tier: 'Platinum Partner', badge: 'tier-platinum', note: 'Certified',      glow: 'rgba(22,163,74,0.15)',   accent: '#16A34A', desc: 'Enterprise endpoint security and threat intelligence.' },
 ];
 const TIER2 = [
-  { name: 'IBM',           img: '/ibm.png'       },
-  { name: 'Microsoft',     img: '/microsoft.png'  },
-  { name: 'HP',            img: '/hp.png'         },
-  { name: 'Huawei',        img: '/huawei.jpg'     },
-  { name: 'Fortinet',      img: '/fortinet.png'   },
-  { name: 'Lenovo',        img: '/lenovo.png'     },
-  { name: 'Eaton',         img: '/eaton.png'      },
-  { name: 'Vertiv',        img: '/vertive.png'    },
-  { name: 'SHARP',         img: '/sharp.png',  exclusive: true },
-  { name: 'Diebold Nixdorf', img: '/diebold.png' },
-  { name: 'Jabra',         img: '/jabra.png'      },
-  { name: 'Poly',          img: '/poly.png'       },
-  { name: 'Epson',         img: '/epson.png'      },
-  { name: 'Backbase',      img: '/backbase.png'   },
-  { name: 'Symantec',      img: '/symante.png'    },
+  { name: 'IBM'             },
+  { name: 'Microsoft'       },
+  { name: 'HP'              },
+  { name: 'Huawei'          },
+  { name: 'Fortinet'        },
+  { name: 'Lenovo'          },
+  { name: 'Eaton'           },
+  { name: 'Vertiv'          },
+  { name: 'SHARP',            exclusive: true },
+  { name: 'Diebold Nixdorf' },
+  { name: 'Jabra'           },
+  { name: 'Poly'            },
+  { name: 'Epson'           },
+  { name: 'Backbase'        },
+  { name: 'Symantec'        },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -662,7 +663,7 @@ export default function ProductsPage() {
                 >
                   <div className="absolute top-0 inset-x-0 h-0.5 opacity-60 group-hover:opacity-100 transition-opacity" style={{ background: p.accent }} aria-hidden="true" />
                   <div className="w-full h-24 flex items-center justify-center group-hover:scale-105 transition-transform duration-250 px-4">
-                    <img src={p.img} alt={`${p.name} logo`} className="max-w-full max-h-full object-contain" loading="lazy" />
+                    <PartnerLogo name={p.name} size={72} className="max-w-full max-h-full object-contain" />
                   </div>
                   <div className="flex flex-col items-center gap-2 text-center">
                     <span className="font-bold text-navy-900 text-[14px]">{p.name}</span>
@@ -683,8 +684,8 @@ export default function ProductsPage() {
             <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-8 gap-2">
               {TIER2.map((p) => (
                 <div key={p.name} className="group flex flex-col items-center gap-3 p-5 rounded-xl hover:bg-slate-50 transition-all duration-200 cursor-default">
-                  <div className="w-full h-16 flex items-center justify-center group-hover:scale-105 transition-transform duration-200 px-2">
-                    <img src={p.img} alt={`${p.name} logo`} className="max-w-full max-h-full object-contain grayscale group-hover:grayscale-0 transition-all duration-200" loading="lazy" />
+                  <div className="w-full h-16 flex items-center justify-center group-hover:scale-110 transition-transform duration-200 px-2">
+                    <PartnerLogo name={p.name} size={56} className="max-w-full max-h-full object-contain" />
                   </div>
                   <span className="text-[12px] font-semibold text-slate-600 text-center leading-tight">{p.name}</span>
                   {p.exclusive && <span className="text-[9px] font-bold text-amber-600">Exclusive</span>}
@@ -696,7 +697,7 @@ export default function ProductsPage() {
       </section>
 
       {/* ── Sidebar + Configurator + Products ─────────────────────────────── */}
-      <section className="section-padding bg-slate-50/80">
+      <section className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container">
           <div className="text-center mb-10">
             <p className="overline-tag justify-center mb-3">Product Catalogue</p>
@@ -712,8 +713,8 @@ export default function ProductsPage() {
               {!activeSub ? (
                 /* Overview state — prompt user to select */
                 <div className="card-light p-12 text-center">
-                  <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto mb-5">
-                    <Package size={28} className="text-slate-400" />
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5" style={{ background: 'rgba(27,79,216,0.08)', border: '1px solid rgba(27,79,216,0.15)' }}>
+                    <Package size={28} className="text-alta-blue" />
                   </div>
                   <h3 className="text-[18px] font-bold text-navy-900 mb-2">Select a Category</h3>
                   <p className="text-slate-500 text-[14px] max-w-sm mx-auto">

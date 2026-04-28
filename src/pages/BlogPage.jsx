@@ -83,11 +83,23 @@ export default function BlogPage() {
       </section>
 
       {/* Articles Grid */}
-      <section className="section-padding bg-slate-50/80">
+      <section className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {filtered.map((article) => (
-              <article key={article.title} className="card-light flex flex-col overflow-hidden rounded-2xl p-0">
+              <article
+                key={article.title}
+                className="group relative flex flex-col overflow-hidden rounded-2xl border-2 bg-white dark:bg-navy-900 transition-all duration-250 hover:-translate-y-1"
+                style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = article.topColor;
+                  e.currentTarget.style.boxShadow = `0 12px 32px ${article.topColor}40, 0 0 0 1px ${article.topColor}55`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(226,232,240,0.8)';
+                  e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+                }}
+              >
                 <div className="h-2 w-full" style={{ background: article.topColor }} aria-hidden="true" />
                 <div className="flex flex-col gap-4 p-5 flex-1">
                   <div className="flex items-center justify-between gap-2">

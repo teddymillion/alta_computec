@@ -3,6 +3,7 @@ import { Server, CreditCard, Cloud, ShieldCheck, Code, Monitor, LayoutDashboard,
 import { Link } from 'react-router-dom';
 import PageLayout from '../components/PageLayout';
 import PageHero from '../components/PageHero';
+import PartnerLogo from '../components/PartnerLogo';
 
 const TABS = [
   { id: 'infrastructure', label: 'IT Infrastructure' },
@@ -24,7 +25,6 @@ const SOLUTIONS = [
     benefits: ['Dell PowerEdge server deployment & configuration', 'Cisco enterprise networking & SD-WAN', '24/7 infrastructure monitoring & SLA support', 'On-site engineering response across Ethiopia'],
     tags: ['Banking', 'Government', 'Telecom', 'Energy'],
     stats: [{ v: '200+', l: 'Infrastructure Projects' }, { v: 'Dell Platinum', l: 'Certified' }, { v: '24/7', l: 'SLA Support' }],
-    partners: ['/dell.png', '/cisco.png', '/hp.png'],
     partnerNames: ['Dell', 'Cisco', 'HP'],
     bg: 'bg-white',
   },
@@ -36,9 +36,8 @@ const SOLUTIONS = [
     benefits: ['Diebold Nixdorf ATM deployment & integration', 'Core banking system connectivity', 'Cash management & reconciliation automation', '24/7 ATM monitoring & first-line maintenance'],
     tags: ['Banking', 'Financial Services', 'MFIs'],
     stats: [{ v: '150+', l: 'Banking Clients' }, { v: 'Diebold Nixdorf', l: 'Exclusive Partner' }, { v: '99.9%', l: 'ATM Uptime' }],
-    partners: ['/diebold.png', '/oracle.png', '/kaspersky.png'],
     partnerNames: ['Diebold Nixdorf', 'Oracle', 'Kaspersky'],
-    bg: 'bg-slate-50/80',
+    bg: 'bg-white dark:bg-navy-950',
   },
   {
     id: 'cloud', icon: Cloud, label: 'Cloud',
@@ -48,7 +47,6 @@ const SOLUTIONS = [
     benefits: ['Private cloud architecture & deployment', 'VMware virtualization & vSphere management', 'Hybrid cloud migration strategy & execution', 'Backup, DR, and business continuity planning'],
     tags: ['All Sectors', 'Government', 'Education'],
     stats: [{ v: '50+', l: 'Cloud Deployments' }, { v: 'VMware', l: 'Certified' }, { v: '<4 hrs', l: 'RTO Target' }],
-    partners: ['/microsoft.png', '/ibm.png', '/dell.png'],
     partnerNames: ['Microsoft', 'IBM', 'Dell'],
     bg: 'bg-white',
   },
@@ -60,9 +58,8 @@ const SOLUTIONS = [
     benefits: ['Kaspersky endpoint security deployment & management', 'Fortinet NGFW & SD-WAN security', 'SIEM implementation & 24/7 SOC services', 'Penetration testing & compliance auditing'],
     tags: ['Banking', 'Government', 'Telecom'],
     stats: [{ v: 'Kaspersky Platinum', l: 'Partner' }, { v: '0', l: 'Post-Deployment Breaches' }, { v: '500+', l: 'Endpoints Secured' }],
-    partners: ['/kaspersky.png', '/fortinet.png', '/cisco.png'],
     partnerNames: ['Kaspersky', 'Fortinet', 'Cisco'],
-    bg: 'bg-slate-50/80',
+    bg: 'bg-white dark:bg-navy-950',
   },
   {
     id: 'software', icon: Code, label: 'Software & AI',
@@ -72,7 +69,6 @@ const SOLUTIONS = [
     benefits: ['Oracle ERP & HCM implementation', 'Custom application development (web & mobile)', 'AI-powered analytics & business intelligence', 'System integration & REST API development'],
     tags: ['All Sectors', 'Banking', 'Government'],
     stats: [{ v: '100+', l: 'Software Projects' }, { v: 'Oracle Gold', l: 'Partner' }, { v: 'AI-Ready', l: 'Architecture' }],
-    partners: ['/oracle.png', '/microsoft.png', '/ibm.png'],
     partnerNames: ['Oracle', 'Microsoft', 'IBM'],
     bg: 'bg-white',
   },
@@ -84,9 +80,8 @@ const SOLUTIONS = [
     benefits: ['SHARP interactive display deployment & training', 'Jabra & Poly video conferencing systems', 'AV system design & integration', 'Smart classroom & boardroom setup'],
     tags: ['Education', 'Corporate', 'Government'],
     stats: [{ v: 'SHARP', l: 'Exclusive Ethiopia Partner' }, { v: '40+', l: 'Smart Office Deployments' }, { v: 'Jabra & Poly', l: 'Certified' }],
-    partners: ['/sharp.png', '/jabra.png', '/poly.png'],
     partnerNames: ['SHARP', 'Jabra', 'Poly'],
-    bg: 'bg-slate-50/80',
+    bg: 'bg-white dark:bg-navy-950',
   },
   {
     id: 'enterprise', icon: LayoutDashboard, label: 'Enterprise Apps',
@@ -96,7 +91,6 @@ const SOLUTIONS = [
     benefits: ['Oracle Fusion ERP full implementation', 'Microsoft Dynamics 365 deployment', 'Backbase digital banking platform', 'User training & change management'],
     tags: ['Manufacturing', 'Finance', 'Government'],
     stats: [{ v: 'Oracle Gold', l: 'Partner' }, { v: '80+', l: 'ERP Deployments' }, { v: '2,000+', l: 'Trained Users' }],
-    partners: ['/oracle.png', '/microsoft.png', '/backbase.png'],
     partnerNames: ['Oracle', 'Microsoft', 'Backbase'],
     bg: 'bg-white',
   },
@@ -108,9 +102,8 @@ const SOLUTIONS = [
     benefits: ['IT strategy & digital transformation roadmaps', 'Vendor selection & procurement advisory', 'System integration & middleware development', 'Project management & delivery assurance'],
     tags: ['All Sectors'],
     stats: [{ v: '30 Yrs', l: 'Market Expertise' }, { v: 'Multi-Vendor', l: 'Certified' }, { v: '640+', l: 'Completed Projects' }],
-    partners: ['/dell.png', '/cisco.png', '/oracle.png'],
     partnerNames: ['Dell', 'Cisco', 'Oracle'],
-    bg: 'bg-slate-50/80',
+    bg: 'bg-white dark:bg-navy-950',
   },
 ];
 
@@ -217,26 +210,26 @@ export default function SolutionsPage() {
                 </div>
 
                 <div className={`${!isEven ? 'lg:col-start-1 lg:row-start-1' : ''}`}>
-                  <div className="card-dark rounded-2xl p-6 flex flex-col gap-6">
+                  <div className="rounded-2xl p-6 flex flex-col gap-6 border-2 bg-white dark:bg-navy-900" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
                     <div className="w-12 h-12 rounded-xl bg-alta-blue/15 border border-alta-blue/20 flex items-center justify-center">
                       <Icon size={24} className="text-alta-blue" aria-hidden="true" />
                     </div>
                     <div className="grid grid-cols-3 gap-4">
                       {s.stats.map((st) => (
                         <div key={st.l} className="flex flex-col gap-1 text-center">
-                          <span className="text-[15px] font-black text-alta-green-light leading-tight">{st.v}</span>
+                          <span className="text-[15px] font-black text-alta-blue dark:text-alta-green-light leading-tight">{st.v}</span>
                           <span className="text-[10px] text-slate-500 font-medium leading-tight">{st.l}</span>
                         </div>
                       ))}
                     </div>
                     <div>
-                      <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500 mb-4">Key Partners</p>
+                      <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-400 mb-4">Key Partners</p>
                       <div className="flex items-center gap-5 flex-wrap">
-                        {s.partners.map((img, i) => (
-                          <img key={i} src={img} alt={s.partnerNames[i]}
-                            style={{ height: 48, maxWidth: 96, width: 'auto', opacity: 1 }}
-                            className="object-contain hover:opacity-100 transition-opacity duration-200"
-                            loading="lazy" />
+                        {s.partnerNames.map((name) => (
+                          <div key={name} className="flex flex-col items-center gap-1.5 group cursor-default">
+                            <PartnerLogo name={name} size={52} className="object-contain group-hover:scale-110 transition-transform duration-200" />
+                            <span className="text-[10px] text-slate-500 font-medium">{name}</span>
+                          </div>
                         ))}
                       </div>
                     </div>

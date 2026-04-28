@@ -12,42 +12,42 @@ const CASE_STUDIES = [
     headline: 'ATM Network Deployment & Core Banking Integration',
     metrics: [{ v: '120+', l: 'ATMs Deployed' }, { v: '99.9%', l: 'Uptime' }, { v: '6 Months', l: 'Delivery' }],
     outcome: 'Nationwide ATM network live with zero downtime during cutover',
-    accent: '#3B82F6',
+    accent: '#3B82F6', accentLight: 'rgba(59,130,246,0.12)', accentBorder: 'rgba(59,130,246,0.35)',
   },
   {
     sector: 'Government', icon: TrendingUp, client: 'Ministry of Finance, Ethiopia',
     headline: 'Nationwide Network Infrastructure Rollout — 47 Offices',
     metrics: [{ v: '47', l: 'Offices Connected' }, { v: '99.7%', l: 'Network Uptime' }, { v: 'A+', l: 'Security Score' }],
     outcome: '47 regional offices connected on secure WAN ahead of schedule',
-    accent: '#6366F1',
+    accent: '#6366F1', accentLight: 'rgba(99,102,241,0.12)', accentBorder: 'rgba(99,102,241,0.35)',
   },
   {
     sector: 'Infrastructure', icon: GraduationCap, client: 'Addis Ababa University',
     headline: 'Smart Campus — Wi-Fi 6 & Interactive Classroom Rollout',
     metrics: [{ v: '40', l: 'Smart Classrooms' }, { v: '2,000+', l: 'Students Served' }, { v: '3 Months', l: 'Deployment' }],
     outcome: 'Full campus Wi-Fi 6 and SHARP smart classroom deployment completed',
-    accent: '#22C55E',
+    accent: '#22C55E', accentLight: 'rgba(34,197,94,0.12)', accentBorder: 'rgba(34,197,94,0.35)',
   },
   {
     sector: 'Banking', icon: ShieldCheck, client: 'Awash Bank',
     headline: 'Enterprise Cybersecurity Posture Overhaul',
     metrics: [{ v: '500+', l: 'Endpoints Secured' }, { v: '0', l: 'Post-Deploy Incidents' }, { v: 'Kaspersky Platinum', l: 'Deployed' }],
     outcome: 'Zero critical security incidents in 18 months post-deployment',
-    accent: '#0EA5E9',
+    accent: '#0EA5E9', accentLight: 'rgba(14,165,233,0.12)', accentBorder: 'rgba(14,165,233,0.35)',
   },
   {
     sector: 'Software', icon: TrendingUp, client: 'Ethiopian Manufacturing Co.',
     headline: 'Custom Oracle ERP with Ethiopian Tax Compliance Module',
     metrics: [{ v: '40%', l: 'Reporting Reduction' }, { v: 'IFRS', l: 'Compliant' }, { v: '200', l: 'Active Users' }],
     outcome: '40% reduction in financial reporting time with full IFRS compliance',
-    accent: '#F59E0B',
+    accent: '#F59E0B', accentLight: 'rgba(245,158,11,0.12)', accentBorder: 'rgba(245,158,11,0.35)',
   },
   {
     sector: 'Smart Office', icon: Monitor, client: 'Regional Enterprise Group',
     headline: 'SHARP Interactive Display Rollout — 25 Offices',
     metrics: [{ v: '25', l: 'Offices Equipped' }, { v: 'SHARP', l: 'Exclusive Partner' }, { v: '3 Months', l: 'Deployment' }],
     outcome: '25 offices equipped with SHARP AQUOS BOARD interactive displays',
-    accent: '#8B5CF6',
+    accent: '#8B5CF6', accentLight: 'rgba(139,92,246,0.12)', accentBorder: 'rgba(139,92,246,0.35)',
   },
 ];
 
@@ -102,7 +102,7 @@ export default function CaseStudiesPage() {
       <PageHero breadcrumb="Case Studies" title="640+ Projects. Proven Results. Real Impact." subtitle="Explore how ALTA has transformed IT infrastructure for Ethiopia's banks, government institutions, and enterprises." />
 
       {/* Filter + Featured */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container">
           {/* Filters */}
           <div className="flex flex-wrap gap-2 mb-10">
@@ -111,7 +111,7 @@ export default function CaseStudiesPage() {
                 key={f}
                 onClick={() => setActiveFilter(f)}
                 className={`text-[12px] font-semibold px-3.5 py-1.5 rounded-full border transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue ${
-                  activeFilter === f ? 'bg-navy-900 text-white border-navy-900' : 'bg-white text-slate-600 border-slate-200 hover:border-alta-blue hover:text-alta-blue'
+                  activeFilter === f ? 'bg-alta-green text-white border-alta-green' : 'bg-white dark:bg-white/10 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-white/20 hover:border-alta-green dark:hover:border-alta-green hover:text-alta-green dark:hover:text-alta-green'
                 }`}
               >
                 {f}
@@ -120,7 +120,14 @@ export default function CaseStudiesPage() {
           </div>
 
           {/* Featured */}
-          <div className="card-light border-l-4 border-l-alta-green p-7 mb-10 rounded-2xl">
+          <div className="group relative p-7 mb-10 rounded-2xl bg-white border-2 transition-all duration-250 hover:-translate-y-1 overflow-hidden" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }} onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = '#22C55E';
+            e.currentTarget.style.boxShadow = '0 12px 32px rgba(34,197,94,0.25), 0 0 0 1px rgba(34,197,94,0.35)';
+          }} onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = 'rgba(226,232,240,0.8)';
+            e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+          }}>
+            <div className="absolute top-0 left-0 right-0 h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-250" style={{ background: 'linear-gradient(90deg, #22C55E, #22C55E88)' }} aria-hidden="true" />
             <div className="flex flex-wrap gap-2 mb-4">
               <span className="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full bg-blue-100 text-blue-700">Banking</span>
               <span className="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full bg-alta-green/15 text-alta-green">Featured</span>
@@ -141,35 +148,67 @@ export default function CaseStudiesPage() {
       </section>
 
       {/* Case Study Grid */}
-      <section className="section-padding bg-slate-50/80">
+      <section className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {filtered.map((study) => {
               const Icon = study.icon;
               return (
-                <article key={study.headline} className="card-light flex flex-col overflow-hidden rounded-2xl p-0">
-                  <div className="h-1.5 w-full" style={{ background: study.accent }} aria-hidden="true" />
-                  <div className="flex flex-col gap-4 p-5 flex-1">
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">{study.sector}</span>
-                      <Icon size={16} className="text-slate-400" aria-hidden="true" />
-                    </div>
-                    <p className="text-[11px] text-slate-400 font-medium">{study.client}</p>
-                    <h3 className="text-[14px] font-bold text-navy-900 leading-snug">{study.headline}</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {study.metrics.map((m) => (
-                        <div key={m.l} className="flex flex-col items-center px-3 py-1.5 rounded-lg bg-navy-900">
-                          <span className="text-[13px] font-black text-alta-green-light">{m.v}</span>
-                          <span className="text-[9px] text-slate-500 font-medium">{m.l}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <p className="text-[12px] text-slate-500 italic flex-1">"{study.outcome}"</p>
-                    <Link to="/contact" className="flex items-center gap-1.5 text-[13px] font-semibold text-alta-blue hover:underline underline-offset-2 mt-auto">
-                      View Details <ArrowRight size={12} />
-                    </Link>
+                <a
+                  key={study.headline}
+                  href="#"
+                  onClick={(e) => { e.preventDefault(); }}
+                  className="group relative flex flex-col gap-5 p-6 rounded-2xl bg-white border-2 transition-all duration-250 hover:-translate-y-1 cursor-pointer overflow-hidden"
+                  style={{
+                    borderColor: 'rgba(226,232,240,0.8)',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = study.accent;
+                    e.currentTarget.style.boxShadow = `0 12px 32px ${study.accentLight.replace('0.12', '0.25')}, 0 0 0 1px ${study.accentBorder}`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(226,232,240,0.8)';
+                    e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+                  }}
+                >
+                  <div
+                    className="absolute top-0 left-0 right-0 h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-250"
+                    style={{ background: `linear-gradient(90deg, ${study.accent}, ${study.accent}88)` }}
+                    aria-hidden="true"
+                  />
+
+                  <div className="flex items-center justify-between gap-3">
+                    <span
+                      className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full"
+                      style={{ background: study.accentLight, color: study.accent, border: `1px solid ${study.accentBorder}` }}
+                    >
+                      {study.sector}
+                    </span>
+                    <Icon size={16} style={{ color: study.accent }} aria-hidden="true" />
                   </div>
-                </article>
+
+                  <div>
+                    <h3 className="text-[16px] font-bold text-navy-900 mb-2 leading-snug">{study.headline}</h3>
+                    <p className="text-[13px] text-slate-500 leading-relaxed line-clamp-2">{study.outcome}</p>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    {study.metrics.map((m) => (
+                      <div key={m.l} className="flex flex-col items-center px-2 py-1 rounded-lg" style={{ background: study.accentLight }}>
+                        <span className="text-[12px] font-black leading-tight" style={{ color: study.accent }}>{m.v}</span>
+                        <span className="text-[9px] text-slate-500 font-medium leading-tight">{m.l}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex items-center gap-2 mt-auto pt-2 border-t border-slate-100">
+                    <span className="text-[13px] font-semibold group-hover:text-current transition-colors" style={{ color: study.accent }}>
+                      View Details
+                    </span>
+                    <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform duration-200" style={{ color: study.accent }} />
+                  </div>
+                </a>
               );
             })}
           </div>
@@ -177,7 +216,7 @@ export default function CaseStudiesPage() {
       </section>
 
       {/* Stats */}
-      <section className="py-16 relative" style={{ background: 'linear-gradient(180deg, #0A1628 0%, #03080F 100%)' }} ref={statsRef}>
+      <section className="py-16 relative bg-white dark:bg-navy-950" ref={statsRef}>
         <div className="absolute inset-0 bg-dot-pattern opacity-40" aria-hidden="true" />
         <div className="section-container relative z-10">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
@@ -187,11 +226,11 @@ export default function CaseStudiesPage() {
       </section>
 
       {/* Process Teaser */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container">
           <div className="text-center mb-10">
             <p className="overline-tag justify-center mb-3">How It Works</p>
-            <h2 className="section-heading">How does a typical ALTA project work?</h2>
+            <h2 className="section-heading dark:section-heading-light">How does a typical ALTA project work?</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
             {[
@@ -199,14 +238,21 @@ export default function CaseStudiesPage() {
               { num: '02', title: 'Delivery', desc: 'Phased deployment with certified engineers, progress reporting, and zero-downtime methodology.' },
               { num: '03', title: 'Support', desc: 'Post-deployment SLA, staff training, and ongoing managed services to ensure long-term success.' },
             ].map((step) => (
-              <div key={step.num} className="card-light flex flex-col gap-3 text-center items-center">
-                <div className="w-12 h-12 rounded-full bg-alta-green flex items-center justify-center">
+              <div key={step.num} className="group relative flex flex-col gap-3 text-center items-center p-5 rounded-2xl bg-white border-2 transition-all duration-250 hover:-translate-y-1 overflow-hidden" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }} onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#16A34A';
+                e.currentTarget.style.boxShadow = '0 12px 32px rgba(22,163,74,0.25), 0 0 0 1px rgba(22,163,74,0.35)';
+              }} onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'rgba(226,232,240,0.8)';
+                e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+              }}>
+                <div className="absolute top-0 left-0 right-0 h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-250" style={{ background: 'linear-gradient(90deg, #16A34A, #16A34A88)' }} aria-hidden="true" />
+                <div className="w-12 h-12 rounded-full bg-alta-green flex items-center justify-center group-hover:scale-110 transition-transform duration-250">
                   <span className="text-white font-black text-[13px]">{step.num}</span>
                 </div>
                 <p className="font-bold text-navy-900 text-[15px]">{step.title}</p>
                 <p className="text-[13px] text-slate-500 leading-relaxed">{step.desc}</p>
               </div>
-            ))}
+            ))}}
           </div>
           <div className="text-center">
             <Link to="/contact" className="btn-primary inline-flex">

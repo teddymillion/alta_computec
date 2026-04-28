@@ -17,7 +17,7 @@ const CASE_STUDIES = [
     ],
     description: 'Designed and deployed a full-scale enterprise data center including Dell PowerEdge servers, Cisco networking fabric, and Eaton UPS infrastructure for uninterrupted banking operations.',
     headerGradient: 'linear-gradient(135deg, #1e3a8a 0%, #0A1628 100%)',
-    accentColor: '#3B82F6',
+    accentColor: '#3B82F6', accentLight: 'rgba(59,130,246,0.12)', accentBorder: 'rgba(59,130,246,0.35)',
   },
   {
     sector: 'Government & Public Sector',
@@ -34,7 +34,7 @@ const CASE_STUDIES = [
     ],
     description: 'Architected and deployed a secure wide-area network connecting 47 regional Ministry offices, with Cisco Meraki SD-WAN, centralized monitoring, and Fortinet firewall protection.',
     headerGradient: 'linear-gradient(135deg, #064e3b 0%, #0A1628 100%)',
-    accentColor: '#10B981',
+    accentColor: '#10B981', accentLight: 'rgba(16,185,129,0.12)', accentBorder: 'rgba(16,185,129,0.35)',
   },
   {
     sector: 'Telecom & ISP',
@@ -51,7 +51,7 @@ const CASE_STUDIES = [
     ],
     description: 'Deployed Kaspersky Enterprise Security across 1,200+ endpoints, implemented a 24/7 SOC monitoring framework, and established incident response protocols for Ethiopia\'s largest telecom.',
     headerGradient: 'linear-gradient(135deg, #4c1d95 0%, #0A1628 100%)',
-    accentColor: '#8B5CF6',
+    accentColor: '#8B5CF6', accentLight: 'rgba(139,92,246,0.12)', accentBorder: 'rgba(139,92,246,0.35)',
   },
 ];
 
@@ -60,20 +60,26 @@ const FILTERS = ['All Sectors', 'Banking', 'Government', 'Telecom', 'Education']
 function CaseStudyCard({ study }) {
   const Icon = study.icon;
   return (
-    <article className="group flex flex-col rounded-2xl overflow-hidden border border-slate-200/80 bg-white transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+    <article className="group flex flex-col rounded-2xl overflow-hidden border-2 transition-all duration-250 hover:-translate-y-1" style={{ background: 'white', borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }} onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = study.accentColor;
+        e.currentTarget.style.boxShadow = `0 12px 32px ${study.accentLight.replace('0.12', '0.25')}, 0 0 0 1px ${study.accentBorder}`;
+      }} onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = 'rgba(226,232,240,0.8)';
+        e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+      }}>
       {/* Header image area */}
       <div className="relative h-44 overflow-hidden" style={{ background: study.headerGradient }}>
         <div className="absolute inset-0 bg-dot-pattern opacity-40" aria-hidden="true" />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.55) 100%)' }} aria-hidden="true" />
         {/* Accent line */}
-        <div className="absolute top-0 inset-x-0 h-0.5" style={{ background: study.accentColor }} aria-hidden="true" />
+        <div className="absolute top-0 inset-x-0 h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-250" style={{ background: `linear-gradient(90deg, ${study.accentColor}, ${study.accentColor}88)` }} aria-hidden="true" />
         <div className="relative h-full flex flex-col justify-between p-5">
           <div className="flex items-start justify-between gap-3">
             <span className={`text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full ${study.sectorColor}`}>
               {study.sector}
             </span>
-            <div className="w-8 h-8 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center flex-shrink-0">
-              <Icon size={15} className="text-white" aria-hidden="true" />
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: study.accentLight, border: `1px solid ${study.accentBorder}` }}>
+              <Icon size={15} style={{ color: study.accentColor }} aria-hidden="true" />
             </div>
           </div>
           <div>
@@ -85,14 +91,14 @@ function CaseStudyCard({ study }) {
       </div>
 
       {/* Metrics bar */}
-      <div className="grid grid-cols-3 divide-x divide-slate-100 border-b border-slate-100">
+      <div className="grid grid-cols-3 divide-x divide-slate-200 border-b border-slate-200">
         {study.metrics.map((m) => (
           <div key={m.label} className="flex flex-col items-center py-3 px-2 text-center">
             <div className="flex items-center gap-1">
-              <TrendingUp size={10} className="text-alta-green flex-shrink-0" aria-hidden="true" />
+              <TrendingUp size={10} style={{ color: study.accentColor }} aria-hidden="true" />
               <span className="text-[15px] font-black text-navy-900">{m.value}</span>
             </div>
-            <span className="text-[10px] text-slate-400 font-medium mt-0.5">{m.label}</span>
+            <span className="text-[10px] text-slate-500 font-medium mt-0.5">{m.label}</span>
           </div>
         ))}
       </div>
@@ -101,14 +107,15 @@ function CaseStudyCard({ study }) {
       <div className="flex flex-col gap-4 p-5 flex-1">
         <div className="flex items-start gap-2.5">
           <div className="w-0.5 min-h-[36px] rounded-full flex-shrink-0 mt-0.5" style={{ background: study.accentColor }} aria-hidden="true" />
-          <p className="text-[12px] font-semibold italic leading-relaxed" style={{ color: study.accentColor }}>
+          <p className="text-[12px] font-semibold italic leading-relaxed text-slate-600">
             "{study.outcome}"
           </p>
         </div>
         <p className="text-[13px] text-slate-500 leading-relaxed flex-1">{study.description}</p>
         <a
           href="#contact"
-          className="flex items-center gap-1.5 text-[13px] font-semibold text-alta-blue hover:text-navy-900 transition-colors duration-150 mt-auto group-hover:underline underline-offset-2"
+          className="flex items-center gap-1.5 text-[13px] font-semibold transition-colors duration-150 mt-auto group-hover:underline underline-offset-2"
+          style={{ color: study.accentColor }}
           aria-label={`Read full case study: ${study.headline}`}
         >
           Read Full Case Study
@@ -121,13 +128,13 @@ function CaseStudyCard({ study }) {
 
 export default function CaseStudies() {
   return (
-    <section id="case-studies" className="section-padding bg-slate-50/80" aria-label="Case studies">
+    <section id="case-studies" className="section-padding bg-white dark:bg-navy-950" aria-label="Case studies">
       <div className="section-container">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
           <div>
             <p className="overline-tag mb-3">Proven Results</p>
-            <h2 className="section-heading">Real Projects.<br className="hidden sm:block" /> Measurable Results.</h2>
-            <p className="section-subheading mt-3">Evidence of 640+ delivered projects across Ethiopia's most critical institutions.</p>
+            <h2 className="section-heading dark:section-heading-light">Real Projects.<br className="hidden sm:block" /> Measurable Results.</h2>
+            <p className="section-subheading dark:section-subheading-light mt-3">Evidence of 640+ delivered projects across Ethiopia's most critical institutions.</p>
           </div>
           <div className="flex flex-wrap gap-2">
             {FILTERS.map((f, i) => (

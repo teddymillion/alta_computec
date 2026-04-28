@@ -18,6 +18,7 @@ import AIAssistant from './components/AIAssistant';
 import TrustBadges from './components/TrustBadges';
 import BackToTop from './components/BackToTop';
 import AnnouncementBanner from './components/AnnouncementBanner';
+import TickerBar from './components/TickerBar';
 import LoadingScreen from './components/LoadingScreen';
 import CookieConsent from './components/CookieConsent';
 
@@ -48,6 +49,7 @@ function HomePage() {
         <Blog />
         <Contact />
       </main>
+      <TickerBar />
       <Footer />
       <AIAssistant />
       <BackToTop />

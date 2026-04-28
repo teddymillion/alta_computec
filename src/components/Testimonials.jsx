@@ -7,6 +7,7 @@ const TESTIMONIALS = [
     name: 'Tadesse Bekele',
     title: 'Chief Information Officer',
     company: 'Commercial Bank of Ethiopia',
+    logo: '/cbe.png',
     initials: 'CB',
     color: 'from-blue-600 to-blue-800',
   },
@@ -15,6 +16,7 @@ const TESTIMONIALS = [
     name: 'Dawit Haile',
     title: 'Director of IT Infrastructure',
     company: 'Ministry of Finance, Ethiopia',
+    logo: '/finance.png',
     initials: 'MF',
     color: 'from-emerald-600 to-emerald-800',
   },
@@ -23,6 +25,7 @@ const TESTIMONIALS = [
     name: 'Selamawit Girma',
     title: 'Head of Network Security',
     company: 'Ethio Telecom',
+    logo: '/tele.png',
     initials: 'ET',
     color: 'from-purple-600 to-purple-800',
   },
@@ -31,6 +34,7 @@ const TESTIMONIALS = [
     name: 'Prof. Abebe Worku',
     title: 'Vice President, Technology',
     company: 'Addis Ababa University',
+    logo: '/aau.png',
     initials: 'AA',
     color: 'from-amber-600 to-amber-800',
   },
@@ -39,18 +43,19 @@ const TESTIMONIALS = [
     name: 'Mekdes Alemu',
     title: 'Chief Financial Officer',
     company: 'Ethiopian Electric Power',
+    logo: '/ethio_elec.png',
     initials: 'EE',
     color: 'from-red-600 to-red-800',
   },
 ];
 
 const CLIENT_TRUST = [
-  { name: 'Commercial Bank of Ethiopia', initials: 'CB', color: 'from-blue-600 to-blue-800' },
-  { name: 'Ministry of Finance',         initials: 'MF', color: 'from-emerald-600 to-emerald-800' },
-  { name: 'Ethio Telecom',               initials: 'ET', color: 'from-purple-600 to-purple-800' },
-  { name: 'Addis Ababa University',      initials: 'AA', color: 'from-amber-600 to-amber-800' },
-  { name: 'Ethiopian Electric Power',    initials: 'EE', color: 'from-red-600 to-red-800' },
-  { name: 'Development Bank of Ethiopia',initials: 'DB', color: 'from-sky-600 to-sky-800' },
+  { name: 'Commercial Bank of Ethiopia', logo: '/cbe.png' },
+  { name: 'Ministry of Finance', logo: '/finance.png' },
+  { name: 'Ethio Telecom', logo: '/tele.png' },
+  { name: 'Development Bank of Ethiopia', logo: '/dbe.png' },
+  { name: 'Ethiopian Electric Power', logo: '/ethio_elec.png' },
+  { name: 'Addis Ababa University', logo: '/aau.png' },
 ];
 
 function Stars() {
@@ -92,8 +97,20 @@ function TestimonialCard({ t, featured }) {
       </blockquote>
 
       <div className={`flex items-center gap-3 pt-4 border-t ${featured ? 'border-slate-100' : 'border-white/8'}`}>
-        <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center flex-shrink-0 shadow-md`}>
-          <span className="text-white font-bold text-[11px]">{t.initials}</span>
+        <div className={`w-12 h-12 rounded-xl flex-shrink-0 shadow-md overflow-hidden flex items-center justify-center p-1.5 ${
+          featured ? 'bg-white border border-slate-200' : 'bg-white/10 border border-white/15'
+        }`}>
+          <img
+            src={t.logo}
+            alt={t.company}
+            className="w-full h-full object-contain"
+            loading="lazy"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.parentElement.classList.add('bg-gradient-to-br', t.color);
+              e.target.parentElement.innerHTML = `<span class="text-white font-bold text-[11px]">${t.initials}</span>`;
+            }}
+          />
         </div>
         <div className="min-w-0">
           <p className={`font-bold text-[13px] truncate ${featured ? 'text-navy-900' : 'text-white'}`}>{t.name}</p>
@@ -227,16 +244,28 @@ export default function Testimonials() {
 
         {/* Client trust bar */}
         <div className="mt-14 pt-8 border-t border-white/6">
-          <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-slate-700 mb-6 text-center">
-            Trusted By
+          <p className="text-[10px] font-bold tracking-[0.15em] uppercase text-slate-700 mb-8 text-center">
+            Trusted By Ethiopia's Leading Institutions
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-5 lg:gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 lg:gap-8">
             {CLIENT_TRUST.map((c) => (
-              <div key={c.name} className="flex items-center gap-2.5 group cursor-default">
-                <div className={`w-7 h-7 rounded-full bg-gradient-to-br ${c.color} flex items-center justify-center flex-shrink-0 shadow-sm`}>
-                  <span className="text-white font-bold text-[9px]">{c.initials}</span>
+              <div key={c.name} className="group flex flex-col items-center gap-3 cursor-default">
+                <div className="w-full h-20 flex items-center justify-center p-4 rounded-xl bg-white/5 border border-white/8 group-hover:bg-white/8 group-hover:border-white/12 transition-all duration-200">
+                  <img
+                    src={c.logo}
+                    alt={`${c.name} logo`}
+                    className="max-w-full max-h-full object-contain"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextElementSibling.style.display = 'flex';
+                    }}
+                  />
+                  <div className="hidden w-full h-full items-center justify-center">
+                    <span className="text-slate-500 text-[10px] font-bold text-center">{c.name}</span>
+                  </div>
                 </div>
-                <span className="text-slate-600 font-semibold text-[12px] tracking-wide group-hover:text-slate-400 transition-colors duration-150">
+                <span className="text-slate-600 font-medium text-[11px] text-center leading-tight group-hover:text-slate-400 transition-colors duration-150">
                   {c.name}
                 </span>
               </div>

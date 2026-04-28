@@ -1,10 +1,10 @@
 import { Phone, Mail, MapPin, Clock, ArrowRight, Send } from 'lucide-react';
 
 const CONTACT_ITEMS = [
-  { icon: Phone, label: 'Phone', value: '+251-115-50-29-28', href: 'tel:+251115502928', iconBg: 'bg-blue-50', iconColor: 'text-alta-blue' },
-  { icon: Mail, label: 'Email', value: 'info@altacomputec.com', href: 'mailto:info@altacomputec.com', iconBg: 'bg-green-50', iconColor: 'text-alta-green' },
-  { icon: MapPin, label: 'Address', value: 'Mexico Road, Chad St., ALTA Building, Addis Ababa', href: 'https://maps.google.com/?q=Mexico+Square+Addis+Ababa', iconBg: 'bg-amber-50', iconColor: 'text-amber-600' },
-  { icon: Clock, label: 'Office Hours', value: 'Mon–Fri: 8:00 AM – 6:00 PM EAT', href: null, iconBg: 'bg-purple-50', iconColor: 'text-purple-600' },
+  { icon: Phone,  label: 'Phone',        value: '+251-115-50-29-28',                                    href: 'tel:+251115502928',                                          accent: '#1B4FD8', accentLight: 'rgba(27,79,216,0.12)',  accentBorder: 'rgba(27,79,216,0.35)' },
+  { icon: Mail,   label: 'Email',        value: 'info@altacomputec.com',                                href: 'mailto:info@altacomputec.com',                               accent: '#16A34A', accentLight: 'rgba(22,163,74,0.12)',  accentBorder: 'rgba(22,163,74,0.35)' },
+  { icon: MapPin, label: 'Address',      value: 'Mexico Road, Chad St., ALTA Building, Addis Ababa',   href: 'https://maps.google.com/?q=Mexico+Square+Addis+Ababa',      accent: '#F59E0B', accentLight: 'rgba(245,158,11,0.12)', accentBorder: 'rgba(245,158,11,0.35)' },
+  { icon: Clock,  label: 'Office Hours', value: 'Mon–Fri: 8:00 AM – 6:00 PM EAT',                      href: null,                                                        accent: '#6366F1', accentLight: 'rgba(99,102,241,0.12)', accentBorder: 'rgba(99,102,241,0.35)' },
 ];
 
 const inputClass = "form-input";
@@ -12,7 +12,7 @@ const labelClass = "form-label";
 
 export default function Contact() {
   return (
-    <section id="contact" className="section-padding bg-slate-50/80" aria-label="Contact ALTA Computec">
+    <section id="contact" className="section-padding bg-white dark:bg-navy-950" aria-label="Contact ALTA Computec">
       <div className="section-container">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
 
@@ -31,8 +31,8 @@ export default function Contact() {
                 const Icon = item.icon;
                 const inner = (
                   <div className="flex items-start gap-4 p-4 rounded-2xl bg-white border border-slate-200/80 transition-all duration-200 hover:border-slate-300 hover:shadow-sm" style={{ boxShadow: '0 1px 2px rgba(0,0,0,0.04)' }}>
-                    <div className={`w-10 h-10 rounded-xl ${item.iconBg} flex items-center justify-center flex-shrink-0`}>
-                      <Icon size={17} className={item.iconColor} aria-hidden="true" />
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: item.accentLight, border: `1px solid ${item.accentBorder}` }}>
+                      <Icon size={17} style={{ color: item.accent }} aria-hidden="true" />
                     </div>
                     <div>
                       <p className="text-[10px] font-bold tracking-[0.1em] uppercase text-slate-400 mb-0.5">{item.label}</p>
@@ -50,11 +50,10 @@ export default function Contact() {
               })}
             </div>
 
-            <div className="relative overflow-hidden rounded-2xl bg-navy-900 border border-navy-800 p-5">
-              <div className="absolute inset-0 bg-dot-pattern opacity-20" aria-hidden="true" />
+            <div className="relative overflow-hidden rounded-2xl border-2 p-5" style={{ background: 'rgba(27,79,216,0.06)', borderColor: 'rgba(27,79,216,0.2)' }}>
               <div className="relative">
-                <p className="text-white font-bold text-[14px] mb-1">Typical Response Time</p>
-                <p className="text-slate-400 text-[13px] leading-relaxed">
+                <p className="font-bold text-[14px] mb-1 text-navy-900 dark:text-white">Typical Response Time</p>
+                <p className="text-slate-500 dark:text-slate-400 text-[13px] leading-relaxed">
                   Enterprise inquiries receive a response within 24 business hours. For urgent infrastructure support, call our direct line.
                 </p>
               </div>

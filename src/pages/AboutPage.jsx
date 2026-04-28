@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import PageLayout from '../components/PageLayout';
 import PageHero from '../components/PageHero';
 import CTABanner from '../components/CTABanner';
+import PartnerLogo from '../components/PartnerLogo';
 
 const MILESTONES = [
   { year: '1994', label: 'Founded', detail: 'Established in Addis Ababa with ETB 100,000 capital', active: false },
@@ -24,12 +25,12 @@ const DIFFERENTIATORS = [
 ];
 
 const DIFFERENTIATOR_CARDS = [
-  { icon: Trophy, title: "Ethiopia's Only Dell Platinum Partner", desc: "The highest tier in Dell's global partner program. No other Ethiopian company holds this status.", color: 'text-alta-amber', bg: 'bg-amber-50' },
-  { icon: Shield, title: '30-Year Local Track Record', desc: 'Continuous operation since 1994 — through every phase of Ethiopia\'s technology evolution.', color: 'text-alta-green', bg: 'bg-green-50' },
-  { icon: Layers, title: 'End-to-End IT Partnership', desc: 'From hardware procurement to software, deployment, and 24/7 support — all under one roof.', color: 'text-alta-blue', bg: 'bg-blue-50' },
-  { icon: Users, title: '130+ Certified Engineers', desc: 'Dell, Cisco, Oracle, and Kaspersky certified professionals on staff — no subcontracting.', color: 'text-alta-indigo', bg: 'bg-indigo-50' },
-  { icon: Building2, title: 'Government & Banking Trust', desc: "Trusted by Ethiopia's banks, ministries, and telecoms for mission-critical infrastructure.", color: 'text-alta-sky', bg: 'bg-sky-50' },
-  { icon: Globe, title: 'Global Brands, Local Service', desc: 'International vendor partnerships with on-the-ground Addis Ababa support and response.', color: 'text-alta-amber', bg: 'bg-amber-50' },
+  { icon: Trophy, title: "Ethiopia's Only Dell Platinum Partner", desc: "The highest tier in Dell's global partner program. No other Ethiopian company holds this status.", accent: '#F59E0B', accentLight: 'rgba(245,158,11,0.12)', accentBorder: 'rgba(245,158,11,0.35)' },
+  { icon: Shield, title: '30-Year Local Track Record', desc: 'Continuous operation since 1994 — through every phase of Ethiopia\'s technology evolution.', accent: '#16A34A', accentLight: 'rgba(22,163,74,0.12)', accentBorder: 'rgba(22,163,74,0.35)' },
+  { icon: Layers, title: 'End-to-End IT Partnership', desc: 'From hardware procurement to software, deployment, and 24/7 support — all under one roof.', accent: '#1B4FD8', accentLight: 'rgba(27,79,216,0.12)', accentBorder: 'rgba(27,79,216,0.35)' },
+  { icon: Users, title: '130+ Certified Engineers', desc: 'Dell, Cisco, Oracle, and Kaspersky certified professionals on staff — no subcontracting.', accent: '#6366F1', accentLight: 'rgba(99,102,241,0.12)', accentBorder: 'rgba(99,102,241,0.35)' },
+  { icon: Building2, title: 'Government & Banking Trust', desc: "Trusted by Ethiopia's banks, ministries, and telecoms for mission-critical infrastructure.", accent: '#0EA5E9', accentLight: 'rgba(14,165,233,0.12)', accentBorder: 'rgba(14,165,233,0.35)' },
+  { icon: Globe, title: 'Global Brands, Local Service', desc: 'International vendor partnerships with on-the-ground Addis Ababa support and response.', accent: '#F59E0B', accentLight: 'rgba(245,158,11,0.12)', accentBorder: 'rgba(245,158,11,0.35)' },
 ];
 
 const TEAM = [
@@ -146,22 +147,23 @@ export default function AboutPage() {
             </div>
 
             {/* Timeline */}
-            <div className="card-dark p-6 rounded-2xl">
-              <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500 mb-6">Company Timeline</p>
+            <div className="p-6 rounded-2xl border-2 bg-white dark:bg-navy-900" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+              <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-400 mb-6">Company Timeline</p>
               <div className="relative">
                 <div className="absolute left-[19px] top-5 bottom-5 w-px" style={{ background: 'linear-gradient(180deg, #1B4FD8, #22C55E)' }} aria-hidden="true" />
                 <div className="flex flex-col gap-5">
                   {MILESTONES.map((m) => (
                     <div key={m.year} className="flex items-start gap-4 relative">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 z-10 border-2 ${m.active ? 'bg-alta-green border-alta-green' : 'bg-navy-800 border-alta-blue/50'}`}
+                      <div
+                        className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 z-10 border-2 ${m.active ? 'bg-alta-green border-alta-green' : 'bg-slate-100 dark:bg-navy-800 border-alta-blue/50'}`}
                         style={m.active ? { boxShadow: '0 0 0 4px rgba(22,163,74,0.2), 0 0 16px rgba(22,163,74,0.35)' } : {}}
                       >
                         <span className={`text-[10px] font-black ${m.active ? 'text-white' : 'text-alta-blue'}`}>{m.year.slice(2)}</span>
                       </div>
                       <div className="pt-2">
                         <div className="flex items-center gap-2 mb-0.5">
-                          <span className="text-[11px] font-bold text-slate-500">{m.year}</span>
-                          <span className={`text-[13px] font-bold ${m.active ? 'text-alta-green-light' : 'text-white'}`}>{m.label}</span>
+                          <span className="text-[11px] font-bold text-slate-400">{m.year}</span>
+                          <span className={`text-[13px] font-bold ${m.active ? 'text-alta-green' : 'text-navy-900 dark:text-white'}`}>{m.label}</span>
                         </div>
                         <p className="text-[12px] text-slate-500 leading-relaxed">{m.detail}</p>
                       </div>
@@ -185,22 +187,35 @@ export default function AboutPage() {
       </section>
 
       {/* Section 3 — Differentiators */}
-      <section className="section-padding bg-slate-50/80">
+      <section className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container">
           <div className="text-center mb-12">
             <p className="overline-tag justify-center mb-3">Our Differentiators</p>
-            <h2 className="section-heading">What Sets Us Apart</h2>
+            <h2 className="section-heading dark:section-heading-light">What Sets Us Apart</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {DIFFERENTIATOR_CARDS.map((c) => {
               const Icon = c.icon;
               return (
-                <div key={c.title} className="card-light flex flex-col gap-4">
-                  <div className={`w-11 h-11 rounded-xl ${c.bg} flex items-center justify-center flex-shrink-0`}>
-                    <Icon size={20} className={c.color} aria-hidden="true" />
+                <div
+                  key={c.title}
+                  className="group relative flex flex-col gap-4 p-6 rounded-2xl border-2 bg-white dark:bg-navy-900 transition-all duration-250 hover:-translate-y-1 overflow-hidden"
+                  style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = c.accent;
+                    e.currentTarget.style.boxShadow = `0 12px 32px ${c.accentLight.replace('0.12', '0.25')}, 0 0 0 1px ${c.accentBorder}`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(226,232,240,0.8)';
+                    e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+                  }}
+                >
+                  <div className="absolute top-0 left-0 right-0 h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-250" style={{ background: `linear-gradient(90deg, ${c.accent}, ${c.accent}88)` }} aria-hidden="true" />
+                  <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-250" style={{ background: c.accentLight, border: `1px solid ${c.accentBorder}` }}>
+                    <Icon size={20} style={{ color: c.accent }} aria-hidden="true" />
                   </div>
                   <div>
-                    <h3 className="text-[15px] font-bold text-navy-900 mb-1.5">{c.title}</h3>
+                    <h3 className="text-[15px] font-bold text-navy-900 dark:text-white mb-1.5">{c.title}</h3>
                     <p className="text-[13px] text-slate-500 leading-relaxed">{c.desc}</p>
                   </div>
                 </div>
@@ -211,11 +226,11 @@ export default function AboutPage() {
       </section>
 
       {/* Section 4 — Leadership */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container">
           <div className="text-center mb-12">
             <p className="overline-tag justify-center mb-3">Our Team</p>
-            <h2 className="section-heading">The People Behind ALTA</h2>
+            <h2 className="section-heading dark:section-heading-light">The People Behind ALTA</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {TEAM.map((member, i) => {
@@ -229,8 +244,22 @@ export default function AboutPage() {
                 'from-red-500 to-rose-600',
                 'from-violet-600 to-purple-700',
               ];
+              const accentColors = ['#1B4FD8','#16A34A','#6366F1','#F59E0B','#0EA5E9','#22C55E','#EF4444','#8B5CF6'];
+              const accent = accentColors[i % accentColors.length];
               return (
-              <div key={member.name} className="card-light flex flex-col items-center gap-4 text-center">
+              <div
+                key={member.name}
+                className="group relative flex flex-col items-center gap-4 text-center p-6 rounded-2xl border-2 bg-white dark:bg-navy-900 transition-all duration-250 hover:-translate-y-1 overflow-hidden"
+                style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = accent;
+                  e.currentTarget.style.boxShadow = `0 12px 32px rgba(0,0,0,0.12), 0 0 0 1px ${accent}55`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(226,232,240,0.8)';
+                  e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+                }}
+              >
                 <div className={`w-[72px] h-[72px] rounded-full bg-gradient-to-br ${gradients[i % gradients.length]} flex items-center justify-center flex-shrink-0 shadow-md`}>
                   <span className="text-white font-black text-xl">{member.initials}</span>
                 </div>
@@ -284,24 +313,18 @@ export default function AboutPage() {
           </div>
           <div className="flex flex-wrap items-center justify-center gap-10 lg:gap-14">
             {[
-              { name: 'Dell', img: '/dell.png', badge: 'Platinum' },
-              { name: 'Cisco', img: '/cisco.png', badge: 'Premier' },
-              { name: 'Oracle', img: '/oracle.png', badge: 'Gold' },
-              { name: 'Kaspersky', img: '/kaspersky.png', badge: 'Platinum' },
-              { name: 'HP', img: '/hp.png', badge: 'Authorized' },
-              { name: 'Microsoft', img: '/microsoft.png', badge: 'Partner' },
-              { name: 'IBM', img: '/ibm.png', badge: 'Authorized' },
-              { name: 'Fortinet', img: '/fortinet.png', badge: 'Authorized' },
+              { name: 'Dell', badge: 'Platinum' },
+              { name: 'Cisco', badge: 'Premier' },
+              { name: 'Oracle', badge: 'Gold' },
+              { name: 'Kaspersky', badge: 'Platinum' },
+              { name: 'HP', badge: 'Authorized' },
+              { name: 'Microsoft', badge: 'Partner' },
+              { name: 'IBM', badge: 'Authorized' },
+              { name: 'Fortinet', badge: 'Authorized' },
             ].map((p) => (
               <div key={p.name} className="flex flex-col items-center gap-2.5 group cursor-default">
-                <div className="flex items-center justify-center" style={{ width: 112, height: 56 }}>
-                  <img
-                    src={p.img}
-                    alt={`${p.name} logo`}
-                    style={{ maxWidth: 110, maxHeight: 56, minHeight: 32, width: 'auto', height: 'auto' }}
-                    className="object-contain grayscale group-hover:grayscale-0 transition-all duration-200"
-                    loading="lazy"
-                  />
+                <div className="flex items-center justify-center group-hover:scale-110 transition-transform duration-200" style={{ width: 112, height: 64 }}>
+                  <PartnerLogo name={p.name} size={64} className="object-contain" />
                 </div>
                 <span className="text-[11px] font-semibold text-slate-400">{p.badge}</span>
               </div>

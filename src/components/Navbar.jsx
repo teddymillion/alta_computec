@@ -162,26 +162,26 @@ export default function Navbar() {
             {/* Logo */}
             <Link
               to="/"
-              className="flex items-center gap-2.5 flex-shrink-0 rounded-xl p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue"
+              className="flex items-center flex-shrink-0 rounded-xl p-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue"
               aria-label="ALTA Computec PLC — Home"
             >
-              <div className="relative w-9 h-9 rounded-lg overflow-hidden flex-shrink-0 shadow-md border border-white/10">
-                <img src="/alta_computec.jpg" alt="ALTA Computec PLC" className="w-full h-full object-cover" width="36" height="36" />
-              </div>
-              <div className="flex flex-col leading-none gap-0.5">
-                <span className="font-black text-[15px] tracking-tight leading-none text-white">ALTA</span>
-                <span className="text-[9px] font-bold tracking-[0.18em] uppercase leading-none text-slate-500">Computec PLC</span>
-              </div>
+              <img
+                src="/alta_logo_light.svg"
+                alt="ALTA Computec PLC"
+                className="h-8 w-auto"
+                width="160"
+                height="68"
+              />
             </Link>
 
             {/* Desktop Nav */}
-            <nav className="hidden lg:flex items-center min-w-0" aria-label="Main navigation">
+            <nav className="hidden lg:flex items-center min-w-0 mx-2" aria-label="Main navigation">
               {NAV_ITEMS.map((item) => {
                 const active = isActive(item);
                 return (
                   <div key={item.label} className="relative" onMouseEnter={() => openMenu(item.label)} onMouseLeave={closeMenu}>
                     <button
-                      className={`relative flex items-center gap-1 px-3.5 py-2 rounded-lg text-[13.5px] font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue ${
+                      className={`relative flex items-center gap-1 px-2.5 py-2 rounded-lg text-[13px] font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue ${
                         item.isGroup
                           ? 'text-amber-400 hover:text-amber-300'
                           : active
@@ -343,17 +343,13 @@ export default function Navbar() {
             </nav>
 
             {/* Right Actions */}
-            <div className="hidden lg:flex items-center gap-2 flex-shrink-0 whitespace-nowrap">
-              <a href="tel:+251115502928" className="flex items-center gap-1.5 text-[13px] font-medium px-3 py-2 rounded-lg transition-colors duration-150 text-slate-300 hover:text-white" aria-label="Call ALTA Computec">
-                <Phone size={13} aria-hidden="true" />
-                <span className="hidden xl:inline">+251 11 550 2928</span>
+            <div className="hidden lg:flex items-center gap-1.5 flex-shrink-0 whitespace-nowrap">
+              <a href="tel:+251115502928" className="flex items-center gap-1 text-[12px] font-medium px-2 py-1.5 rounded-lg transition-colors duration-150 text-slate-300 hover:text-white" aria-label="Call ALTA Computec">
+                <Phone size={12} aria-hidden="true" />
               </a>
-              <div className="w-px h-4 bg-white/15" aria-hidden="true" />
               <ThemeToggle />
-              <div className="w-px h-4 bg-white/15" aria-hidden="true" />
-              <button className="text-[12px] font-medium px-2 py-1.5 rounded-lg transition-colors duration-150 text-slate-300 hover:text-white" aria-label="Switch language">EN | AM</button>
-              <Link to="/contact" className="btn-primary !text-[13px] !px-4 !py-2.5 ml-1 whitespace-nowrap" style={{ minHeight: '38px' }}>
-                Get a Quote <ArrowRight size={13} />
+              <Link to="/contact" className="btn-primary !text-[12px] !px-3.5 !py-2 whitespace-nowrap" style={{ minHeight: '34px' }}>
+                Get a Quote
               </Link>
             </div>
 
@@ -388,14 +384,8 @@ export default function Navbar() {
           }}
         >
           <div className="flex items-center justify-between h-16 px-4 border-b border-white/8">
-            <Link to="/" className="flex items-center gap-3" onClick={() => setMobileOpen(false)}>
-              <div className="relative w-9 h-9 rounded-lg overflow-hidden flex-shrink-0 border border-white/10">
-                <img src="/alta_computec.jpg" alt="ALTA Computec PLC" className="w-full h-full object-cover" width="36" height="36" />
-              </div>
-              <div className="flex flex-col leading-none gap-0.5">
-                <span className="font-black text-[15px] text-white tracking-tight">ALTA</span>
-                <span className="text-[9px] font-bold tracking-[0.18em] uppercase text-slate-500">Computec PLC</span>
-              </div>
+            <Link to="/" className="flex items-center" onClick={() => setMobileOpen(false)}>
+              <img src="/alta_logo_light.svg" alt="ALTA Computec PLC" className="h-8 w-auto" width="160" height="68" />
             </Link>
             <button
               className="p-2 text-slate-400 hover:text-white rounded-xl transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue"

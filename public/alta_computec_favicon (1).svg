@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+  <rect x="0" y="0" width="500" height="500" rx="80" fill="#ffffff"/>
+
+  <!-- A (first): left leg -->
+  <polygon points="42,430 62,430 95,90 75,90" fill="#1B75BB"/>
+  <!-- A (first): right leg -->
+  <polygon points="95,430 115,430 82,90 62,90" fill="#1B75BB"/>
+  <!-- A (first): lime crossbar -->
+  <rect x="48" y="300" width="62" height="18" rx="3" fill="#8DC63F"/>
+  <!-- A (first): white counter -->
+  <polygon points="78,118 53,296 103,296" fill="#ffffff"/>
+
+  <!-- L: vertical stroke -->
+  <rect x="118" y="90" width="20" height="325" rx="3" fill="#1B75BB"/>
+  <!-- L: lime foot -->
+  <rect x="118" y="415" width="68" height="18" rx="3" fill="#8DC63F"/>
+
+  <!-- T: lime top bar -->
+  <rect x="155" y="90" width="80" height="18" rx="3" fill="#8DC63F"/>
+  <!-- T: vertical stem -->
+  <rect x="185" y="108" width="20" height="325" rx="3" fill="#1B75BB"/>
+
+  <!-- A (second): left leg -->
+  <polygon points="248,430 268,430 301,90 281,90" fill="#1B75BB"/>
+  <!-- A (second): right leg -->
+  <polygon points="301,430 321,430 288,90 268,90" fill="#1B75BB"/>
+  <!-- A (second): lime crossbar -->
+  <rect x="254" y="300" width="62" height="18" rx="3" fill="#8DC63F"/>
+  <!-- A (second): white counter -->
+  <polygon points="284,118 259,296 309,296" fill="#ffffff"/>
+
+  <!-- Unifying lime baseline -->
+  <rect x="42" y="430" width="280" height="8" rx="3" fill="#8DC63F"/>
+</svg>

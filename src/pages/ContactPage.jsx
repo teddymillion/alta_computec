@@ -25,26 +25,34 @@ export default function ContactPage() {
         <div className="section-container">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-0">
             {[
-              { icon: Phone, label: 'Phone', value: '+251 11 550 2928', sub: 'Mon–Fri, 8AM–6PM EAT', cta: 'Call Now', href: 'tel:+251115502928', iconBg: 'bg-blue-50', iconColor: 'text-alta-blue', responseTime: 'Immediate' },
-              { icon: Mail, label: 'Email', value: 'info@altacomputec.com', sub: 'Business inquiries welcome', cta: 'Send Email', href: 'mailto:info@altacomputec.com', iconBg: 'bg-green-50', iconColor: 'text-alta-green', responseTime: 'Within 24 hrs' },
-              { icon: MessageCircle, label: 'WhatsApp', value: 'Chat with us directly', sub: 'Quick responses on WhatsApp', cta: 'Open WhatsApp', href: 'https://wa.me/251115502928', iconBg: 'bg-green-50', iconColor: 'text-alta-green-light', external: true, responseTime: 'Same day' },
+              { icon: Phone, label: 'Phone', value: '+251 11 550 2928', sub: 'Mon–Fri, 8AM–6PM EAT', cta: 'Call Now', href: 'tel:+251115502928', accent: '#1B4FD8', accentLight: 'rgba(27,79,216,0.12)', accentBorder: 'rgba(27,79,216,0.35)', responseTime: 'Immediate' },
+              { icon: Mail, label: 'Email', value: 'info@altacomputec.com', sub: 'Business inquiries welcome', cta: 'Send Email', href: 'mailto:info@altacomputec.com', accent: '#16A34A', accentLight: 'rgba(22,163,74,0.12)', accentBorder: 'rgba(22,163,74,0.35)', responseTime: 'Within 24 hrs' },
+              { icon: MessageCircle, label: 'WhatsApp', value: 'Chat with us directly', sub: 'Quick responses on WhatsApp', cta: 'Open WhatsApp', href: 'https://wa.me/251115502928', accent: '#22C55E', accentLight: 'rgba(34,197,94,0.12)', accentBorder: 'rgba(34,197,94,0.35)', external: true, responseTime: 'Same day' },
             ].map((item) => {
               const Icon = item.icon;
               return (
                 <div
                   key={item.label}
-                  className="card-light flex flex-col gap-4 relative overflow-hidden group"
-                  style={{ '--accent': item.iconColor.includes('blue') ? '#1B4FD8' : '#16A34A' }}
+                  className="group relative flex flex-col gap-4 p-6 rounded-2xl border-2 bg-white dark:bg-navy-900 transition-all duration-250 hover:-translate-y-1 overflow-hidden"
+                  style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = item.accent;
+                    e.currentTarget.style.boxShadow = `0 12px 32px ${item.accentLight.replace('0.12', '0.25')}, 0 0 0 1px ${item.accentBorder}`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(226,232,240,0.8)';
+                    e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+                  }}
                 >
                   {/* Hover top border */}
                   <div
-                    className="absolute top-0 left-0 right-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{ background: `linear-gradient(90deg, #1B4FD8, #22C55E)` }}
+                    className="absolute top-0 left-0 right-0 h-1 opacity-0 group-hover:opacity-100 transition-opacity duration-250"
+                    style={{ background: `linear-gradient(90deg, ${item.accent}, ${item.accent}88)` }}
                     aria-hidden="true"
                   />
                   <div className="flex items-center justify-between">
-                    <div className={`w-11 h-11 rounded-xl ${item.iconBg} flex items-center justify-center flex-shrink-0`}>
-                      <Icon size={20} className={item.iconColor} aria-hidden="true" />
+                    <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-250" style={{ background: item.accentLight, border: `1px solid ${item.accentBorder}` }}>
+                      <Icon size={20} style={{ color: item.accent }} aria-hidden="true" />
                     </div>
                     {item.responseTime && (
                       <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-alta-green/10 text-alta-green border border-alta-green/20">
@@ -74,7 +82,7 @@ export default function ContactPage() {
       </section>
 
       {/* Main Form + Office Info */}
-      <section className="section-padding bg-slate-50/80">
+      <section className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container">
           <div className="grid lg:grid-cols-[60%_40%] gap-10 lg:gap-12">
 
