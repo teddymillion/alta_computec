@@ -389,9 +389,6 @@ function ConfiguratorForm({ subcategory, accent }) {
   const [formData, setFormData] = useState({});
   const [errors,   setErrors]   = useState({});
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [apiError, setApiError] = useState('');
-  const [fe, setFe] = useState({});
 
   // Reset form when subcategory changes
   const key = subcategory; // we also use it as a key on the outer div
@@ -401,42 +398,18 @@ function ConfiguratorForm({ subcategory, accent }) {
     setErrors(prev  => ({ ...prev, [id]: false }));
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const config = FORM_CONFIGS[subcategory] || getGenericConfig(subcategory);
     const newErrors = {};
     config.sections.forEach(s => s.fields.forEach(f => {
       if (f.required && !formData[f.id]) newErrors[f.id] = true;
     }));
-    // email format check
-    const emailVal = formData.email || '';
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (emailVal && !EMAIL_RE.test(emailVal)) newErrors.email = true;
+    if (formData.email && !EMAIL_RE.test(formData.email)) newErrors.email = true;
     if (Object.keys(newErrors).length) { setErrors(newErrors); return; }
     setErrors({});
-    setLoading(true);
-    setApiError('');
-    try {
-      const res = await fetch('/api/quote', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          subcategory,
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-          phone: formData.phone || '',
-          specs: formData,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Submission failed');
-      setSubmitted(true);
-    } catch (err) {
-      setApiError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    setSubmitted(true);
   };
 
   if (submitted) {
@@ -495,9 +468,8 @@ function ConfiguratorForm({ subcategory, accent }) {
 
         {/* Submit area */}
         <div className="bg-slate-50 rounded-xl p-5 mt-7">
-          {apiError && <p className="text-red-500 text-[13px] mb-3">{apiError}</p>}
-          <button type="submit" disabled={loading} className="btn-primary w-full justify-center text-[14px] py-3.5">
-            {loading ? 'Sending...' : 'Submit Configuration Request'} <ArrowRight size={15} />
+          <button type="submit" className="btn-primary w-full justify-center text-[14px] py-3.5">
+            Submit Configuration Request <ArrowRight size={15} />
           </button>
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mt-4">
             {['Our team responds within 24 hours', 'Free consultation included', 'No commitment required'].map(r => (
@@ -624,7 +596,6 @@ export default function ProductsPage() {
   const [activeCat,  setActiveCat]  = useState(null);
   const [rfqLoading, setRfqLoading] = useState(false);
   const [rfqSuccess, setRfqSuccess] = useState(false);
-  const [rfqError,   setRfqError]   = useState('');
   const [rfqFe,      setRfqFe]      = useState({});
 
   async function handleRfqSubmit(e) {
@@ -633,22 +604,7 @@ export default function ProductsPage() {
     const errs = validateFields({ fullName: body.fullName, email: body.email, organisation: body.organisation });
     if (Object.keys(errs).length) { setRfqFe(errs); return; }
     setRfqFe({});
-    setRfqLoading(true);
-    setRfqError('');
-    try {
-      const res = await fetch('/api/rfq', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Submission failed');
-      setRfqSuccess(true);
-    } catch (err) {
-      setRfqError(err.message);
-    } finally {
-      setRfqLoading(false);
-    }
+    setRfqSuccess(true);
   }
 
   const handleSelectSub = (sub, cat) => {
@@ -927,8 +883,8 @@ export default function ProductsPage() {
                 </div>
               </div>
               {rfqError && <p className="text-red-500 text-[13px]">{rfqError}</p>}
-              <button type="submit" disabled={rfqLoading} className="btn-primary w-full justify-center text-[15px] py-4 mt-2">
-                {rfqLoading ? 'Sending...' : 'Submit RFQ'} <ArrowRight size={15} />
+              <button type="submit" className="btn-primary w-full justify-center text-[15px] py-4 mt-2">
+                Submit RFQ <ArrowRight size={15} />
               </button>
             </form>
             )}

@@ -15,7 +15,6 @@ const labelClass = "form-label";
 export default function Contact() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
   const [fe, setFe] = useState({});
 
   async function handleSubmit(e) {
@@ -24,22 +23,7 @@ export default function Contact() {
     const errs = validateFields({ firstName: body.firstName, lastName: body.lastName, email: body.email, company: body.organisation });
     if (Object.keys(errs).length) { setFe(errs); return; }
     setFe({});
-    setLoading(true);
-    setError('');
-    try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Submission failed');
-      setSuccess(true);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    setSuccess(true);
   }
 
   return (
@@ -171,11 +155,10 @@ export default function Contact() {
                 />
               </div>
 
-              {error && <p className="text-red-500 text-[13px]">{error}</p>}
-
-              <button type="submit" disabled={loading} className="btn-primary w-full justify-center text-[15px] py-4">
+              {loading && null}
+              <button type="submit" className="btn-primary w-full justify-center text-[15px] py-4">
                 <Send size={15} aria-hidden="true" />
-                {loading ? 'Sending...' : 'Submit Request'}
+                Submit Request
               </button>
 
               <p className="text-[11px] text-slate-400 text-center leading-relaxed">

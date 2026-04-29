@@ -77,7 +77,6 @@ const PROCESS_STEPS = [
 export default function CareersPage() {
   const [activeRole, setActiveRole] = useState('All');
   const [selectedJob, setSelectedJob] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [applyError, setApplyError] = useState('');
   const [applySuccess, setApplySuccess] = useState(false);
   const [applyFe, setApplyFe] = useState({});
@@ -88,8 +87,8 @@ export default function CareersPage() {
     const errs = validateFields({ fullName: data.fullName, email: data.email, cvFile: data.cvFile?.name ? data.cvFile.name : '' });
     if (Object.keys(errs).length) { setApplyError(''); setApplyFe(errs); return; }
     setApplyFe({});
-    setLoading(true);
-    setApplyError('');
+    setApplySuccess(true);
+  };
     const formData = new FormData(e.target);
     formData.set('jobTitle', selectedJob.title);
     formData.set('department', selectedJob.dept);
@@ -377,8 +376,8 @@ export default function CareersPage() {
                 </div>
                 <div><label className="form-label">Cover Note</label><textarea name="coverNote" rows={3} className="form-input resize-none" placeholder="Tell us why you're a great fit..." /></div>
                 {applyError && <p className="text-red-500 text-[13px]">{applyError}</p>}
-                <button type="submit" disabled={loading} className="btn-primary w-full justify-center">
-                  {loading ? 'Submitting...' : 'Submit Application'} <ArrowRight size={15} />
+                <button type="submit" className="btn-primary w-full justify-center">
+                  Submit Application <ArrowRight size={15} />
                 </button>
               </form>
               )}

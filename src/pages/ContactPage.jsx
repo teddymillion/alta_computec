@@ -16,9 +16,7 @@ const FAQS = [
 
 export default function ContactPage() {
   const [openFaq, setOpenFaq] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
   const [fe, setFe] = useState({});
 
   async function handleSubmit(e) {
@@ -27,22 +25,7 @@ export default function ContactPage() {
     const errs = validateFields({ firstName: body.firstName, lastName: body.lastName, email: body.email, organisation: body.organisation });
     if (Object.keys(errs).length) { setFe(errs); return; }
     setFe({});
-    setLoading(true);
-    setError('');
-    try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Submission failed');
-      setSuccess(true);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    setSuccess(true);
   }
 
   return (
@@ -174,8 +157,8 @@ export default function ContactPage() {
                   </select>
                 </div>
                 {error && <p className="text-red-500 text-[13px]">{error}</p>}
-                <button type="submit" disabled={loading} className="btn-primary w-full justify-center text-[15px] py-4 mt-1">
-                  <Send size={15} aria-hidden="true" /> {loading ? 'Sending...' : 'Send Request'}
+                <button type="submit" className="btn-primary w-full justify-center text-[15px] py-4 mt-1">
+                  <Send size={15} aria-hidden="true" /> Send Request
                 </button>
                 <div className="flex flex-wrap items-center justify-center gap-4 pt-1">
                   {['Free consultation', 'Response within 24 hours', 'No commitment required'].map((item) => (
