@@ -89,9 +89,10 @@ export default function CareersPage() {
     formData.set('department', selectedJob.dept);
     try {
       const res = await fetch('/api/apply', { method: 'POST', body: formData });
-      const data = await res.json();
+      const text = await res.text();
+      const data = text ? JSON.parse(text) : {};
       if (!res.ok) {
-        const firstError = Object.values(data.errors || {})[0]?.[0] || data.message;
+        const firstError = Object.values(data.errors || {})[0]?.[0] || data.message || 'Submission failed';
         throw new Error(firstError);
       }
       setApplySuccess(true);

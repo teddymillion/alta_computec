@@ -3,7 +3,6 @@ import { Phone, Mail, MessageCircle, MapPin, CheckCircle2, ChevronDown, ArrowRig
 import { Link } from 'react-router-dom';
 import PageLayout from '../components/PageLayout';
 import PageHero from '../components/PageHero';
-import { validateFields, errCls } from '../hooks/useFormValidation';
 
 const FAQS = [
   { q: 'How quickly can ALTA respond to a request for quotation?', a: 'Our sales team typically responds to RFQs within 24 hours on business days. For urgent government procurement deadlines, same-day response is available by calling directly.' },
@@ -16,16 +15,29 @@ const FAQS = [
 
 export default function ContactPage() {
   const [openFaq, setOpenFaq] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [fe, setFe] = useState({});
+  const [error, setError] = useState('');
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setLoading(true);
+    setError('');
     const body = Object.fromEntries(new FormData(e.target));
-    const errs = validateFields({ firstName: body.firstName, lastName: body.lastName, email: body.email, organisation: body.organisation });
-    if (Object.keys(errs).length) { setFe(errs); return; }
-    setFe({});
-    setSuccess(true);
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Submission failed');
+      setSuccess(true);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -112,24 +124,20 @@ export default function ContactPage() {
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label className="form-label">First Name *</label>
-                    <input name="firstName" type="text" autoComplete="given-name" className={`form-input${errCls(fe.firstName)}`} placeholder="Tadesse" />
-                    {fe.firstName && <p className="text-red-500 text-[11px] mt-1">{fe.firstName}</p>}
+                    <input name="firstName" type="text" autoComplete="given-name" className="form-input" placeholder="Tadesse" />
                   </div>
                   <div>
                     <label className="form-label">Last Name *</label>
-                    <input name="lastName" type="text" autoComplete="family-name" className={`form-input${errCls(fe.lastName)}`} placeholder="Bekele" />
-                    {fe.lastName && <p className="text-red-500 text-[11px] mt-1">{fe.lastName}</p>}
+                    <input name="lastName" type="text" autoComplete="family-name" className="form-input" placeholder="Bekele" />
                   </div>
                 </div>
                 <div>
                   <label className="form-label">Work Email *</label>
-                  <input name="email" type="email" autoComplete="email" className={`form-input${errCls(fe.email)}`} placeholder="tadesse@organization.com" />
-                  {fe.email && <p className="text-red-500 text-[11px] mt-1">{fe.email}</p>}
+                  <input name="email" type="email" autoComplete="email" className="form-input" placeholder="tadesse@organization.com" />
                 </div>
                 <div>
                   <label className="form-label">Organisation *</label>
-                  <input name="organisation" type="text" autoComplete="organization" className={`form-input${errCls(fe.organisation)}`} placeholder="Commercial Bank of Ethiopia" />
-                  {fe.organisation && <p className="text-red-500 text-[11px] mt-1">{fe.organisation}</p>}
+                  <input name="organisation" type="text" autoComplete="organization" className="form-input" placeholder="Commercial Bank of Ethiopia" />
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div><label className="form-label">Job Title</label><input name="jobTitle" type="text" className="form-input" placeholder="IT Director" /></div>
@@ -157,8 +165,8 @@ export default function ContactPage() {
                   </select>
                 </div>
                 {error && <p className="text-red-500 text-[13px]">{error}</p>}
-                <button type="submit" className="btn-primary w-full justify-center text-[15px] py-4 mt-1">
-                  <Send size={15} aria-hidden="true" /> Send Request
+                <button type="submit" disabled={loading} className="btn-primary w-full justify-center text-[15px] py-4 mt-1">
+                  <Send size={15} aria-hidden="true" /> {loading ? 'Sending...' : 'Send Request'}
                 </button>
                 <div className="flex flex-wrap items-center justify-center gap-4 pt-1">
                   {['Free consultation', 'Response within 24 hours', 'No commitment required'].map((item) => (

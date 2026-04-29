@@ -72,7 +72,11 @@ export default function App() {
   }, []);
 
   if (loading) {
-    return <LoadingScreen onDone={() => setLoading(false)} />;
+    return (
+      <ThemeProvider>
+        <LoadingScreen onDone={() => setLoading(false)} />
+      </ThemeProvider>
+    );
   }
 
   return (
