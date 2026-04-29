@@ -88,7 +88,7 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'llama3-70b-8192',
+        model: 'llama-3.3-70b-versatile',
         messages: groqMessages,
         max_tokens: 512,
         temperature: 0.7,
@@ -98,7 +98,7 @@ export default async function handler(req, res) {
     if (!response.ok) {
       const err = await response.text();
       console.error('Groq API error:', response.status, err);
-      return res.status(200).json({ reply: `Groq error ${response.status}: ${err.slice(0, 300)}` });
+      return res.status(502).json({ reply: 'Our AI assistant is temporarily unavailable. Please contact us at +251 11 550 2928.' });
     }
 
     const data = await response.json();
