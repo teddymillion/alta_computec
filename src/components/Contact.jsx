@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Phone, Mail, MapPin, Clock, ArrowRight, Send } from 'lucide-react';
+import { validateFields, errCls } from '../hooks/useFormValidation';
 
 const CONTACT_ITEMS = [
   { icon: Phone,  label: 'Phone',        value: '+251-115-50-29-28',                                    href: 'tel:+251115502928',                                          accent: '#1B4FD8', accentLight: 'rgba(27,79,216,0.12)',  accentBorder: 'rgba(27,79,216,0.35)' },
@@ -15,12 +16,16 @@ export default function Contact() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [fe, setFe] = useState({});
 
   async function handleSubmit(e) {
     e.preventDefault();
+    const body = Object.fromEntries(new FormData(e.target));
+    const errs = validateFields({ firstName: body.firstName, lastName: body.lastName, email: body.email, company: body.organisation });
+    if (Object.keys(errs).length) { setFe(errs); return; }
+    setFe({});
     setLoading(true);
     setError('');
-    const body = Object.fromEntries(new FormData(e.target));
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
@@ -106,23 +111,27 @@ export default function Contact() {
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="firstName" className={labelClass}>First Name <span className="text-red-400" aria-hidden="true">*</span></label>
-                  <input id="firstName" name="firstName" type="text" required autoComplete="given-name" placeholder="Tadesse" className={inputClass} aria-required="true" />
+                  <input id="firstName" name="firstName" type="text" autoComplete="given-name" placeholder="Tadesse" className={inputClass + errCls(fe.firstName)} aria-required="true" />
+                  {fe.firstName && <p className="text-red-500 text-[11px] mt-1">{fe.firstName}</p>}
                 </div>
                 <div>
                   <label htmlFor="lastName" className={labelClass}>Last Name <span className="text-red-400" aria-hidden="true">*</span></label>
-                  <input id="lastName" name="lastName" type="text" required autoComplete="family-name" placeholder="Bekele" className={inputClass} aria-required="true" />
+                  <input id="lastName" name="lastName" type="text" autoComplete="family-name" placeholder="Bekele" className={inputClass + errCls(fe.lastName)} aria-required="true" />
+                  {fe.lastName && <p className="text-red-500 text-[11px] mt-1">{fe.lastName}</p>}
                 </div>
               </div>
 
               <div>
                 <label htmlFor="email" className={labelClass}>Work Email <span className="text-red-400" aria-hidden="true">*</span></label>
-                <input id="email" name="email" type="email" required autoComplete="email" placeholder="tadesse@organization.com" className={inputClass} aria-required="true" />
+                <input id="email" name="email" type="email" autoComplete="email" placeholder="tadesse@organization.com" className={inputClass + errCls(fe.email)} aria-required="true" />
+                {fe.email && <p className="text-red-500 text-[11px] mt-1">{fe.email}</p>}
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="company" className={labelClass}>Organization <span className="text-red-400" aria-hidden="true">*</span></label>
-                  <input id="company" name="organisation" type="text" required autoComplete="organization" placeholder="Commercial Bank of Ethiopia" className={inputClass} aria-required="true" />
+                  <input id="company" name="organisation" type="text" autoComplete="organization" placeholder="Commercial Bank of Ethiopia" className={inputClass + errCls(fe.company)} aria-required="true" />
+                  {fe.company && <p className="text-red-500 text-[11px] mt-1">{fe.company}</p>}
                 </div>
                 <div>
                   <label htmlFor="sector" className={labelClass}>Sector</label>

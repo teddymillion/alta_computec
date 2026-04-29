@@ -8,6 +8,7 @@ import PageLayout from '../components/PageLayout';
 import PageHero from '../components/PageHero';
 import PartnerLogo from '../components/PartnerLogo';
 import { CATEGORIES, PRODUCTS } from '../data/products';
+import { validateFields, errCls } from '../hooks/useFormValidation';
 
 // ─── Icon map (category icon strings → Lucide components) ─────────────────
 const ICON_MAP = { Monitor, Server, Zap, CreditCard, Video, Layers, Package };
@@ -274,6 +275,10 @@ function Field({ field, formData, onChange, errors }) {
   }
 
   if (field.type === 'text' || field.type === 'email' || field.type === 'tel') {
+    const isEmail = field.type === 'email';
+    const errMsg  = err
+      ? (isEmail && val ? 'Enter a valid email address' : 'This field is required')
+      : null;
     return (
       <div className={wrap}>
         <label className="form-label">{field.label}{field.required && ' *'}</label>
@@ -284,7 +289,7 @@ function Field({ field, formData, onChange, errors }) {
           placeholder={field.placeholder || ''}
           onChange={e => onChange(field.id, e.target.value)}
         />
-        {err && <p className="text-red-500 text-[11px] mt-1">This field is required</p>}
+        {errMsg && <p className="text-red-500 text-[11px] mt-1">{errMsg}</p>}
       </div>
     );
   }
@@ -386,6 +391,7 @@ function ConfiguratorForm({ subcategory, accent }) {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState('');
+  const [fe, setFe] = useState({});
 
   // Reset form when subcategory changes
   const key = subcategory; // we also use it as a key on the outer div
@@ -402,7 +408,12 @@ function ConfiguratorForm({ subcategory, accent }) {
     config.sections.forEach(s => s.fields.forEach(f => {
       if (f.required && !formData[f.id]) newErrors[f.id] = true;
     }));
+    // email format check
+    const emailVal = formData.email || '';
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (emailVal && !EMAIL_RE.test(emailVal)) newErrors.email = true;
     if (Object.keys(newErrors).length) { setErrors(newErrors); return; }
+    setErrors({});
     setLoading(true);
     setApiError('');
     try {
@@ -614,12 +625,16 @@ export default function ProductsPage() {
   const [rfqLoading, setRfqLoading] = useState(false);
   const [rfqSuccess, setRfqSuccess] = useState(false);
   const [rfqError,   setRfqError]   = useState('');
+  const [rfqFe,      setRfqFe]      = useState({});
 
   async function handleRfqSubmit(e) {
     e.preventDefault();
+    const body = Object.fromEntries(new FormData(e.target));
+    const errs = validateFields({ fullName: body.fullName, email: body.email, organisation: body.organisation });
+    if (Object.keys(errs).length) { setRfqFe(errs); return; }
+    setRfqFe({});
     setRfqLoading(true);
     setRfqError('');
-    const body = Object.fromEntries(new FormData(e.target));
     try {
       const res = await fetch('/api/rfq', {
         method: 'POST',
@@ -874,11 +889,23 @@ export default function ProductsPage() {
             ) : (
             <form className="flex flex-col gap-4" onSubmit={handleRfqSubmit} noValidate>
               <div className="grid sm:grid-cols-2 gap-4">
-                <div><label className="form-label">Full Name *</label><input name="fullName" type="text" required className="form-input" placeholder="Tadesse Bekele" /></div>
-                <div><label className="form-label">Organisation *</label><input name="organisation" type="text" required className="form-input" placeholder="Commercial Bank of Ethiopia" /></div>
+                <div>
+                  <label className="form-label">Full Name *</label>
+                  <input name="fullName" type="text" className={`form-input${errCls(rfqFe.fullName)}`} placeholder="Tadesse Bekele" />
+                  {rfqFe.fullName && <p className="text-red-500 text-[11px] mt-1">{rfqFe.fullName}</p>}
+                </div>
+                <div>
+                  <label className="form-label">Organisation *</label>
+                  <input name="organisation" type="text" className={`form-input${errCls(rfqFe.organisation)}`} placeholder="Commercial Bank of Ethiopia" />
+                  {rfqFe.organisation && <p className="text-red-500 text-[11px] mt-1">{rfqFe.organisation}</p>}
+                </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
-                <div><label className="form-label">Email *</label><input name="email" type="email" required className="form-input" placeholder="tadesse@org.com" /></div>
+                <div>
+                  <label className="form-label">Email *</label>
+                  <input name="email" type="email" className={`form-input${errCls(rfqFe.email)}`} placeholder="tadesse@org.com" />
+                  {rfqFe.email && <p className="text-red-500 text-[11px] mt-1">{rfqFe.email}</p>}
+                </div>
                 <div><label className="form-label">Phone</label><input name="phone" type="tel" className="form-input" placeholder="+251 911 000 000" /></div>
               </div>
               <div>

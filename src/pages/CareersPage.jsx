@@ -3,6 +3,7 @@ import { Briefcase, Award, TrendingUp, Users, Globe, Monitor, X, MapPin, Clock, 
 import { Link } from 'react-router-dom';
 import PageLayout from '../components/PageLayout';
 import PageHero from '../components/PageHero';
+import { validateFields, errCls } from '../hooks/useFormValidation';
 
 const BENEFITS = [
   { icon: Briefcase, title: 'Competitive Compensation', desc: 'Market-leading salaries with performance bonuses and benefits.', accent: '#1B4FD8', accentLight: 'rgba(27,79,216,0.12)', accentBorder: 'rgba(27,79,216,0.35)' },
@@ -79,9 +80,14 @@ export default function CareersPage() {
   const [loading, setLoading] = useState(false);
   const [applyError, setApplyError] = useState('');
   const [applySuccess, setApplySuccess] = useState(false);
+  const [applyFe, setApplyFe] = useState({});
 
   const handleApply = async (e) => {
     e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.target));
+    const errs = validateFields({ fullName: data.fullName, email: data.email, cvFile: data.cvFile?.name ? data.cvFile.name : '' });
+    if (Object.keys(errs).length) { setApplyError(''); setApplyFe(errs); return; }
+    setApplyFe({});
     setLoading(true);
     setApplyError('');
     const formData = new FormData(e.target);
@@ -354,9 +360,21 @@ export default function CareersPage() {
               ) : (
               <form className="flex flex-col gap-4 pt-2 border-t border-slate-100" onSubmit={handleApply} noValidate>
                 <p className="font-bold text-navy-900 text-[14px]">Apply Now</p>
-                <div><label className="form-label">Full Name *</label><input name="fullName" type="text" required className="form-input" placeholder="Your full name" /></div>
-                <div><label className="form-label">Email *</label><input name="email" type="email" required className="form-input" placeholder="your@email.com" /></div>
-                <div><label className="form-label">CV / Resume *</label><input name="cvFile" type="file" accept=".pdf,.doc,.docx" required className="form-input !py-2" /></div>
+                <div>
+                  <label className="form-label">Full Name *</label>
+                  <input name="fullName" type="text" className={`form-input${errCls(applyFe.fullName)}`} placeholder="Your full name" />
+                  {applyFe.fullName && <p className="text-red-500 text-[11px] mt-1">{applyFe.fullName}</p>}
+                </div>
+                <div>
+                  <label className="form-label">Email *</label>
+                  <input name="email" type="email" className={`form-input${errCls(applyFe.email)}`} placeholder="your@email.com" />
+                  {applyFe.email && <p className="text-red-500 text-[11px] mt-1">{applyFe.email}</p>}
+                </div>
+                <div>
+                  <label className="form-label">CV / Resume *</label>
+                  <input name="cvFile" type="file" accept=".pdf,.doc,.docx" className={`form-input !py-2${errCls(applyFe.cvFile)}`} />
+                  {applyFe.cvFile && <p className="text-red-500 text-[11px] mt-1">{applyFe.cvFile}</p>}
+                </div>
                 <div><label className="form-label">Cover Note</label><textarea name="coverNote" rows={3} className="form-input resize-none" placeholder="Tell us why you're a great fit..." /></div>
                 {applyError && <p className="text-red-500 text-[13px]">{applyError}</p>}
                 <button type="submit" disabled={loading} className="btn-primary w-full justify-center">

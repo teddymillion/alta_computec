@@ -3,6 +3,7 @@ import { Phone, Mail, MessageCircle, MapPin, CheckCircle2, ChevronDown, ArrowRig
 import { Link } from 'react-router-dom';
 import PageLayout from '../components/PageLayout';
 import PageHero from '../components/PageHero';
+import { validateFields, errCls } from '../hooks/useFormValidation';
 
 const FAQS = [
   { q: 'How quickly can ALTA respond to a request for quotation?', a: 'Our sales team typically responds to RFQs within 24 hours on business days. For urgent government procurement deadlines, same-day response is available by calling directly.' },
@@ -18,12 +19,16 @@ export default function ContactPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [fe, setFe] = useState({});
 
   async function handleSubmit(e) {
     e.preventDefault();
+    const body = Object.fromEntries(new FormData(e.target));
+    const errs = validateFields({ firstName: body.firstName, lastName: body.lastName, email: body.email, organisation: body.organisation });
+    if (Object.keys(errs).length) { setFe(errs); return; }
+    setFe({});
     setLoading(true);
     setError('');
-    const body = Object.fromEntries(new FormData(e.target));
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
@@ -122,11 +127,27 @@ export default function ContactPage() {
               ) : (
               <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <div><label className="form-label">First Name *</label><input name="firstName" type="text" required autoComplete="given-name" className="form-input" placeholder="Tadesse" /></div>
-                  <div><label className="form-label">Last Name *</label><input name="lastName" type="text" required autoComplete="family-name" className="form-input" placeholder="Bekele" /></div>
+                  <div>
+                    <label className="form-label">First Name *</label>
+                    <input name="firstName" type="text" autoComplete="given-name" className={`form-input${errCls(fe.firstName)}`} placeholder="Tadesse" />
+                    {fe.firstName && <p className="text-red-500 text-[11px] mt-1">{fe.firstName}</p>}
+                  </div>
+                  <div>
+                    <label className="form-label">Last Name *</label>
+                    <input name="lastName" type="text" autoComplete="family-name" className={`form-input${errCls(fe.lastName)}`} placeholder="Bekele" />
+                    {fe.lastName && <p className="text-red-500 text-[11px] mt-1">{fe.lastName}</p>}
+                  </div>
                 </div>
-                <div><label className="form-label">Work Email *</label><input name="email" type="email" required autoComplete="email" className="form-input" placeholder="tadesse@organization.com" /></div>
-                <div><label className="form-label">Organisation *</label><input name="organisation" type="text" required autoComplete="organization" className="form-input" placeholder="Commercial Bank of Ethiopia" /></div>
+                <div>
+                  <label className="form-label">Work Email *</label>
+                  <input name="email" type="email" autoComplete="email" className={`form-input${errCls(fe.email)}`} placeholder="tadesse@organization.com" />
+                  {fe.email && <p className="text-red-500 text-[11px] mt-1">{fe.email}</p>}
+                </div>
+                <div>
+                  <label className="form-label">Organisation *</label>
+                  <input name="organisation" type="text" autoComplete="organization" className={`form-input${errCls(fe.organisation)}`} placeholder="Commercial Bank of Ethiopia" />
+                  {fe.organisation && <p className="text-red-500 text-[11px] mt-1">{fe.organisation}</p>}
+                </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div><label className="form-label">Job Title</label><input name="jobTitle" type="text" className="form-input" placeholder="IT Director" /></div>
                   <div>
