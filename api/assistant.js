@@ -74,9 +74,10 @@ export default async function handler(req, res) {
   const history = messages.slice(1).slice(-10);
   const trimmed = pageCtx ? [pageCtx, ...history] : history;
 
+  // Strip any extra fields (e.g. time) — Groq only accepts role + content
   const groqMessages = [
     { role: 'system', content: SYSTEM_PROMPT },
-    ...trimmed,
+    ...trimmed.map(({ role, content }) => ({ role, content })),
   ];
 
   try {
@@ -97,19 +98,19 @@ export default async function handler(req, res) {
     if (!response.ok) {
       const err = await response.text();
       console.error('Groq API error:', response.status, err);
-      return res.status(200).json({ reply: `[DEBUG] Groq error ${response.status}: ${err.slice(0, 200)}` });
+      return res.status(502).json({ reply: 'Our AI assistant is temporarily unavailable. Please contact us at +251 11 550 2928.' });
     }
 
     const data = await response.json();
     const reply = data.choices?.[0]?.message?.content?.trim();
 
     if (!reply) {
-      return res.status(200).json({ reply: '[DEBUG] Groq returned no choices. Raw: ' + JSON.stringify(data).slice(0, 200) });
+      return res.status(502).json({ reply: 'No response received. Please try again or contact our team directly.' });
     }
 
     return res.status(200).json({ reply });
   } catch (err) {
     console.error('Assistant handler error:', err);
-    return res.status(200).json({ reply: `[DEBUG] Caught error: ${err.message} | stack: ${err.stack?.slice(0, 300)}` });
+    return res.status(500).json({ reply: 'Something went wrong. Please contact our team at +251 11 550 2928 or info@altacomputec.com.' });
   }
 }
