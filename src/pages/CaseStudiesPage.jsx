@@ -120,7 +120,7 @@ export default function CaseStudiesPage() {
           </div>
 
           {/* Featured */}
-          <div className="group relative p-7 mb-10 rounded-2xl bg-white border-2 transition-all duration-250 hover:-translate-y-1 overflow-hidden" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }} onMouseEnter={(e) => {
+          <div className="group relative p-7 mb-10 rounded-2xl bg-white dark:bg-navy-900 border-2 transition-all duration-250 hover:-translate-y-1 overflow-hidden" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }} onMouseEnter={(e) => {
             e.currentTarget.style.borderColor = '#22C55E';
             e.currentTarget.style.boxShadow = '0 12px 32px rgba(34,197,94,0.25), 0 0 0 1px rgba(34,197,94,0.35)';
           }} onMouseLeave={(e) => {
@@ -132,9 +132,9 @@ export default function CaseStudiesPage() {
               <span className="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full bg-blue-100 text-blue-700">Banking</span>
               <span className="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full bg-alta-green/15 text-alta-green">Featured</span>
             </div>
-            <h2 className="text-[22px] font-bold text-navy-900 mb-3 leading-snug">ATM Network Deployment & Integration — Commercial Bank of Ethiopia</h2>
-            <p className="text-[14px] text-slate-600 leading-relaxed mb-2"><strong>Challenge:</strong> CBE needed to deploy a nationwide ATM network with zero downtime and full core banking integration.</p>
-            <p className="text-[14px] text-slate-600 leading-relaxed mb-6"><strong>Solution:</strong> ALTA designed and deployed a complete Diebold Nixdorf ATM infrastructure with cash management integration, training, and a 24/7 support SLA.</p>
+            <h2 className="text-[22px] font-bold text-navy-900 dark:text-white mb-3 leading-snug">ATM Network Deployment &amp; Integration — Commercial Bank of Ethiopia</h2>
+            <p className="text-[14px] text-slate-600 dark:text-slate-400 leading-relaxed mb-2"><strong>Challenge:</strong> CBE needed to deploy a nationwide ATM network with zero downtime and full core banking integration.</p>
+            <p className="text-[14px] text-slate-600 dark:text-slate-400 leading-relaxed mb-6"><strong>Solution:</strong> ALTA designed and deployed a complete Diebold Nixdorf ATM infrastructure with cash management integration, training, and a 24/7 support SLA.</p>
             <div className="flex flex-wrap gap-4 mb-6">
               {[{ v: '120+ ATMs Deployed' }, { v: '99.9% Uptime' }, { v: '6-Month Delivery' }].map((m) => (
                 <div key={m.v} className="px-4 py-2.5 rounded-xl bg-navy-900 text-alta-green-light font-bold text-[13px]">{m.v}</div>
@@ -158,7 +158,7 @@ export default function CaseStudiesPage() {
                   key={study.headline}
                   href="#"
                   onClick={(e) => { e.preventDefault(); }}
-                  className="group relative flex flex-col gap-5 p-6 rounded-2xl bg-white border-2 transition-all duration-250 hover:-translate-y-1 cursor-pointer overflow-hidden"
+                  className="group relative flex flex-col gap-5 p-6 rounded-2xl bg-white dark:bg-navy-900 border-2 transition-all duration-250 hover:-translate-y-1 cursor-pointer overflow-hidden"
                   style={{
                     borderColor: 'rgba(226,232,240,0.8)',
                     boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
@@ -189,8 +189,8 @@ export default function CaseStudiesPage() {
                   </div>
 
                   <div>
-                    <h3 className="text-[16px] font-bold text-navy-900 mb-2 leading-snug">{study.headline}</h3>
-                    <p className="text-[13px] text-slate-500 leading-relaxed line-clamp-2">{study.outcome}</p>
+                    <h3 className="text-[16px] font-bold text-navy-900 dark:text-white mb-2 leading-snug">{study.headline}</h3>
+                    <p className="text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-2">{study.outcome}</p>
                   </div>
 
                   <div className="flex flex-wrap gap-2">
@@ -202,7 +202,7 @@ export default function CaseStudiesPage() {
                     ))}
                   </div>
 
-                  <div className="flex items-center gap-2 mt-auto pt-2 border-t border-slate-100">
+                  <div className="flex items-center gap-2 mt-auto pt-2 border-t border-slate-100 dark:border-white/6">
                     <span className="text-[13px] font-semibold group-hover:text-current transition-colors" style={{ color: study.accent }}>
                       View Details
                     </span>
@@ -230,7 +230,7 @@ export default function CaseStudiesPage() {
         <div className="section-container">
           <div className="text-center mb-10">
             <p className="overline-tag justify-center mb-3">How It Works</p>
-            <h2 className="section-heading dark:section-heading-light">How does a typical ALTA project work?</h2>
+            <h2 className="section-heading">How does a typical ALTA project work?</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
             {[
@@ -238,7 +238,7 @@ export default function CaseStudiesPage() {
               { num: '02', title: 'Delivery', desc: 'Phased deployment with certified engineers, progress reporting, and zero-downtime methodology.' },
               { num: '03', title: 'Support', desc: 'Post-deployment SLA, staff training, and ongoing managed services to ensure long-term success.' },
             ].map((step) => (
-              <div key={step.num} className="group relative flex flex-col gap-3 text-center items-center p-5 rounded-2xl bg-white border-2 transition-all duration-250 hover:-translate-y-1 overflow-hidden" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }} onMouseEnter={(e) => {
+              <div key={step.num} className="group relative flex flex-col gap-3 text-center items-center p-5 rounded-2xl bg-white dark:bg-navy-900 border-2 transition-all duration-250 hover:-translate-y-1 overflow-hidden" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }} onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = '#16A34A';
                 e.currentTarget.style.boxShadow = '0 12px 32px rgba(22,163,74,0.25), 0 0 0 1px rgba(22,163,74,0.35)';
               }} onMouseLeave={(e) => {
@@ -249,8 +249,8 @@ export default function CaseStudiesPage() {
                 <div className="w-12 h-12 rounded-full bg-alta-green flex items-center justify-center group-hover:scale-110 transition-transform duration-250">
                   <span className="text-white font-black text-[13px]">{step.num}</span>
                 </div>
-                <p className="font-bold text-navy-900 text-[15px]">{step.title}</p>
-                <p className="text-[13px] text-slate-500 leading-relaxed">{step.desc}</p>
+                <p className="font-bold text-navy-900 dark:text-white text-[15px]">{step.title}</p>
+                <p className="text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed">{step.desc}</p>
               </div>
             ))}
           </div>

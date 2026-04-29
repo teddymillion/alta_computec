@@ -38,7 +38,7 @@ export default function BlogPage() {
       <PageHero breadcrumb="Blog" title="Insights from Ethiopia's Technology Leaders" subtitle="Industry analysis, product guides, and technology trends from the ALTA team." />
 
       {/* Search + Filters */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container">
           <div className="relative mb-6">
             <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden="true" />
@@ -47,7 +47,7 @@ export default function BlogPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search articles..."
-              className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 text-[14px] focus:outline-none focus:ring-2 focus:ring-alta-blue/30 focus:border-alta-blue"
+              className="form-input pl-11"
               aria-label="Search articles"
             />
           </div>
@@ -57,7 +57,9 @@ export default function BlogPage() {
                 key={c}
                 onClick={() => setActiveCategory(c)}
                 className={`text-[12px] font-semibold px-3.5 py-1.5 rounded-full border transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue ${
-                  activeCategory === c ? 'bg-navy-900 text-white border-navy-900' : 'bg-white text-slate-600 border-slate-200 hover:border-alta-blue hover:text-alta-blue'
+                  activeCategory === c
+                    ? 'bg-navy-900 dark:bg-alta-blue text-white border-navy-900 dark:border-alta-blue'
+                    : 'bg-white dark:bg-navy-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-white/10 hover:border-alta-blue hover:text-alta-blue'
                 }`}
               >
                 {c}
@@ -66,11 +68,11 @@ export default function BlogPage() {
           </div>
 
           {/* Featured */}
-          <div className="relative card-light border-l-4 border-l-alta-green p-7 mb-10 rounded-2xl">
+          <div className="relative card-light dark:bg-navy-900 dark:border-white/8 border-l-4 border-l-alta-green p-7 mb-10 rounded-2xl">
             <span className="absolute top-4 right-4 text-[9px] font-black tracking-wider uppercase px-2 py-0.5 rounded-full bg-alta-green text-white">Featured</span>
-            <span className="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full bg-green-100 text-green-700 inline-block mb-4">Industry Analysis</span>
-            <h2 className="text-[22px] font-bold text-navy-900 mb-3 leading-snug">Why Ethiopian Enterprises Are Accelerating Cloud Adoption in 2026</h2>
-            <p className="text-[14px] text-slate-600 leading-relaxed mb-4">As connectivity infrastructure matures across Ethiopia, enterprise IT directors are shifting from on-premise-only strategies to hybrid and private cloud architectures. Here is what is driving the change.</p>
+            <span className="text-[11px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full bg-green-100 dark:bg-alta-green/15 text-green-700 dark:text-alta-green inline-block mb-4">Industry Analysis</span>
+            <h2 className="text-[22px] font-bold text-navy-900 dark:text-white mb-3 leading-snug">Why Ethiopian Enterprises Are Accelerating Cloud Adoption in 2026</h2>
+            <p className="text-[14px] text-slate-600 dark:text-slate-400 leading-relaxed mb-4">As connectivity infrastructure matures across Ethiopia, enterprise IT directors are shifting from on-premise-only strategies to hybrid and private cloud architectures. Here is what is driving the change.</p>
             <div className="flex items-center gap-4 text-[12px] text-slate-400 mb-5">
               <span>ALTA Technology Team</span>
               <span>·</span>
@@ -109,9 +111,9 @@ export default function BlogPage() {
                     <span className={`text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full ${article.catColor}`}>{article.cat}</span>
                     <span className="text-[11px] text-slate-400 flex items-center gap-1 flex-shrink-0"><Clock size={10} aria-hidden="true" />{article.read}</span>
                   </div>
-                  <h3 className="text-[14px] font-bold text-navy-900 leading-snug flex-1">{article.title}</h3>
-                  <p className="text-[12px] text-slate-500 leading-relaxed line-clamp-2">{article.excerpt}</p>
-                  <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                  <h3 className="text-[14px] font-bold text-navy-900 dark:text-white leading-snug flex-1">{article.title}</h3>
+                  <p className="text-[12px] text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-2">{article.excerpt}</p>
+                  <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-white/6">
                     <span className="text-[11px] text-slate-400">{article.date}</span>
                     <Link to="/blog" className="text-[12px] font-semibold text-alta-blue hover:underline underline-offset-2 flex items-center gap-1">
                       Read <ArrowRight size={11} />
@@ -188,10 +190,10 @@ export default function BlogPage() {
       </section>
 
       {/* Pagination */}
-      <section className="py-12 bg-white">
+      <section className="py-12 bg-white dark:bg-navy-950">
         <div className="section-container">
           <div className="flex items-center justify-center gap-2">
-            <button className="w-9 h-9 rounded-lg border border-slate-200 flex items-center justify-center text-slate-400 hover:text-navy-900 hover:border-slate-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue" aria-label="Previous page">
+            <button className="w-9 h-9 rounded-lg border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-400 hover:text-navy-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue" aria-label="Previous page">
               <ChevronLeft size={16} />
             </button>
             {[1, 2, 3].map((p) => (
@@ -199,14 +201,16 @@ export default function BlogPage() {
                 key={p}
                 onClick={() => setCurrentPage(p)}
                 className={`w-9 h-9 rounded-lg flex items-center justify-center text-[13px] font-semibold transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue ${
-                  currentPage === p ? 'bg-navy-900 text-white' : 'text-slate-600 hover:bg-slate-50'
+                  currentPage === p
+                    ? 'bg-navy-900 dark:bg-alta-blue text-white'
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/6'
                 }`}
               >
                 {p}
               </button>
             ))}
             <span className="text-slate-400 text-[13px]">…</span>
-            <button className="w-9 h-9 rounded-lg border border-slate-200 flex items-center justify-center text-slate-400 hover:text-navy-900 hover:border-slate-300 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue" aria-label="Next page">
+            <button className="w-9 h-9 rounded-lg border border-slate-200 dark:border-white/10 flex items-center justify-center text-slate-400 hover:text-navy-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-white/20 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue" aria-label="Next page">
               <ChevronRight size={16} />
             </button>
           </div>

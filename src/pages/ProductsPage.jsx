@@ -298,16 +298,16 @@ function Field({ field, formData, onChange, errors }) {
     return (
       <div className={wrap}>
         <label className="form-label">{field.label}{field.required && ' *'}</label>
-        <div className="flex items-center rounded-xl border border-slate-200 overflow-hidden" style={{ boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.04)' }}>
-          <button type="button" className="px-3 py-3 text-slate-500 hover:bg-slate-50 transition-colors text-lg font-medium" onClick={() => onChange(field.id, Math.max(1, num - 1))}>−</button>
+        <div className="flex items-center rounded-xl border border-slate-200 dark:border-white/10 overflow-hidden bg-white dark:bg-white/4" style={{ boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.04)' }}>
+          <button type="button" className="px-3 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/6 transition-colors text-lg font-medium" onClick={() => onChange(field.id, Math.max(1, num - 1))}>−</button>
           <input
             type="number"
             min={1}
-            className="flex-1 text-center text-sm font-semibold text-navy-900 py-3 border-none outline-none bg-white"
+            className="flex-1 text-center text-sm font-semibold text-navy-900 dark:text-white py-3 border-none outline-none bg-transparent"
             value={num}
             onChange={e => onChange(field.id, Math.max(1, parseInt(e.target.value) || 1))}
           />
-          <button type="button" className="px-3 py-3 text-slate-500 hover:bg-slate-50 transition-colors text-lg font-medium" onClick={() => onChange(field.id, num + 1)}>+</button>
+          <button type="button" className="px-3 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/6 transition-colors text-lg font-medium" onClick={() => onChange(field.id, num + 1)}>+</button>
         </div>
       </div>
     );
@@ -346,7 +346,7 @@ function Field({ field, formData, onChange, errors }) {
                     onChange(field.id, e.target.checked ? [...prev, opt] : prev.filter(x => x !== opt));
                   }}
                 />
-                <span className="text-[13px] text-slate-700">{opt}</span>
+                <span className="text-[13px] text-slate-700 dark:text-slate-300">{opt}</span>
               </label>
             );
           })}
@@ -370,7 +370,7 @@ function Field({ field, formData, onChange, errors }) {
                 checked={val === opt}
                 onChange={() => onChange(field.id, opt)}
               />
-              <span className="text-[13px] text-slate-700">{opt}</span>
+              <span className="text-[13px] text-slate-700 dark:text-slate-300">{opt}</span>
             </label>
           ))}
         </div>
@@ -451,10 +451,10 @@ function ConfiguratorForm({ subcategory, accent }) {
 
   if (submitted) {
     return (
-      <div className="card-light p-8 mb-8 text-center" style={{ borderLeft: `4px solid ${accent}` }}>
+      <div className="card-light dark:bg-navy-900 dark:border-white/8 p-8 mb-8 text-center" style={{ borderLeft: `4px solid ${accent}` }}>
         <CheckCircle size={48} className="mx-auto mb-4 text-alta-green" />
-        <h3 className="text-[20px] font-black text-navy-900 mb-2">Configuration Received!</h3>
-        <p className="text-slate-500 text-[14px] max-w-md mx-auto leading-relaxed">
+        <h3 className="text-[20px] font-black text-navy-900 dark:text-white mb-2">Configuration Received!</h3>
+        <p className="text-slate-500 dark:text-slate-400 text-[14px] max-w-md mx-auto leading-relaxed">
           Our technical team will review your requirements and respond with tailored options within 24 hours.
         </p>
         <button
@@ -470,22 +470,22 @@ function ConfiguratorForm({ subcategory, accent }) {
   const FormIcon = config.icon || Package;
 
   return (
-    <div className="card-light p-8 mb-8" style={{ borderLeft: `4px solid ${accent}` }}>
+    <div className="card-light dark:bg-navy-900 dark:border-white/8 p-8 mb-8" style={{ borderLeft: `4px solid ${accent}` }}>
       {/* Header */}
       <div className="flex items-start gap-4 mb-6">
         <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${accent}18` }}>
           <FormIcon size={22} style={{ color: accent }} />
         </div>
         <div>
-          <h2 className="text-[18px] font-black text-navy-900 leading-snug">{config.title}</h2>
-          <p className="text-[13px] text-slate-500 mt-1 leading-relaxed">{config.copy}</p>
+          <h2 className="text-[18px] font-black text-navy-900 dark:text-white leading-snug">{config.title}</h2>
+          <p className="text-[13px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">{config.copy}</p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} noValidate>
         {config.sections.map((section, si) => (
           <div key={si}>
-            <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 border-b border-slate-100 pb-2 mb-4 mt-6 first:mt-0">
+            <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 border-b border-slate-100 dark:border-white/6 pb-2 mb-4 mt-6 first:mt-0">
               {section.label}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -503,7 +503,7 @@ function ConfiguratorForm({ subcategory, accent }) {
         ))}
 
         {/* Submit area */}
-        <div className="bg-slate-50 rounded-xl p-5 mt-7">
+        <div className="bg-slate-50 dark:bg-white/4 rounded-xl p-5 mt-7">
           {apiError && <p className="text-red-500 text-[13px] mb-3">{apiError}</p>}
           <button type="submit" disabled={loading} className="btn-primary w-full justify-center text-[14px] py-3.5">
             {loading ? 'Submitting...' : 'Submit Configuration Request'} <ArrowRight size={15} />
@@ -536,7 +536,7 @@ function Sidebar({ activeSub, onSelectSub }) {
 
   return (
     <aside className="w-64 flex-shrink-0 lg:sticky lg:top-24 self-start">
-      <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+      <div className="bg-white dark:bg-navy-900 rounded-2xl border border-slate-200/80 dark:border-white/8 overflow-hidden" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
         <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-400 px-4 pt-4 pb-3">
           Browse by Category
         </p>
@@ -554,18 +554,18 @@ function Sidebar({ activeSub, onSelectSub }) {
             : 0;
 
           return (
-            <div key={cat.name} className="border-t border-slate-100 first:border-t-0">
+            <div key={cat.name} className="border-t border-slate-100 dark:border-white/6 first:border-t-0">
               {/* Category header */}
               <button
                 onClick={() => toggleCat(cat.name)}
-                className={`w-full flex items-center gap-2.5 px-4 py-3 text-left transition-colors duration-150 hover:bg-slate-50 focus:outline-none ${isActive ? 'border-l-2 border-alta-green' : 'border-l-2 border-transparent'}`}
+                className={`w-full flex items-center gap-2.5 px-4 py-3 text-left transition-colors duration-150 hover:bg-slate-50 dark:hover:bg-white/4 focus:outline-none ${isActive ? 'border-l-2 border-alta-green' : 'border-l-2 border-transparent'}`}
                 style={isActive ? { color: cat.accent } : {}}
               >
                 <CatIcon size={14} className="flex-shrink-0" style={{ color: cat.accent }} />
-                <span className={`text-[11.5px] font-bold uppercase tracking-wide flex-1 ${isActive ? '' : 'text-slate-600'}`}>
+                <span className={`text-[11.5px] font-bold uppercase tracking-wide flex-1 ${isActive ? '' : 'text-slate-600 dark:text-slate-400'}`}>
                   {cat.name}
                 </span>
-                <span className="ml-auto text-[10px] bg-slate-100 text-slate-500 rounded-full px-2 py-0.5 mr-1">{subsCount}</span>
+                <span className="ml-auto text-[10px] bg-slate-100 dark:bg-white/8 text-slate-500 dark:text-slate-400 rounded-full px-2 py-0.5 mr-1">{subsCount}</span>
                 {isExpanded
                   ? <ChevronDown size={12} className="text-slate-400 flex-shrink-0" />
                   : <ChevronRight size={12} className="text-slate-400 flex-shrink-0" />
@@ -595,7 +595,7 @@ function Sidebar({ activeSub, onSelectSub }) {
                             <button
                               key={child}
                               onClick={() => onSelectSub(child, cat)}
-                              className={`w-full flex items-center px-8 py-2 text-left text-[12.5px] transition-colors duration-150 rounded-lg mx-1 ${activeSub === child ? 'bg-blue-50 text-alta-blue font-semibold' : 'text-slate-600 hover:text-navy-900 hover:bg-slate-50'}`}
+                              className={`w-full flex items-center px-8 py-2 text-left text-[12.5px] transition-colors duration-150 rounded-lg mx-1 ${activeSub === child ? 'bg-blue-50 dark:bg-alta-blue/15 text-alta-blue font-semibold' : 'text-slate-600 dark:text-slate-400 hover:text-navy-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/4'}`}
                             >
                               {child}
                             </button>
@@ -609,7 +609,7 @@ function Sidebar({ activeSub, onSelectSub }) {
                       <button
                         key={sub}
                         onClick={() => onSelectSub(sub, cat)}
-                        className={`w-full flex items-center px-6 py-2 text-left text-[12.5px] transition-colors duration-150 ${activeSub === sub ? 'bg-blue-50 text-alta-blue font-semibold' : 'text-slate-600 hover:text-navy-900 hover:bg-slate-50'}`}
+                        className={`w-full flex items-center px-6 py-2 text-left text-[12.5px] transition-colors duration-150 ${activeSub === sub ? 'bg-blue-50 dark:bg-alta-blue/15 text-alta-blue font-semibold' : 'text-slate-600 dark:text-slate-400 hover:text-navy-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/4'}`}
                       >
                         {sub}
                       </button>
@@ -735,7 +735,7 @@ export default function ProductsPage() {
       </section>
 
       {/* ── Brand Partner Grid ──────────────────────────────────────────────── */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container">
           <div className="text-center mb-12">
             <p className="overline-tag justify-center mb-3">Our Authorized Portfolio</p>
@@ -751,7 +751,7 @@ export default function ProductsPage() {
               {TIER1.map((p) => (
                 <div
                   key={p.name}
-                  className="group relative flex flex-col items-center gap-4 p-6 rounded-2xl bg-white border border-slate-200/80 transition-all duration-250 hover:-translate-y-1 cursor-default overflow-hidden"
+                  className="group relative flex flex-col items-center gap-4 p-6 rounded-2xl bg-white dark:bg-navy-900 border border-slate-200/80 dark:border-white/8 transition-all duration-250 hover:-translate-y-1 cursor-default overflow-hidden"
                   style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
                   onMouseEnter={(e) => { e.currentTarget.style.boxShadow = `0 12px 32px ${p.glow}`; }}
                   onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)'; }}
@@ -761,10 +761,10 @@ export default function ProductsPage() {
                     <PartnerLogo name={p.name} size={72} className="max-w-full max-h-full object-contain" />
                   </div>
                   <div className="flex flex-col items-center gap-2 text-center">
-                    <span className="font-bold text-navy-900 text-[14px]">{p.name}</span>
+                    <span className="font-bold text-navy-900 dark:text-white text-[14px]">{p.name}</span>
                     <span className={`tier-badge ${p.badge}`}>{p.tier}</span>
                     {p.note && <span className="text-[10px] text-slate-400 font-medium">{p.note}</span>}
-                    <p className="text-[11px] text-slate-500 leading-relaxed text-center">{p.desc}</p>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed text-center">{p.desc}</p>
                   </div>
                 </div>
               ))}
@@ -778,11 +778,11 @@ export default function ProductsPage() {
             </div>
             <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-8 gap-2">
               {TIER2.map((p) => (
-                <div key={p.name} className="group flex flex-col items-center gap-3 p-5 rounded-xl hover:bg-slate-50 transition-all duration-200 cursor-default">
+                <div key={p.name} className="group flex flex-col items-center gap-3 p-5 rounded-xl hover:bg-slate-50 dark:hover:bg-white/4 transition-all duration-200 cursor-default">
                   <div className="w-full h-16 flex items-center justify-center group-hover:scale-110 transition-transform duration-200 px-2">
                     <PartnerLogo name={p.name} size={56} className="max-w-full max-h-full object-contain" />
                   </div>
-                  <span className="text-[12px] font-semibold text-slate-600 text-center leading-tight">{p.name}</span>
+                  <span className="text-[12px] font-semibold text-slate-600 dark:text-slate-400 text-center leading-tight">{p.name}</span>
                   {p.exclusive && <span className="text-[9px] font-bold text-amber-600">Exclusive</span>}
                 </div>
               ))}
@@ -807,12 +807,12 @@ export default function ProductsPage() {
             <div className="flex-1 min-w-0">
               {!activeSub ? (
                 /* Overview state — prompt user to select */
-                <div className="card-light p-12 text-center">
+                <div className="card-light dark:bg-navy-900 dark:border-white/8 p-12 text-center">
                   <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5" style={{ background: 'rgba(27,79,216,0.08)', border: '1px solid rgba(27,79,216,0.15)' }}>
                     <Package size={28} className="text-alta-blue" />
                   </div>
-                  <h3 className="text-[18px] font-bold text-navy-900 mb-2">Select a Category</h3>
-                  <p className="text-slate-500 text-[14px] max-w-sm mx-auto">
+                  <h3 className="text-[18px] font-bold text-navy-900 dark:text-white mb-2">Select a Category</h3>
+                  <p className="text-slate-500 dark:text-slate-400 text-[14px] max-w-sm mx-auto">
                     Choose any subcategory from the sidebar to configure your requirements. Our team will respond with tailored options within 24 hours.
                   </p>
                   <div className="flex flex-wrap justify-center gap-3 mt-6">
@@ -822,7 +822,7 @@ export default function ProductsPage() {
                         <button
                           key={s}
                           onClick={() => cat && handleSelectSub(s, cat)}
-                          className="px-3.5 py-1.5 rounded-full border border-slate-200 bg-white text-slate-600 text-[12px] font-semibold hover:border-alta-blue hover:text-alta-blue transition-colors"
+                          className="px-3.5 py-1.5 rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-white/4 text-slate-600 dark:text-slate-400 text-[12px] font-semibold hover:border-alta-blue hover:text-alta-blue transition-colors"
                         >
                           {s}
                         </button>
@@ -837,24 +837,24 @@ export default function ProductsPage() {
 
                   {/* Reference divider */}
                   <div className="flex items-center gap-4 my-8">
-                    <div className="flex-1 h-px bg-slate-200" />
+                    <div className="flex-1 h-px bg-slate-200 dark:bg-white/8" />
                     <span className="text-[10px] uppercase tracking-widest text-slate-400 font-medium px-3 whitespace-nowrap">
                       Popular Configurations for Reference
                     </span>
-                    <div className="flex-1 h-px bg-slate-200" />
+                    <div className="flex-1 h-px bg-slate-200 dark:bg-white/8" />
                   </div>
 
                   {/* Reference product cards */}
                   {subProducts.length === 0 ? (
                     <div className="text-center py-16 text-slate-400">
                       <Package size={48} className="mx-auto mb-4 opacity-40" />
-                      <p className="font-medium text-slate-600">Configure your {activeSub} requirements above</p>
-                      <p className="text-sm mt-1">Our team will respond with tailored options within 24 hours.</p>
+                      <p className="font-medium text-slate-600 dark:text-slate-400">Configure your {activeSub} requirements above</p>
+                      <p className="text-sm mt-1 dark:text-slate-500">Our team will respond with tailored options within 24 hours.</p>
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
                       {subProducts.map((product) => (
-                        <div key={`${product.name}-${product.subcategory}`} className="group card-light flex flex-col overflow-hidden p-0">
+                        <div key={`${product.name}-${product.subcategory}`} className="group card-light dark:bg-navy-900 dark:border-white/8 flex flex-col overflow-hidden p-0">
                           {/* Example badge + image */}
                           <div className="relative h-44 overflow-hidden flex-shrink-0">
                             <img
@@ -873,16 +873,16 @@ export default function ProductsPage() {
                           </div>
                           {/* Content */}
                           <div className="flex flex-col gap-3 p-5 flex-1">
-                            <h3 className="font-bold text-navy-900 text-[13.5px] leading-snug">{product.name}</h3>
+                            <h3 className="font-bold text-navy-900 dark:text-white text-[13.5px] leading-snug">{product.name}</h3>
                             <ul className="flex flex-col gap-1.5 flex-1">
                               {product.specs.map((s) => (
-                                <li key={s} className="flex items-start gap-2 text-[12px] text-slate-500">
+                                <li key={s} className="flex items-start gap-2 text-[12px] text-slate-500 dark:text-slate-400">
                                   <span className="w-1 h-1 rounded-full bg-alta-blue flex-shrink-0 mt-1.5" aria-hidden="true" />
                                   {s}
                                 </li>
                               ))}
                             </ul>
-                            <div className="flex items-center gap-3 pt-2 border-t border-slate-100">
+                            <div className="flex items-center gap-3 pt-2 border-t border-slate-100 dark:border-white/6">
                               <Link to="/contact" className="btn-outline !text-[12px] !px-3 !py-2 flex-1 justify-center" style={{ minHeight: '36px' }}>
                                 Request Quote
                               </Link>
@@ -911,11 +911,11 @@ export default function ProductsPage() {
             <h2 className="section-heading-light">Need a Formal Quotation for Procurement?</h2>
             <p className="section-subheading-light mx-auto text-center">Used by government procurement offices and enterprise buyers across Ethiopia.</p>
           </div>
-          <div className="max-w-2xl mx-auto bg-white rounded-2xl p-8" style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.2)' }}>
+          <div className="max-w-2xl mx-auto bg-white dark:bg-navy-900 rounded-2xl p-8" style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.2)' }}>
             {rfqSuccess ? (
               <div className="text-center py-8">
-                <h3 className="text-[18px] font-bold text-navy-900 mb-2">RFQ Submitted!</h3>
-                <p className="text-slate-500 text-[14px]">Our sales team will respond with a formal quotation within 24 hours.</p>
+                <h3 className="text-[18px] font-bold text-navy-900 dark:text-white mb-2">RFQ Submitted!</h3>
+                <p className="text-slate-500 dark:text-slate-400 text-[14px]">Our sales team will respond with a formal quotation within 24 hours.</p>
               </div>
             ) : (
             <form className="flex flex-col gap-4" onSubmit={handleRfqSubmit} noValidate>

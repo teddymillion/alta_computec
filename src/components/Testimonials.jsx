@@ -73,7 +73,7 @@ function TestimonialCard({ t, featured }) {
     <article
       className={`relative flex flex-col gap-5 p-6 rounded-2xl border transition-all duration-300 ${
         featured
-          ? 'bg-white border-l-4 border-l-alta-green border-t border-r border-b border-slate-200/80 shadow-xl'
+          ? 'bg-white dark:bg-navy-900 border-l-4 border-l-alta-green border-t border-r border-b border-slate-200/80 dark:border-white/8 shadow-xl dark:shadow-none'
           : 'border-white/6 hover:border-white/10'
       }`}
       style={!featured ? { background: 'rgba(13,30,56,0.6)', backdropFilter: 'blur(8px)' } : {}}
@@ -92,13 +92,13 @@ function TestimonialCard({ t, featured }) {
         <Stars />
       </div>
 
-      <blockquote className={`text-[13.5px] leading-[1.7] flex-1 ${featured ? 'text-slate-700' : 'text-slate-400'}`}>
+      <blockquote className={`text-[13.5px] leading-[1.7] flex-1 ${featured ? 'text-slate-700 dark:text-slate-300' : 'text-slate-400'}`}>
         "{t.quote}"
       </blockquote>
 
-      <div className={`flex items-center gap-3 pt-4 border-t ${featured ? 'border-slate-100' : 'border-white/8'}`}>
+      <div className={`flex items-center gap-3 pt-4 border-t ${featured ? 'border-slate-100 dark:border-white/8' : 'border-white/8'}`}>
         <div className={`w-12 h-12 rounded-xl flex-shrink-0 shadow-md overflow-hidden flex items-center justify-center p-1.5 ${
-          featured ? 'bg-white border border-slate-200' : 'bg-white/10 border border-white/15'
+          featured ? 'bg-white dark:bg-white/10 border border-slate-200 dark:border-white/15' : 'bg-white/10 border border-white/15'
         }`}>
           <img
             src={t.logo}
@@ -113,7 +113,7 @@ function TestimonialCard({ t, featured }) {
           />
         </div>
         <div className="min-w-0">
-          <p className={`font-bold text-[13px] truncate ${featured ? 'text-navy-900' : 'text-white'}`}>{t.name}</p>
+          <p className={`font-bold text-[13px] truncate ${featured ? 'text-navy-900 dark:text-white' : 'text-white'}`}>{t.name}</p>
           <p className={`text-[11px] truncate text-slate-500`}>{t.title}</p>
           <p className={`text-[11px] font-semibold truncate ${featured ? 'text-alta-blue' : 'text-alta-blue/70'}`}>{t.company}</p>
         </div>

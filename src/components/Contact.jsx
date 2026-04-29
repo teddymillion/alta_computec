@@ -45,13 +45,13 @@ export default function Contact() {
               {CONTACT_ITEMS.map((item) => {
                 const Icon = item.icon;
                 const inner = (
-                  <div className="flex items-start gap-4 p-4 rounded-2xl bg-white border border-slate-200/80 transition-all duration-200 hover:border-slate-300 hover:shadow-sm" style={{ boxShadow: '0 1px 2px rgba(0,0,0,0.04)' }}>
+                  <div className="flex items-start gap-4 p-4 rounded-2xl bg-white dark:bg-navy-900 border border-slate-200/80 dark:border-white/8 transition-all duration-200 hover:border-slate-300 dark:hover:border-white/15 hover:shadow-sm" style={{ boxShadow: '0 1px 2px rgba(0,0,0,0.04)' }}>
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: item.accentLight, border: `1px solid ${item.accentBorder}` }}>
                       <Icon size={17} style={{ color: item.accent }} aria-hidden="true" />
                     </div>
                     <div>
                       <p className="text-[10px] font-bold tracking-[0.1em] uppercase text-slate-400 mb-0.5">{item.label}</p>
-                      <p className="text-[14px] font-semibold text-navy-900">{item.value}</p>
+                      <p className="text-[14px] font-semibold text-navy-900 dark:text-white">{item.value}</p>
                     </div>
                   </div>
                 );
@@ -76,10 +76,10 @@ export default function Contact() {
           </div>
 
           {/* Right: Form */}
-          <div className="bg-white rounded-2xl border border-slate-200/80 p-8" style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
+          <div className="bg-white dark:bg-navy-900 rounded-2xl border border-slate-200/80 dark:border-white/8 p-8" style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.06)' }}>
             <div className="mb-7">
-              <h3 className="text-[18px] font-bold text-navy-900">Request a Proposal</h3>
-              <p className="text-[13px] text-slate-500 mt-1">Fill in your details and we'll get back to you within 24 hours.</p>
+              <h3 className="text-[18px] font-bold text-navy-900 dark:text-white">Request a Proposal</h3>
+              <p className="text-[13px] text-slate-500 dark:text-slate-400 mt-1">Fill in your details and we'll get back to you within 24 hours.</p>
             </div>
 
             {success ? (
@@ -87,8 +87,8 @@ export default function Contact() {
                 <div className="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mb-4">
                   <ArrowRight size={24} className="text-alta-green" />
                 </div>
-                <h3 className="text-[18px] font-bold text-navy-900 mb-2">Request Received!</h3>
-                <p className="text-slate-500 text-[14px]">Thank you! We've received your request and will respond within 24 hours.</p>
+                <h3 className="text-[18px] font-bold text-navy-900 dark:text-white mb-2">Request Received!</h3>
+                <p className="text-slate-500 dark:text-slate-400 text-[14px]">Thank you! We've received your request and will respond within 24 hours.</p>
               </div>
             ) : (
             <form className="flex flex-col gap-5" onSubmit={handleSubmit} noValidate aria-label="Contact form">

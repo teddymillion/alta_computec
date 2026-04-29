@@ -422,6 +422,11 @@ html.dark body {
   color: #F1F5F9;
 }
 
+/* ── Section heading dark override (used as class combo) ── */
+html.dark .section-heading {
+  color: #F1F5F9;
+}
+
 html.dark ::selection {
   background-color: rgba(27,79,216,0.35);
   color: #F1F5F9;
@@ -443,6 +448,11 @@ html.dark .bg-slate-50 {
 }
 html.dark .bg-slate-100 {
   background-color: rgba(255,255,255,0.06) !important;
+}
+/* Industry alternating bg */
+html.dark .bg-slate-50\/80,
+html.dark [class*="bg-slate-50"] {
+  background-color: #060D1A !important;
 }
 html.dark .bg-blue-50 {
   background-color: rgba(59,130,246,0.12) !important;
@@ -499,6 +509,9 @@ html.dark .border-blue-200\/80  { border-color: rgba(59,130,246,0.28); }
 html.dark .border-green-200\/80 { border-color: rgba(34,197,94,0.28); }
 html.dark .divide-y > * + * { border-color: rgba(255,255,255,0.06); }
 html.dark .divide-slate-100 > * + * { border-color: rgba(255,255,255,0.06); }
+html.dark .border-y { border-color: rgba(255,255,255,0.06); }
+html.dark .border-b { border-color: rgba(255,255,255,0.06); }
+html.dark .border-t { border-color: rgba(255,255,255,0.06); }
 
 /* ── Form elements ── */
 html.dark .form-input {
@@ -551,3 +564,188 @@ html.dark .tier-auth     { background: rgba(100,116,139,0.13);border-color: rgba
 html.dark ::-webkit-scrollbar-track { background: #060D1A; }
 html.dark ::-webkit-scrollbar-thumb { background: rgba(27,79,216,0.3); }
 html.dark ::-webkit-scrollbar-thumb:hover { background: rgba(27,79,216,0.5); }
+
+/* ── Stat cards & white cards used in Statistics, TrustBadges ── */
+html.dark .stat-card-light {
+  background: rgba(13,27,46,0.95) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+
+/* ── Trust badges bar ── */
+html.dark .trust-badges-bar {
+  background: #0D1B2E;
+  border-color: rgba(255,255,255,0.06);
+}
+
+/* ── Sidebar in products page ── */
+html.dark .sidebar-panel {
+  background: rgba(13,27,46,0.95);
+  border-color: rgba(255,255,255,0.08);
+}
+html.dark .sidebar-panel button:hover {
+  background: rgba(255,255,255,0.04);
+}
+html.dark .sidebar-panel .active-sub {
+  background: rgba(27,79,216,0.15);
+  color: #93C5FD;
+}
+
+/* ── Number stepper in forms ── */
+html.dark .number-stepper {
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.10);
+}
+html.dark .number-stepper button {
+  color: #94A3B8;
+}
+html.dark .number-stepper button:hover {
+  background: rgba(255,255,255,0.06);
+}
+html.dark .number-stepper input {
+  background: transparent;
+  color: #F1F5F9;
+}
+
+/* ── FAQ accordion ── */
+html.dark .faq-container {
+  background: rgba(13,27,46,0.95);
+  border-color: rgba(255,255,255,0.08);
+}
+
+/* ── Job cards ── */
+html.dark .job-card {
+  background: rgba(13,27,46,0.95) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+
+/* ── Process step cards ── */
+html.dark .process-card {
+  background: rgba(13,27,46,0.95) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+
+/* ── Configurator form card ── */
+html.dark .configurator-card {
+  background: rgba(13,27,46,0.95);
+  border-color: rgba(27,79,216,0.3);
+}
+
+/* ── RFQ white card on dark bg ── */
+html.dark .rfq-card {
+  background: rgba(13,27,46,0.98);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+html.dark .rfq-card .text-navy-900 { color: #F1F5F9; }
+
+/* ── Industry selector cards ── */
+html.dark .industry-card {
+  background: rgba(13,27,46,0.95) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+html.dark .industry-card .text-navy-900 { color: #F1F5F9; }
+html.dark .industry-card .text-slate-500 { color: #94A3B8; }
+html.dark .industry-card .border-slate-100 { border-color: rgba(255,255,255,0.06); }
+
+/* ── About page accordion ── */
+html.dark .about-accordion {
+  background: rgba(13,27,46,0.95);
+  border-color: rgba(255,255,255,0.08);
+}
+html.dark .about-accordion .border-slate-100 { border-color: rgba(255,255,255,0.06); }
+html.dark .about-accordion .text-navy-900 { color: #F1F5F9; }
+
+/* ── Timeline card ── */
+html.dark .timeline-card {
+  background: rgba(13,27,46,0.95);
+  border-color: rgba(255,255,255,0.08);
+}
+
+/* ── Partner tier cards (Products page) ── */
+html.dark .partner-tier-card {
+  background: rgba(13,27,46,0.95) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+html.dark .partner-tier-card .text-navy-900 { color: #F1F5F9; }
+
+/* ── Sticky tab nav (Solutions page) ── */
+html.dark .sticky-tab-nav {
+  background: #0D1B2E;
+  border-color: rgba(255,255,255,0.08);
+}
+html.dark .sticky-tab-nav button {
+  color: #94A3B8;
+}
+html.dark .sticky-tab-nav button.active {
+  color: #F1F5F9;
+  border-color: #22C55E;
+}
+html.dark .sticky-tab-nav button:hover {
+  color: #F1F5F9;
+}
+
+/* ── Solution detail card (right panel) ── */
+html.dark .solution-detail-card {
+  background: rgba(13,27,46,0.95);
+  border-color: rgba(255,255,255,0.08);
+}
+
+/* ── Contact form card ── */
+html.dark .contact-form-card {
+  background: rgba(13,27,46,0.95);
+  border-color: rgba(255,255,255,0.08);
+}
+html.dark .contact-form-card .section-heading { color: #F1F5F9; }
+
+/* ── Announcement banner ── */
+html.dark .announcement-banner { /* already gradient, no change needed */ }
+
+/* ── Modal overlays ── */
+html.dark .modal-panel {
+  background: #0D1B2E;
+  border-color: rgba(255,255,255,0.08);
+}
+html.dark .modal-panel .text-navy-900 { color: #F1F5F9; }
+html.dark .modal-panel .border-slate-100 { border-color: rgba(255,255,255,0.06); }
+html.dark .modal-panel .bg-white { background: #0D1B2E; }
+html.dark .modal-panel .bg-slate-50 { background: rgba(255,255,255,0.03) !important; }
+html.dark .modal-panel .text-slate-600 { color: #CBD5E1; }
+html.dark .modal-panel .text-slate-700 { color: #CBD5E1; }
+html.dark .modal-panel .text-slate-400 { color: #94A3B8; }
+html.dark .modal-panel .border-b { border-color: rgba(255,255,255,0.06); }
+html.dark .modal-panel .bg-white.rounded-t-2xl { background: #0D1B2E; }
+
+/* ── Testimonial featured card ── */
+html.dark .testimonial-featured {
+  background: rgba(13,27,46,0.95);
+  border-color: rgba(255,255,255,0.08);
+}
+html.dark .testimonial-featured .text-slate-700 { color: #CBD5E1; }
+html.dark .testimonial-featured .text-navy-900 { color: #F1F5F9; }
+html.dark .testimonial-featured .border-slate-100 { border-color: rgba(255,255,255,0.06); }
+html.dark .testimonial-featured .bg-white { background: rgba(255,255,255,0.06); }
+html.dark .testimonial-featured .border-slate-200 { border-color: rgba(255,255,255,0.08); }
+
+/* ── Blog cards ── */
+html.dark .blog-card {
+  background: rgba(13,27,46,0.95);
+  border-color: rgba(255,255,255,0.08);
+}
+html.dark .blog-card .text-navy-900 { color: #F1F5F9; }
+html.dark .blog-card .text-slate-600 { color: #CBD5E1; }
+html.dark .blog-card .border-slate-100 { border-color: rgba(255,255,255,0.06); }
+
+/* ── Case study cards ── */
+html.dark .case-card {
+  background: rgba(13,27,46,0.95);
+  border-color: rgba(255,255,255,0.08);
+}
+
+/* ── About page partners strip ── */
+html.dark .partners-strip {
+  background: #0D1B2E;
+}
+
+/* ── Overline tag on light bg in dark mode ── */
+html.dark .overline-tag { color: #60A5FA; }
+
+/* ── Dell Platinum banner (amber gradient) — keep as-is ── */

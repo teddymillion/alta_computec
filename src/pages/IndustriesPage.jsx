@@ -86,7 +86,7 @@ export default function IndustriesPage() {
       <PageHero breadcrumb="Industries" title="Deep Sector Expertise Across Ethiopia's Critical Industries" subtitle="30 years of delivering mission-critical IT to the institutions that power Ethiopia's economy." />
 
       {/* Industry Selector */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container">
           <div className="text-center mb-12">
             <p className="overline-tag justify-center mb-3">Industries We Serve</p>
@@ -100,7 +100,7 @@ export default function IndustriesPage() {
                   key={ind.id}
                   href={`#${ind.id}`}
                   onClick={(e) => { e.preventDefault(); document.getElementById(ind.id)?.scrollIntoView({ behavior: 'smooth' }); }}
-                  className="group relative flex flex-col gap-5 p-6 rounded-2xl bg-white border-2 transition-all duration-250 hover:-translate-y-1 cursor-pointer overflow-hidden"
+                  className="group relative flex flex-col gap-5 p-6 rounded-2xl bg-white dark:bg-navy-900 border-2 transition-all duration-250 hover:-translate-y-1 cursor-pointer overflow-hidden"
                   style={{
                     borderColor: 'rgba(226,232,240,0.8)',
                     boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
@@ -137,11 +137,11 @@ export default function IndustriesPage() {
                   </div>
 
                   <div>
-                    <h3 className="text-[16px] font-bold text-navy-900 mb-2 leading-snug">{ind.name}</h3>
-                    <p className="text-[13px] text-slate-500 leading-relaxed line-clamp-2">{ind.challenge.split('.')[0]}.</p>
+                    <h3 className="text-[16px] font-bold text-navy-900 dark:text-white mb-2 leading-snug">{ind.name}</h3>
+                    <p className="text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-2">{ind.challenge.split('.')[0]}.</p>
                   </div>
 
-                  <div className="flex items-center gap-2 mt-auto pt-2 border-t border-slate-100">
+                  <div className="flex items-center gap-2 mt-auto pt-2 border-t border-slate-100 dark:border-white/6">
                     <span className="text-[13px] font-semibold text-navy-900 group-hover:text-current transition-colors" style={{ color: ind.accent }}>
                       View Solutions
                     </span>
@@ -158,8 +158,9 @@ export default function IndustriesPage() {
       {INDUSTRIES.map((ind, idx) => {
         const Icon = ind.icon;
         const isEven = idx % 2 === 0;
+        const sectionBg = isEven ? 'bg-white dark:bg-navy-950' : 'bg-slate-50/80 dark:bg-navy-950';
         return (
-          <section key={ind.id} id={ind.id} className={`section-padding ${ind.sectionBg}`}>
+          <section key={ind.id} id={ind.id} className={`section-padding ${sectionBg}`}>
             <div className="section-container">
               <div className={`grid lg:grid-cols-[60%_40%] gap-10 lg:gap-16 items-start ${!isEven ? 'lg:grid-flow-dense' : ''}`}>
                 <div className={`flex flex-col gap-6 ${!isEven ? 'lg:col-start-2' : ''}`}>
@@ -180,10 +181,10 @@ export default function IndustriesPage() {
                     </div>
                     <h2 className="section-heading">{ind.name}</h2>
                   </div>
-                  <p className="text-[14px] text-slate-600 leading-[1.75]">{ind.challenge}</p>
+                  <p className="text-[14px] text-slate-600 dark:text-slate-400 leading-[1.75]">{ind.challenge}</p>
                   <ul className="flex flex-col gap-2.5">
                     {ind.solutions.map((s) => (
-                      <li key={s} className="flex items-start gap-2.5 text-[14px] text-slate-700">
+                      <li key={s} className="flex items-start gap-2.5 text-[14px] text-slate-700 dark:text-slate-300">
                         <CheckCircle2 size={16} className="flex-shrink-0 mt-0.5" style={{ color: ind.accent }} aria-hidden="true" />
                         {s}
                       </li>

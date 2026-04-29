@@ -10,7 +10,7 @@ const BADGES = [
 
 export default function TrustBadges() {
   return (
-    <section className="py-10 bg-white border-y border-slate-100" aria-label="Trust credentials">
+    <section className="py-10 bg-white dark:bg-navy-950 border-y border-slate-100 dark:border-white/6" aria-label="Trust credentials">
       <div className="section-container">
         <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
           {BADGES.map(({ icon: Icon, label, color }) => (
@@ -18,7 +18,7 @@ export default function TrustBadges() {
               <div className={`icon-wrap ${color} w-9 h-9`}>
                 <Icon size={15} aria-hidden="true" />
               </div>
-              <span className="text-[13px] font-semibold text-navy-900 leading-tight">{label}</span>
+              <span className="text-[13px] font-semibold text-navy-900 dark:text-slate-200 leading-tight">{label}</span>
             </div>
           ))}
         </div>

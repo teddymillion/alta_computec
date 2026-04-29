@@ -88,17 +88,17 @@ function StatItem({ stat, animate }) {
 
 function AccordionItem({ item, isOpen, onToggle }) {
   return (
-    <div className="border-b border-slate-100 last:border-0">
+    <div className="border-b border-slate-100 dark:border-white/6 last:border-0">
       <button className="w-full flex items-center justify-between py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue rounded-lg px-1 group" onClick={onToggle} aria-expanded={isOpen}>
         <div className="flex items-center gap-3 pr-4">
           <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${item.dot} ${isOpen ? 'opacity-100' : 'opacity-40'} transition-opacity duration-200`} aria-hidden="true" />
-          <span className={`font-semibold text-[14px] transition-colors duration-150 ${isOpen ? item.accent : 'text-navy-900 group-hover:text-alta-blue'}`}>{item.title}</span>
+          <span className={`font-semibold text-[14px] transition-colors duration-150 ${isOpen ? item.accent : 'text-navy-900 dark:text-slate-200 group-hover:text-alta-blue'}`}>{item.title}</span>
         </div>
         <ChevronDown size={15} className={`text-slate-400 flex-shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} aria-hidden="true" />
       </button>
       {isOpen && (
         <div className="pb-4 pl-5 pr-1">
-          <p className="text-[13px] text-slate-500 leading-relaxed">{item.body}</p>
+          <p className="text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed">{item.body}</p>
         </div>
       )}
     </div>
@@ -121,7 +121,7 @@ export default function AboutPage() {
       <PageHero breadcrumb="About Us" title="30 Years of Technology Excellence in Africa" subtitle="From a ETB 100,000 startup in 1994 to a USD $25 million enterprise — ALTA Computec is Ethiopia's most trusted IT partner." />
 
       {/* Section 1 — Company Story */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container">
           <div className="grid lg:grid-cols-[3fr_2fr] gap-12 lg:gap-16 items-start">
             <div className="flex flex-col gap-8">
@@ -129,14 +129,14 @@ export default function AboutPage() {
                 <p className="overline-tag mb-3">Our Story</p>
                 <h2 className="section-heading">Built in Ethiopia. Trusted Across Africa.</h2>
               </div>
-              <div className="flex flex-col gap-4 text-[14px] text-slate-600 leading-[1.75]">
+              <div className="flex flex-col gap-4 text-[14px] text-slate-600 dark:text-slate-400 leading-[1.75]">
                 <p>ALTA Computec PLC was founded in 1994 in Addis Ababa with a single conviction: that Ethiopian enterprises deserve world-class technology infrastructure, delivered by people who understand the local context. Starting with ETB 100,000 in capital and a small team of engineers, we built the company project by project, client by client.</p>
                 <p>Over three decades, we have grown into Ethiopia's most decorated enterprise IT company — the country's only Dell Platinum Partner, a Cisco Premier Partner, Oracle Gold Partner, and Kaspersky Platinum Partner. Our 130+ engineers have delivered 640+ projects across banking, government, telecom, education, and energy sectors.</p>
                 <p>Our mission has never changed: to be the strategic technology partner that Ethiopian institutions trust with their most critical infrastructure — not just for a project, but for decades. Today, with USD $25 million in annual revenue and 470+ enterprise clients, we are proud to be the backbone of Ethiopia's digital economy.</p>
               </div>
               <div>
                 <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-400 mb-4">Why Choose ALTA?</p>
-                <div className="rounded-2xl border border-slate-200/80 overflow-hidden divide-y divide-slate-100" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+                <div className="rounded-2xl border border-slate-200/80 dark:border-white/8 overflow-hidden divide-y divide-slate-100 dark:divide-white/6 bg-white dark:bg-navy-900" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
                   {DIFFERENTIATORS.map((item, i) => (
                     <div key={item.title} className="px-4">
                       <AccordionItem item={item} isOpen={openIndex === i} onToggle={() => setOpenIndex(openIndex === i ? null : i)} />
@@ -165,7 +165,7 @@ export default function AboutPage() {
                           <span className="text-[11px] font-bold text-slate-400">{m.year}</span>
                           <span className={`text-[13px] font-bold ${m.active ? 'text-alta-green' : 'text-navy-900 dark:text-white'}`}>{m.label}</span>
                         </div>
-                        <p className="text-[12px] text-slate-500 leading-relaxed">{m.detail}</p>
+                        <p className="text-[12px] text-slate-500 dark:text-slate-400 leading-relaxed">{m.detail}</p>
                       </div>
                     </div>
                   ))}
@@ -191,7 +191,7 @@ export default function AboutPage() {
         <div className="section-container">
           <div className="text-center mb-12">
             <p className="overline-tag justify-center mb-3">Our Differentiators</p>
-            <h2 className="section-heading dark:section-heading-light">What Sets Us Apart</h2>
+            <h2 className="section-heading">What Sets Us Apart</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {DIFFERENTIATOR_CARDS.map((c) => {
@@ -230,7 +230,7 @@ export default function AboutPage() {
         <div className="section-container">
           <div className="text-center mb-12">
             <p className="overline-tag justify-center mb-3">Our Team</p>
-            <h2 className="section-heading dark:section-heading-light">The People Behind ALTA</h2>
+            <h2 className="section-heading">The People Behind ALTA</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {TEAM.map((member, i) => {
@@ -305,7 +305,7 @@ export default function AboutPage() {
       </section>
 
       {/* Section 6 — Partners Strip */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container">
           <div className="text-center mb-10">
             <p className="overline-tag justify-center mb-3">Official Certifications</p>
@@ -326,7 +326,7 @@ export default function AboutPage() {
                 <div className="flex items-center justify-center group-hover:scale-110 transition-transform duration-200" style={{ width: 112, height: 64 }}>
                   <PartnerLogo name={p.name} size={64} className="object-contain" />
                 </div>
-                <span className="text-[11px] font-semibold text-slate-400">{p.badge}</span>
+                <span className="text-[11px] font-semibold text-slate-400 dark:text-slate-500">{p.badge}</span>
               </div>
             ))}
           </div>

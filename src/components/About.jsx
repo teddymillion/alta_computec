@@ -93,7 +93,7 @@ const MILESTONES = [
 
 function AccordionItem({ item, isOpen, onToggle }) {
   return (
-    <div className="border-b border-slate-100 last:border-0">
+    <div className="border-b border-slate-100 dark:border-white/6 last:border-0">
       <button
         className="w-full flex items-center justify-between py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue rounded-lg px-1 group"
         onClick={onToggle}
@@ -101,7 +101,7 @@ function AccordionItem({ item, isOpen, onToggle }) {
       >
         <div className="flex items-center gap-3 pr-4">
           <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: item.accent, opacity: isOpen ? 1 : 0.4 }} aria-hidden="true" />
-          <span className="font-semibold text-[14px] transition-colors duration-150" style={{ color: isOpen ? item.accent : '#0A1628' }}>
+          <span className="font-semibold text-[14px] transition-colors duration-150 text-navy-900 dark:text-slate-200" style={{ color: isOpen ? item.accent : undefined }}>
             {item.title}
           </span>
         </div>
@@ -113,7 +113,7 @@ function AccordionItem({ item, isOpen, onToggle }) {
       </button>
       {isOpen && (
         <div className="pb-4 pl-5 pr-1">
-          <p className="text-[13px] text-slate-500 leading-relaxed">{item.body}</p>
+          <p className="text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed">{item.body}</p>
         </div>
       )}
     </div>
@@ -132,7 +132,7 @@ export default function About() {
           <div className="flex flex-col gap-8">
             <div>
               <p className="overline-tag mb-3">Our Story</p>
-              <h2 className="section-heading dark:section-heading-light">30 Years Building Ethiopia's Digital Infrastructure</h2>
+              <h2 className="section-heading">30 Years Building Ethiopia's Digital Infrastructure</h2>
             </div>
 
             <div className="flex flex-col gap-4 text-[14px] text-slate-600 dark:text-slate-400 leading-[1.75]">
@@ -150,7 +150,7 @@ export default function About() {
             {/* Why Alta accordion */}
             <div>
               <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500 mb-4">Why Alta?</p>
-              <div className="rounded-2xl border-2 overflow-hidden divide-y divide-slate-100 bg-white transition-all duration-250" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+              <div className="rounded-2xl border-2 overflow-hidden divide-y divide-slate-100 dark:divide-white/6 bg-white dark:bg-navy-900 transition-all duration-250" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
                 {DIFFERENTIATORS.map((item, i) => (
                   <div key={item.title} className="px-4 group" onMouseEnter={(e) => {
                     const parent = e.currentTarget.closest('.rounded-2xl');
@@ -186,7 +186,7 @@ export default function About() {
             <CompanyVideoPlayer />
 
             {/* Timeline */}
-            <div className="rounded-2xl border-2 p-6 bg-white transition-all duration-250" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
+            <div className="rounded-2xl border-2 p-6 bg-white dark:bg-navy-900 transition-all duration-250" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
               <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500 mb-6">Company Milestones</p>
               <div className="relative">
                 <div className="absolute left-[19px] top-5 bottom-5 w-px bg-gradient-to-b from-alta-blue via-slate-200 to-alta-green" aria-hidden="true" />
@@ -207,7 +207,7 @@ export default function About() {
                           <span className="text-[11px] font-bold text-slate-400">{m.year}</span>
                           <span className={`text-[14px] font-bold ${m.active ? 'text-alta-green' : 'text-navy-900 dark:text-white'}`}>{m.label}</span>
                         </div>
-                        <p className="text-[12px] text-slate-500 leading-relaxed">{m.detail}</p>
+                        <p className="text-[12px] text-slate-500 dark:text-slate-400 leading-relaxed">{m.detail}</p>
                       </div>
                     </div>
                   ))}

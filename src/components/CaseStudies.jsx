@@ -60,7 +60,7 @@ const FILTERS = ['All Sectors', 'Banking', 'Government', 'Telecom', 'Education']
 function CaseStudyCard({ study }) {
   const Icon = study.icon;
   return (
-    <article className="group flex flex-col rounded-2xl overflow-hidden border-2 transition-all duration-250 hover:-translate-y-1" style={{ background: 'white', borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }} onMouseEnter={(e) => {
+    <article className="group flex flex-col rounded-2xl overflow-hidden border-2 bg-white dark:bg-navy-900 transition-all duration-250 hover:-translate-y-1" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }} onMouseEnter={(e) => {
         e.currentTarget.style.borderColor = study.accentColor;
         e.currentTarget.style.boxShadow = `0 12px 32px ${study.accentLight.replace('0.12', '0.25')}, 0 0 0 1px ${study.accentBorder}`;
       }} onMouseLeave={(e) => {
@@ -91,12 +91,12 @@ function CaseStudyCard({ study }) {
       </div>
 
       {/* Metrics bar */}
-      <div className="grid grid-cols-3 divide-x divide-slate-200 border-b border-slate-200">
+      <div className="grid grid-cols-3 divide-x divide-slate-200 dark:divide-white/8 border-b border-slate-200 dark:border-white/8">
         {study.metrics.map((m) => (
           <div key={m.label} className="flex flex-col items-center py-3 px-2 text-center">
             <div className="flex items-center gap-1">
               <TrendingUp size={10} style={{ color: study.accentColor }} aria-hidden="true" />
-              <span className="text-[15px] font-black text-navy-900">{m.value}</span>
+              <span className="text-[15px] font-black text-navy-900 dark:text-white">{m.value}</span>
             </div>
             <span className="text-[10px] text-slate-500 font-medium mt-0.5">{m.label}</span>
           </div>
@@ -107,11 +107,11 @@ function CaseStudyCard({ study }) {
       <div className="flex flex-col gap-4 p-5 flex-1">
         <div className="flex items-start gap-2.5">
           <div className="w-0.5 min-h-[36px] rounded-full flex-shrink-0 mt-0.5" style={{ background: study.accentColor }} aria-hidden="true" />
-          <p className="text-[12px] font-semibold italic leading-relaxed text-slate-600">
+          <p className="text-[12px] font-semibold italic leading-relaxed text-slate-600 dark:text-slate-300">
             "{study.outcome}"
           </p>
         </div>
-        <p className="text-[13px] text-slate-500 leading-relaxed flex-1">{study.description}</p>
+        <p className="text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed flex-1">{study.description}</p>
         <a
           href="#contact"
           className="flex items-center gap-1.5 text-[13px] font-semibold transition-colors duration-150 mt-auto group-hover:underline underline-offset-2"
@@ -133,8 +133,8 @@ export default function CaseStudies() {
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
           <div>
             <p className="overline-tag mb-3">Proven Results</p>
-            <h2 className="section-heading dark:section-heading-light">Real Projects.<br className="hidden sm:block" /> Measurable Results.</h2>
-            <p className="section-subheading dark:section-subheading-light mt-3">Evidence of 640+ delivered projects across Ethiopia's most critical institutions.</p>
+            <h2 className="section-heading">Real Projects.<br className="hidden sm:block" /> Measurable Results.</h2>
+            <p className="section-subheading mt-3">Evidence of 640+ delivered projects across Ethiopia's most critical institutions.</p>
           </div>
           <div className="flex flex-wrap gap-2">
             {FILTERS.map((f, i) => (
@@ -142,8 +142,8 @@ export default function CaseStudies() {
                 key={f}
                 className={`text-[12px] font-semibold px-3.5 py-1.5 rounded-full border transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue ${
                   i === 0
-                    ? 'bg-navy-900 text-white border-navy-900'
-                    : 'bg-white text-slate-600 border-slate-200 hover:border-alta-blue hover:text-alta-blue'
+                    ? 'bg-navy-900 dark:bg-alta-blue text-white border-navy-900 dark:border-alta-blue'
+                    : 'bg-white dark:bg-navy-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-white/10 hover:border-alta-blue hover:text-alta-blue'
                 }`}
               >
                 {f}

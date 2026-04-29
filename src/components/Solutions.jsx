@@ -99,10 +99,10 @@ function SolutionCard({ solution, index }) {
 
       {/* Content */}
       <div className="flex flex-col gap-2.5 flex-1">
-        <h3 className="text-[15px] font-bold text-navy-900 dark:text-white leading-snug group-hover:text-current transition-colors duration-200" style={{ color: solution.accent }}>
+        <h3 className="text-[15px] font-bold leading-snug group-hover:text-current transition-colors duration-200" style={{ color: solution.accent }}>
           {solution.title}
         </h3>
-        <p className="text-[13px] text-slate-500 dark:text-slate-500 leading-relaxed line-clamp-3 group-hover:text-slate-600 dark:group-hover:text-slate-400 transition-colors duration-200">
+        <p className="text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-3 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors duration-200">
           {solution.description}
         </p>
       </div>

@@ -46,7 +46,7 @@ export default function Blog() {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
           <div>
             <p className="overline-tag mb-3">Insights</p>
-            <h2 className="section-heading dark:section-heading-light">Technology Insights for<br className="hidden sm:block" /> Ethiopian Enterprise Leaders</h2>
+            <h2 className="section-heading">Technology Insights for<br className="hidden sm:block" /> Ethiopian Enterprise Leaders</h2>
           </div>
           <Link to="/blog" className="btn-ghost self-start sm:self-auto flex-shrink-0">
             View All Insights <ArrowRight size={15} />
@@ -55,13 +55,18 @@ export default function Blog() {
 
         <div className="grid lg:grid-cols-3 gap-5">
           {/* Featured */}
-          <article className="lg:col-span-2 group flex flex-col rounded-2xl overflow-hidden border-2 transition-all duration-250 hover:-translate-y-1" style={{ background: 'white', borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }} onMouseEnter={(e) => {
-        e.currentTarget.style.borderColor = FEATURED.accent;
-        e.currentTarget.style.boxShadow = `0 12px 32px ${FEATURED.accentLight.replace('0.12', '0.25')}, 0 0 0 1px ${FEATURED.accentBorder}`;
-      }} onMouseLeave={(e) => {
-        e.currentTarget.style.borderColor = 'rgba(226,232,240,0.8)';
-        e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
-      }}>
+          <article
+            className="lg:col-span-2 group flex flex-col rounded-2xl overflow-hidden border-2 bg-white dark:bg-navy-900 transition-all duration-250 hover:-translate-y-1"
+            style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = FEATURED.accent;
+              e.currentTarget.style.boxShadow = `0 12px 32px ${FEATURED.accentLight.replace('0.12', '0.25')}, 0 0 0 1px ${FEATURED.accentBorder}`;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(226,232,240,0.8)';
+              e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+            }}
+          >
             <div className="relative h-56 overflow-hidden" style={{ background: FEATURED.gradient }}>
               <div className="absolute inset-0 bg-dot-pattern opacity-40" aria-hidden="true" />
               <div className="absolute inset-0 bg-gradient-to-t from-navy-950/60 to-transparent" aria-hidden="true" />
@@ -77,11 +82,11 @@ export default function Blog() {
               </div>
             </div>
             <div className="flex flex-col gap-4 p-6 flex-1">
-              <p className="text-[12px] text-slate-600">{FEATURED.date}</p>
-              <h3 className="text-[17px] font-bold text-navy-900 leading-snug group-hover:text-current transition-colors duration-150" style={{ color: FEATURED.accent }}>
+              <p className="text-[12px] text-slate-600 dark:text-slate-400">{FEATURED.date}</p>
+              <h3 className="text-[17px] font-bold leading-snug group-hover:text-current transition-colors duration-150" style={{ color: FEATURED.accent }}>
                 {FEATURED.title}
               </h3>
-              <p className="text-[13.5px] text-slate-500 leading-relaxed flex-1">{FEATURED.excerpt}</p>
+              <p className="text-[13.5px] text-slate-500 dark:text-slate-400 leading-relaxed flex-1">{FEATURED.excerpt}</p>
               <Link to="/blog" className="flex items-center gap-1.5 text-[13px] font-semibold transition-colors duration-150 mt-auto" style={{ color: FEATURED.accent }}>
                 Read Article <ArrowRight size={13} />
               </Link>
@@ -93,8 +98,8 @@ export default function Blog() {
             {ARTICLES.map((article) => (
               <article
                 key={article.title}
-                className="group flex flex-col gap-3 p-5 rounded-2xl border-2 transition-all duration-250 hover:-translate-y-0.5 flex-1"
-                style={{ background: 'white', borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}
+                className="group flex flex-col gap-3 p-5 rounded-2xl border-2 bg-white dark:bg-navy-900 transition-all duration-250 hover:-translate-y-0.5 flex-1"
+                style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = article.accent;
                   e.currentTarget.style.boxShadow = `0 12px 32px ${article.accentLight.replace('0.12', '0.25')}, 0 0 0 1px ${article.accentBorder}`;
@@ -112,11 +117,11 @@ export default function Blog() {
                     <Clock size={10} aria-hidden="true" /> {article.readTime}
                   </span>
                 </div>
-                <h3 className="text-[13.5px] font-bold text-navy-900 leading-snug group-hover:text-current transition-colors duration-150 flex-1" style={{ color: article.accent }}>
+                <h3 className="text-[13.5px] font-bold leading-snug group-hover:text-current transition-colors duration-150 flex-1" style={{ color: article.accent }}>
                   {article.title}
                 </h3>
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] text-slate-500">{article.date}</span>
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400">{article.date}</span>
                   <Link to="/blog" className="text-[12px] font-semibold transition-colors duration-150 flex items-center gap-1" style={{ color: article.accent }}>
                     Read <ArrowRight size={11} />
                   </Link>

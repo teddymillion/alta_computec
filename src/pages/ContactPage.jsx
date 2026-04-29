@@ -55,7 +55,7 @@ export default function ContactPage() {
       <PageHero breadcrumb="Contact" title="Let's Build Something Extraordinary Together" subtitle="Our team of 130+ engineers and specialists is ready to help with your next project." />
 
       {/* Contact Options */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-0">
             {[
@@ -121,13 +121,13 @@ export default function ContactPage() {
           <div className="grid lg:grid-cols-[60%_40%] gap-10 lg:gap-12">
 
             {/* Form */}
-            <div className="card-light p-8 rounded-2xl">
+            <div className="card-light dark:bg-navy-900 dark:border-white/8 p-8 rounded-2xl">
               <p className="overline-tag mb-3">Get In Touch</p>
               <h2 className="section-heading mb-6">Request a Consultation</h2>
               {success ? (
                 <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <h3 className="text-[18px] font-bold text-navy-900 mb-2">Request Received!</h3>
-                  <p className="text-slate-500 text-[14px]">Thank you! We've received your request and will respond within 24 hours.</p>
+                  <h3 className="text-[18px] font-bold text-navy-900 dark:text-white mb-2">Request Received!</h3>
+                  <p className="text-slate-500 dark:text-slate-400 text-[14px]">Thank you! We've received your request and will respond within 24 hours.</p>
                 </div>
               ) : (
               <form className="flex flex-col gap-4" onSubmit={handleSubmit} noValidate>
@@ -251,13 +251,13 @@ export default function ContactPage() {
       </section>
 
       {/* FAQ */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container max-w-3xl">
           <div className="text-center mb-10">
             <p className="overline-tag justify-center mb-3">Common Questions</p>
             <h2 className="section-heading">Frequently Asked Questions</h2>
           </div>
-          <div className="rounded-2xl border border-slate-200/80 overflow-hidden divide-y divide-slate-100" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+          <div className="rounded-2xl border border-slate-200/80 dark:border-white/8 overflow-hidden divide-y divide-slate-100 dark:divide-white/6 bg-white dark:bg-navy-900" style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
             {FAQS.map((faq, i) => (
               <div key={i} className="px-5">
                 <button
@@ -265,12 +265,12 @@ export default function ContactPage() {
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   aria-expanded={openFaq === i}
                 >
-                  <span className={`font-semibold text-[14px] pr-4 transition-colors duration-150 ${openFaq === i ? 'text-alta-blue' : 'text-navy-900 group-hover:text-alta-blue'}`}>{faq.q}</span>
+                  <span className={`font-semibold text-[14px] pr-4 transition-colors duration-150 ${openFaq === i ? 'text-alta-blue' : 'text-navy-900 dark:text-slate-200 group-hover:text-alta-blue'}`}>{faq.q}</span>
                   <ChevronDown size={15} className={`text-slate-400 flex-shrink-0 transition-transform duration-200 ${openFaq === i ? 'rotate-180' : ''}`} aria-hidden="true" />
                 </button>
                 {openFaq === i && (
                   <div className="pb-4">
-                    <p className="text-[13px] text-slate-500 leading-relaxed">{faq.a}</p>
+                    <p className="text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed">{faq.a}</p>
                   </div>
                 )}
               </div>

@@ -212,7 +212,9 @@ export default function CareersPage() {
                 key={f}
                 onClick={() => setActiveRole(f)}
                 className={`text-[12px] font-semibold px-3.5 py-1.5 rounded-full border transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue ${
-                  activeRole === f ? 'bg-navy-900 text-white border-navy-900' : 'bg-white text-slate-600 border-slate-200 hover:border-alta-blue hover:text-alta-blue'
+                  activeRole === f
+                    ? 'bg-navy-900 dark:bg-alta-blue text-white border-navy-900 dark:border-alta-blue'
+                    : 'bg-white dark:bg-navy-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-white/10 hover:border-alta-blue hover:text-alta-blue'
                 }`}
               >
                 {f}
@@ -224,7 +226,7 @@ export default function CareersPage() {
             {filtered.map((job, ji) => {
               const isNew = JOBS.indexOf(job) < 2;
               return (
-              <div key={job.title} className="group relative flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-white border-2 transition-all duration-250 hover:-translate-y-1 overflow-hidden" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }} onMouseEnter={(e) => {
+              <div key={job.title} className="group relative flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-white dark:bg-navy-900 border-2 transition-all duration-250 hover:-translate-y-1 overflow-hidden" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }} onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = '#1B4FD8';
                   e.currentTarget.style.boxShadow = '0 12px 32px rgba(27,79,216,0.25), 0 0 0 1px rgba(27,79,216,0.35)';
                 }} onMouseLeave={(e) => {
@@ -233,7 +235,7 @@ export default function CareersPage() {
                 }}>
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-2">
-                    <h3 className="font-bold text-navy-900 text-[16px]">{job.title}</h3>
+                    <h3 className="font-bold text-navy-900 dark:text-white text-[16px]">{job.title}</h3>
                     {isNew && (
                       <span className="text-[9px] font-black tracking-wider uppercase px-1.5 py-0.5 rounded-full bg-alta-green/15 text-alta-green border border-alta-green/25">
                         New
@@ -272,7 +274,7 @@ export default function CareersPage() {
             {PROCESS_STEPS.map((step, i) => {
               const Icon = step.icon;
               return (
-                <div key={step.title} className="group relative flex flex-col items-center gap-4 text-center relative z-10 p-5 rounded-2xl bg-white border-2 transition-all duration-250 hover:-translate-y-1 overflow-hidden" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }} onMouseEnter={(e) => {
+                <div key={step.title} className="group relative flex flex-col items-center gap-4 text-center relative z-10 p-5 rounded-2xl bg-white dark:bg-navy-900 border-2 transition-all duration-250 hover:-translate-y-1 overflow-hidden" style={{ borderColor: 'rgba(226,232,240,0.8)', boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }} onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = '#16A34A';
                   e.currentTarget.style.boxShadow = '0 12px 32px rgba(22,163,74,0.25), 0 0 0 1px rgba(22,163,74,0.35)';
                 }} onMouseLeave={(e) => {
@@ -285,8 +287,8 @@ export default function CareersPage() {
                   </div>
                   <Icon size={20} className="text-alta-green" aria-hidden="true" />
                   <div>
-                    <p className="font-bold text-navy-900 text-[14px] mb-1">{step.title}</p>
-                    <p className="text-[12px] text-slate-500 leading-relaxed">{step.desc}</p>
+                    <p className="font-bold text-navy-900 dark:text-white text-[14px] mb-1">{step.title}</p>
+                    <p className="text-[12px] text-slate-500 dark:text-slate-400 leading-relaxed">{step.desc}</p>
                   </div>
                 </div>
               );
@@ -312,16 +314,16 @@ export default function CareersPage() {
       {selectedJob && (
         <div className="fixed inset-0 z-[9998] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label={`Apply for ${selectedJob.title}`}>
           <div className="absolute inset-0 bg-navy-950/80 backdrop-blur-sm" onClick={() => setSelectedJob(null)} />
-          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-[540px] max-h-[90vh] overflow-y-auto z-10">
-            <div className="sticky top-0 bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between rounded-t-2xl">
+          <div className="relative bg-white dark:bg-navy-900 rounded-2xl shadow-2xl w-full max-w-[540px] max-h-[90vh] overflow-y-auto z-10">
+            <div className="sticky top-0 bg-white dark:bg-navy-900 border-b border-slate-100 dark:border-white/8 px-6 py-4 flex items-center justify-between rounded-t-2xl">
               <div>
-                <h3 className="font-bold text-navy-900 text-[16px]">{selectedJob.title}</h3>
+                <h3 className="font-bold text-navy-900 dark:text-white text-[16px]">{selectedJob.title}</h3>
                 <div className="flex items-center gap-2 mt-1">
                   <span className={`text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full ${selectedJob.deptColor}`}>{selectedJob.dept}</span>
                   <span className="text-[12px] text-slate-400">{selectedJob.type} · {selectedJob.location}</span>
                 </div>
               </div>
-              <button onClick={() => setSelectedJob(null)} className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-navy-900 hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue" aria-label="Close">
+              <button onClick={() => setSelectedJob(null)} className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue" aria-label="Close">
                 <X size={16} />
               </button>
             </div>
@@ -330,7 +332,7 @@ export default function CareersPage() {
                 <p className="text-[11px] font-bold tracking-widest uppercase text-slate-400 mb-2">Responsibilities</p>
                 <ul className="flex flex-col gap-1.5">
                   {selectedJob.responsibilities.map((r) => (
-                    <li key={r} className="flex items-start gap-2 text-[13px] text-slate-600">
+                    <li key={r} className="flex items-start gap-2 text-[13px] text-slate-600 dark:text-slate-300">
                       <span className="w-1 h-1 rounded-full bg-alta-blue flex-shrink-0 mt-1.5" aria-hidden="true" />{r}
                     </li>
                   ))}
@@ -340,7 +342,7 @@ export default function CareersPage() {
                 <p className="text-[11px] font-bold tracking-widest uppercase text-slate-400 mb-2">Qualifications</p>
                 <ul className="flex flex-col gap-1.5">
                   {selectedJob.qualifications.map((q) => (
-                    <li key={q} className="flex items-start gap-2 text-[13px] text-slate-600">
+                    <li key={q} className="flex items-start gap-2 text-[13px] text-slate-600 dark:text-slate-300">
                       <span className="w-1 h-1 rounded-full bg-alta-green flex-shrink-0 mt-1.5" aria-hidden="true" />{q}
                     </li>
                   ))}
@@ -350,20 +352,20 @@ export default function CareersPage() {
                 <p className="text-[11px] font-bold tracking-widest uppercase text-slate-400 mb-2">What We Offer</p>
                 <ul className="flex flex-col gap-1.5">
                   {selectedJob.offer.map((o) => (
-                    <li key={o} className="flex items-start gap-2 text-[13px] text-slate-600">
+                    <li key={o} className="flex items-start gap-2 text-[13px] text-slate-600 dark:text-slate-300">
                       <CheckCircle size={13} className="text-alta-green flex-shrink-0 mt-0.5" aria-hidden="true" />{o}
                     </li>
                   ))}
                 </ul>
               </div>
               {applySuccess ? (
-                <div className="text-center py-6 border-t border-slate-100">
-                  <h3 className="font-bold text-navy-900 text-[16px] mb-2">Application Submitted!</h3>
-                  <p className="text-slate-500 text-[13px]">Our HR team will contact you within 5 business days.</p>
+                <div className="text-center py-6 border-t border-slate-100 dark:border-white/8">
+                  <h3 className="font-bold text-navy-900 dark:text-white text-[16px] mb-2">Application Submitted!</h3>
+                  <p className="text-slate-500 dark:text-slate-400 text-[13px]">Our HR team will contact you within 5 business days.</p>
                 </div>
               ) : (
-              <form className="flex flex-col gap-4 pt-2 border-t border-slate-100" onSubmit={handleApply} noValidate>
-                <p className="font-bold text-navy-900 text-[14px]">Apply Now</p>
+              <form className="flex flex-col gap-4 pt-2 border-t border-slate-100 dark:border-white/8" onSubmit={handleApply} noValidate>
+                <p className="font-bold text-navy-900 dark:text-white text-[14px]">Apply Now</p>
                 <div><label className="form-label">Full Name *</label><input name="fullName" type="text" required className="form-input" placeholder="Your full name" /></div>
                 <div><label className="form-label">Email *</label><input name="email" type="email" required className="form-input" placeholder="your@email.com" /></div>
                 <div><label className="form-label">CV / Resume *</label><input name="cvFile" type="file" accept=".pdf,.doc,.docx" required className="form-input !py-2" /></div>

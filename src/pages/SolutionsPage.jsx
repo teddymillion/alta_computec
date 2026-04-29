@@ -156,7 +156,7 @@ export default function SolutionsPage() {
       />
 
       {/* Sticky Tab Nav */}
-      <div className="sticky top-[64px] z-40 bg-white border-b border-slate-200 shadow-sm overflow-x-auto scrollbar-hide">
+      <div className="sticky top-[64px] z-40 bg-white dark:bg-navy-950 border-b border-slate-200 dark:border-white/8 shadow-sm overflow-x-auto scrollbar-hide">
         <div className="section-container">
           <div className="flex items-center gap-0 min-w-max">
             {TABS.map((tab) => (
@@ -165,8 +165,8 @@ export default function SolutionsPage() {
                 onClick={() => scrollTo(tab.id)}
                 className={`px-4 py-4 text-[13px] font-medium whitespace-nowrap transition-all duration-150 border-b-2 focus-visible:outline-none ${
                   activeTab === tab.id
-                    ? 'border-alta-green text-navy-900 font-semibold'
-                    : 'border-transparent text-slate-500 hover:text-navy-900'
+                    ? 'border-alta-green text-navy-900 dark:text-white font-semibold'
+                    : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-navy-900 dark:hover:text-white'
                 }`}
               >
                 {tab.label}
@@ -181,7 +181,7 @@ export default function SolutionsPage() {
         const Icon = s.icon;
         const isEven = idx % 2 === 0;
         return (
-          <section key={s.id} id={s.id} className={`section-padding ${s.bg}`}>
+          <section key={s.id} id={s.id} className={`section-padding ${s.bg} dark:bg-navy-950`}>
             <div className="section-container">
               <div className={`grid lg:grid-cols-[55%_45%] gap-10 lg:gap-16 items-start ${!isEven ? 'lg:grid-flow-dense' : ''}`}>
                 <div className={`flex flex-col gap-6 ${!isEven ? 'lg:col-start-2' : ''}`}>
@@ -189,11 +189,11 @@ export default function SolutionsPage() {
                     <p className="overline-tag mb-3">{s.label}</p>
                     <h2 className="section-heading">{s.title}</h2>
                   </div>
-                  <p className="text-[14px] text-slate-600 leading-[1.75]">{s.p1}</p>
-                  <p className="text-[14px] text-slate-600 leading-[1.75]">{s.p2}</p>
+                  <p className="text-[14px] text-slate-600 dark:text-slate-400 leading-[1.75]">{s.p1}</p>
+                  <p className="text-[14px] text-slate-600 dark:text-slate-400 leading-[1.75]">{s.p2}</p>
                   <ul className="flex flex-col gap-2.5">
                     {s.benefits.map((b) => (
-                      <li key={b} className="flex items-start gap-2.5 text-[14px] text-slate-700">
+                      <li key={b} className="flex items-start gap-2.5 text-[14px] text-slate-700 dark:text-slate-300">
                         <CheckCircle2 size={16} className="text-alta-green flex-shrink-0 mt-0.5" aria-hidden="true" />
                         {b}
                       </li>
@@ -242,14 +242,14 @@ export default function SolutionsPage() {
       })}
 
       {/* How We Deliver */}
-      <section className="section-padding bg-white">
+      <section className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container">
           <div className="text-center mb-12">
             <p className="overline-tag justify-center mb-3">Our Process</p>
             <h2 className="section-heading">How We Deliver Every Project</h2>
           </div>
           <div className="relative">
-            <div className="hidden lg:block absolute top-8 left-[10%] right-[10%] h-px border-t-2 border-dashed border-slate-200" aria-hidden="true" />
+            <div className="hidden lg:block absolute top-8 left-[10%] right-[10%] h-px border-t-2 border-dashed border-slate-200 dark:border-white/8" aria-hidden="true" />
             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-8">
               {PROCESS_STEPS.map((step) => {
                 const Icon = step.icon;
@@ -260,8 +260,8 @@ export default function SolutionsPage() {
                     </div>
                     <Icon size={20} className="text-alta-blue" aria-hidden="true" />
                     <div>
-                      <p className="font-bold text-navy-900 text-[14px] mb-1">{step.title}</p>
-                      <p className="text-[12px] text-slate-500 leading-relaxed">{step.desc}</p>
+                      <p className="font-bold text-navy-900 dark:text-white text-[14px] mb-1">{step.title}</p>
+                      <p className="text-[12px] text-slate-500 dark:text-slate-400 leading-relaxed">{step.desc}</p>
                     </div>
                   </div>
                 );
@@ -287,11 +287,11 @@ export default function SolutionsPage() {
       {showFinder && (
         <div className="fixed inset-0 z-[9998] flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Solution Finder">
           <div className="absolute inset-0 bg-navy-950/80 backdrop-blur-sm" onClick={() => { setShowFinder(false); setFinderResult(null); }} />
-          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-[480px] p-8 z-10">
-            <button onClick={() => { setShowFinder(false); setFinderResult(null); }} className="absolute top-4 right-4 w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-navy-900 hover:bg-slate-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue" aria-label="Close">
+          <div className="relative bg-white dark:bg-navy-900 rounded-2xl shadow-2xl w-full max-w-[480px] p-8 z-10">
+            <button onClick={() => { setShowFinder(false); setFinderResult(null); }} className="absolute top-4 right-4 w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue" aria-label="Close">
               <X size={16} />
             </button>
-            <h3 className="text-[18px] font-bold text-navy-900 mb-6">ALTA Solution Finder</h3>
+            <h3 className="text-[18px] font-bold text-navy-900 dark:text-white mb-6">ALTA Solution Finder</h3>
             {!finderResult ? (
               <form onSubmit={handleFinder} className="flex flex-col gap-4">
                 <div>
@@ -321,7 +321,7 @@ export default function SolutionsPage() {
               </form>
             ) : (
               <div className="flex flex-col gap-5">
-                <p className="text-[14px] text-slate-600">Based on your answers, we recommend:</p>
+                <p className="text-[14px] text-slate-600 dark:text-slate-300">Based on your answers, we recommend:</p>
                 <div className="flex flex-wrap gap-2">
                   {finderResult.map((r) => (
                     <span key={r} className="px-3 py-1.5 rounded-full bg-alta-green/10 text-alta-green font-semibold text-[13px] border border-alta-green/20">{r}</span>
@@ -330,7 +330,7 @@ export default function SolutionsPage() {
                 <Link to="/contact" onClick={() => setShowFinder(false)} className="btn-primary w-full justify-center">
                   Request a Proposal <ArrowRight size={15} />
                 </Link>
-                <button onClick={() => setFinderResult(null)} className="text-[13px] text-slate-400 hover:text-slate-600 transition-colors text-center">
+                <button onClick={() => setFinderResult(null)} className="text-[13px] text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors text-center">
                   ← Start over
                 </button>
               </div>

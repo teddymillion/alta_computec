@@ -258,7 +258,7 @@ export default function GroupPage() {
       </section>
 
       {/* ── Shared Identity ── */}
-      <section className="section-padding bg-white border-t border-slate-100">
+      <section className="section-padding bg-white dark:bg-navy-950 border-t border-slate-100 dark:border-white/6">
         <div className="section-container">
           <div className="text-center mb-12">
             <p className="overline-tag justify-center mb-3">The ALTA Group</p>
@@ -296,14 +296,17 @@ export default function GroupPage() {
 
           {/* Two company cards side by side */}
           <div className="grid lg:grid-cols-2 gap-5">
-            <div className="rounded-2xl p-6 flex items-center gap-5 border border-blue-100" style={{ background: 'linear-gradient(135deg, #eff6ff 0%, #f8faff 100%)' }}>
-              <div className="w-14 h-14 rounded-2xl bg-alta-blue flex items-center justify-center flex-shrink-0 shadow-md">
-                <Award size={24} className="text-white" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-black text-navy-900 text-[16px] leading-tight">ALTA Computec PLC</p>
-                <p className="text-slate-500 text-[13px] mt-0.5">Ethiopia's #1 Enterprise IT Partner · Dell Platinum</p>
-              </div>
+            <div
+                className="rounded-2xl p-6 flex items-center gap-5 border border-blue-100 dark:border-alta-blue/20"
+                style={{ background: 'linear-gradient(135deg, #eff6ff 0%, #f8faff 100%)' }}
+              >
+                <div className="w-14 h-14 rounded-2xl bg-alta-blue flex items-center justify-center flex-shrink-0 shadow-md">
+                  <Award size={24} className="text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-black text-navy-900 text-[16px] leading-tight">ALTA Computec PLC</p>
+                  <p className="text-slate-500 text-[13px] mt-0.5">Ethiopia's #1 Enterprise IT Partner · Dell Platinum</p>
+                </div>
               <Link to="/" className="btn-outline !text-[13px] !px-4 !py-2 flex-shrink-0" style={{ minHeight: 38 }}>
                 Explore <ArrowRight size={13} />
               </Link>

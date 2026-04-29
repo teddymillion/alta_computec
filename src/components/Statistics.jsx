@@ -73,7 +73,7 @@ function StatCard({ stat, animate, index }) {
 
   return (
     <div
-      className="relative flex flex-col gap-4 p-7 rounded-2xl bg-white border border-slate-200/80 overflow-hidden transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1 group"
+      className="relative flex flex-col gap-4 p-7 rounded-2xl bg-white dark:bg-navy-900 border border-slate-200/80 overflow-hidden transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1 group"
       style={{
         boxShadow: stat.isAmber
           ? '0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px rgba(245,158,11,0.12), 0 0 20px rgba(245,158,11,0.06)'
@@ -109,8 +109,8 @@ function StatCard({ stat, animate, index }) {
         {stat.sublabel && (
           <span className="text-[10px] font-bold tracking-[0.12em] uppercase text-amber-500">{stat.sublabel}</span>
         )}
-        <p className="text-[15px] font-bold text-navy-900 leading-tight">{stat.label}</p>
-        <p className="text-[13px] text-slate-500 leading-relaxed">{stat.context}</p>
+        <p className="text-[15px] font-bold text-navy-900 dark:text-white leading-tight">{stat.label}</p>
+        <p className="text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed">{stat.context}</p>
       </div>
 
       {/* Bottom right icon */}
@@ -135,7 +135,7 @@ export default function Statistics() {
   }, []);
 
   return (
-    <section id="statistics" className="section-padding section-depth-light" aria-label="Company statistics" ref={ref}>
+    <section id="statistics" className="section-padding section-depth-light dark:bg-navy-950" aria-label="Company statistics" ref={ref}>
       <div className="section-container">
         <div className="text-center mb-14">
           <p className="overline-tag justify-center mb-3">By The Numbers</p>
