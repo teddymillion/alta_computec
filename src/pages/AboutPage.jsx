@@ -186,6 +186,134 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Section 2b — ALTA Building */}
+      <section className="section-padding bg-white dark:bg-navy-950 overflow-hidden" aria-label="ALTA Computec headquarters">
+        <div className="section-container">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+
+            {/* Left — rich image frame */}
+            <div className="relative">
+              {/* Outer glow ring */}
+              <div className="absolute -inset-4 rounded-3xl opacity-30 blur-2xl" style={{ background: 'linear-gradient(135deg, #1B4FD8 0%, #22C55E 100%)' }} aria-hidden="true" />
+
+              {/* Main image container */}
+              <div className="relative rounded-3xl overflow-hidden" style={{ boxShadow: '0 32px 64px rgba(0,0,0,0.18), 0 0 0 1px rgba(27,79,216,0.12)' }}>
+
+                {/* The building photo */}
+                <img
+                  src="/Alta-Building.jpeg"
+                  alt="ALTA Computec PLC Headquarters — Mexico Road, Addis Ababa"
+                  className="w-full object-cover"
+                  style={{ height: 480, objectPosition: 'center center' }}
+                  loading="lazy"
+                />
+
+                {/* Bottom gradient overlay */}
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(3,8,15,0.75) 0%, rgba(3,8,15,0.2) 45%, transparent 100%)' }} aria-hidden="true" />
+
+                {/* Top-left: Since badge */}
+                <div
+                  className="absolute top-5 left-5 flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-md"
+                  style={{ background: 'rgba(3,8,15,0.65)', border: '1px solid rgba(27,79,216,0.4)' }}
+                >
+                  <span className="w-2 h-2 rounded-full bg-alta-green-light animate-ping-slow" aria-hidden="true" />
+                  <span className="text-[11px] font-bold text-white tracking-wider uppercase">Est. 1994 · Addis Ababa</span>
+                </div>
+
+                {/* Top-right: Dell Platinum badge */}
+                <div
+                  className="absolute top-5 right-5 flex items-center gap-1.5 px-3 py-1.5 rounded-full backdrop-blur-md"
+                  style={{ background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.45)' }}
+                >
+                  <span className="text-amber-400 text-[11px] font-black">★</span>
+                  <span className="text-[11px] font-bold text-amber-300 tracking-wide">Dell Platinum Partner</span>
+                </div>
+
+                {/* Bottom overlay content */}
+                <div className="absolute bottom-0 left-0 right-0 p-5">
+                  <div className="flex items-end justify-between gap-4">
+                    <div>
+                      <p className="text-white font-black text-[18px] leading-tight">ALTA Computec PLC</p>
+                      <div className="flex items-center gap-1.5 mt-1">
+                        <MapPin size={12} className="text-alta-blue flex-shrink-0" aria-hidden="true" />
+                        <span className="text-[12px] text-slate-300">Mexico Road, Chad St., Addis Ababa</span>
+                      </div>
+                    </div>
+                    <a
+                      href="https://maps.google.com/?q=Mexico+Square+Addis+Ababa"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-[12px] font-semibold text-white transition-all duration-150 hover:bg-white/20 flex-shrink-0 backdrop-blur-sm"
+                      style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)' }}
+                    >
+                      <MapPin size={12} aria-hidden="true" /> View on Maps
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating stat card — bottom-left */}
+              <div
+                className="absolute -bottom-5 -left-5 flex flex-col gap-1 px-4 py-3 rounded-2xl backdrop-blur-md shadow-xl"
+                style={{ background: 'rgba(10,22,40,0.92)', border: '1px solid rgba(27,79,216,0.35)' }}
+              >
+                <span className="text-[28px] font-black text-alta-blue leading-none">30+</span>
+                <span className="text-[11px] text-slate-400 font-medium">Years at this address</span>
+              </div>
+
+              {/* Floating stat card — top-right offset */}
+              <div
+                className="absolute -top-5 -right-5 flex flex-col gap-1 px-4 py-3 rounded-2xl backdrop-blur-md shadow-xl"
+                style={{ background: 'rgba(10,22,40,0.92)', border: '1px solid rgba(34,197,94,0.35)' }}
+              >
+                <span className="text-[28px] font-black text-alta-green-light leading-none">470+</span>
+                <span className="text-[11px] text-slate-400 font-medium">Enterprise clients</span>
+              </div>
+            </div>
+
+            {/* Right — copy */}
+            <div className="flex flex-col gap-7">
+              <div>
+                <p className="overline-tag mb-3">Our Home</p>
+                <h2 className="section-heading">One Building.<br />Ethiopia's IT Backbone.</h2>
+              </div>
+
+              <p className="text-[15px] text-slate-600 dark:text-slate-400 leading-[1.75]">
+                From this building on Mexico Road in Addis Ababa, ALTA Computec has been engineering Ethiopia's most critical technology infrastructure for over 30 years — serving banks, government ministries, telecoms, and enterprises across the country.
+              </p>
+
+              {/* Fact tiles */}
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { label: 'Headquarters', value: 'Mexico Road, Addis Ababa', icon: '🏢' },
+                  { label: 'In Operation Since', value: '1994 — 30+ years', icon: '📅' },
+                  { label: 'Engineers On-Site', value: '130+ certified staff', icon: '👷' },
+                  { label: 'ICT Park Presence', value: 'Training center inside', icon: '🎓' },
+                ].map((f) => (
+                  <div
+                    key={f.label}
+                    className="flex flex-col gap-1.5 p-4 rounded-2xl bg-slate-50 dark:bg-navy-900 border border-slate-200/80 dark:border-white/8"
+                  >
+                    <span className="text-[18px] leading-none">{f.icon}</span>
+                    <span className="text-[10px] font-bold tracking-wider uppercase text-slate-400">{f.label}</span>
+                    <span className="text-[13px] font-semibold text-navy-900 dark:text-white leading-snug">{f.value}</span>
+                  </div>
+                ))}
+              </div>
+
+              <a
+                href="https://maps.google.com/?q=Mexico+Square+Addis+Ababa"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-outline self-start"
+              >
+                <MapPin size={15} /> Get Directions
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Section 3 — Differentiators */}
       <section className="section-padding bg-white dark:bg-navy-950">
         <div className="section-container">
