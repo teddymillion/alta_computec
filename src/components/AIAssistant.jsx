@@ -1,12 +1,28 @@
 import { useState, useEffect, useRef } from 'react';
-import { X, Send, Minimize2, Server, ShieldCheck, Cloud, FileText } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
+import { X, Send, Minimize2 } from 'lucide-react';
 
-const CHIPS = [
-  { label: 'IT Infrastructure', icon: Server },
-  { label: 'Cybersecurity',     icon: ShieldCheck },
-  { label: 'Cloud Setup',       icon: Cloud },
-  { label: 'Get a Quote',       icon: FileText },
+const SUGGESTIONS = [
+  'What products do you offer?',
+  'Tell me about your AI services',
+  'How do I request a quote?',
+  'What training courses are available?',
 ];
+
+// Human-readable label for each route
+const PAGE_LABELS = {
+  '/':                  'Home',
+  '/products':          'Products',
+  '/solutions':         'Solutions',
+  '/software-division': 'Software & AI Division',
+  '/about':             'About Us',
+  '/contact':           'Contact',
+  '/careers':           'Careers',
+  '/industries':        'Industries',
+  '/case-studies':      'Case Studies',
+  '/blog':              'Blog',
+  '/group':             'ALTA Group',
+};
 
 function AvatarIcon({ size = 32 }) {
   return (
@@ -22,16 +38,20 @@ function AvatarIcon({ size = 32 }) {
 }
 
 export default function AIAssistant() {
-  const [open, setOpen] = useState(false);
-  const [pos, setPos] = useState({ x: null, y: null });
-  const [dragging, setDragging] = useState(false);
-  const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([]);
+  const location = useLocation();
+  const [open, setOpen]               = useState(false);
+  const [pos, setPos]                 = useState({ x: null, y: null });
+  const [dragging, setDragging]       = useState(false);
+  const [input, setInput]             = useState('');
+  const [messages, setMessages]       = useState([]);
+  const [loading, setLoading]         = useState(false);
   const [initialized, setInitialized] = useState(false);
-  const dragOffset = useRef({ x: 0, y: 0 });
-  const widgetRef = useRef(null);
+  const dragOffset  = useRef({ x: 0, y: 0 });
+  const widgetRef   = useRef(null);
+  const bodyRef     = useRef(null);
   const FAB = 64;
 
+  // Position FAB bottom-right on mount
   useEffect(() => {
     setPos({ x: window.innerWidth - FAB - 24, y: window.innerHeight - FAB - 24 });
     setInitialized(true);
@@ -45,6 +65,7 @@ export default function AIAssistant() {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
+  // Drag logic
   useEffect(() => {
     if (!dragging) return;
     const onMove = (e) => {
@@ -70,6 +91,13 @@ export default function AIAssistant() {
     };
   }, [dragging]);
 
+  // Auto-scroll chat body when messages change
+  useEffect(() => {
+    if (bodyRef.current) {
+      bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   const startDrag = (e) => {
     if (e.target.closest('button') || e.target.closest('input')) return;
     const cx = e.touches ? e.touches[0].clientX : e.clientX;
@@ -81,32 +109,52 @@ export default function AIAssistant() {
 
   const now = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-  const handleSend = () => {
-    if (!input.trim()) return;
-    setMessages((prev) => [...prev, { role: 'user', content: input.trim(), time: now() }]);
+  const handleSend = async (text) => {
+    const content = (text || input).trim();
+    if (!content || loading) return;
+
+    const userMsg = { role: 'user', content, time: now() };
+    const next = [...messages, userMsg];
+    setMessages([...next, { role: 'typing' }]);
     setInput('');
-    setMessages((prev) => [...prev, { role: 'typing' }]);
-    setTimeout(() => {
-      setMessages((prev) => {
-        const filtered = prev.filter((m) => m.role !== 'typing');
-        return [
-          ...filtered,
-          {
-            role: 'assistant',
-            content:
-              'Thank you for your message. Our team will follow up shortly. ' +
-              'For immediate assistance, call +251 11 550 2928 or visit /contact.',
-            time: now(),
-          },
-        ];
+    setLoading(true);
+
+    // Page context is sent separately — does NOT count against the 10-message history limit
+    const pagePath  = location.pathname;
+    const pageLabel = PAGE_LABELS[pagePath] || pagePath;
+    const pageCtx   = { role: 'user', content: `[Context: User is currently viewing the "${pageLabel}" page (${pagePath})]` };
+
+    // Full conversation history (last 10 real turns only — typing markers excluded)
+    const history = next
+      .filter((m) => m.role === 'user' || m.role === 'assistant')
+      .slice(-10);
+
+    const apiMessages = [pageCtx, ...history];
+
+    try {
+      const res = await fetch('/api/assistant', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: apiMessages }),
       });
-    }, 1200);
+      const data = await res.json();
+      const reply = data.reply || 'Sorry, I could not get a response. Please try again.';
+      setMessages([...next, { role: 'assistant', content: reply, time: now() }]);
+    } catch {
+      setMessages([...next, {
+        role: 'assistant',
+        content: 'Something went wrong. Please contact us at +251 11 550 2928 or info@altacomputec.com.',
+        time: now(),
+      }]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (!initialized || pos.x === null) return null;
 
-  const PANEL_W = 320;
-  const PANEL_H = 460;
+  const PANEL_W  = 320;
+  const PANEL_H  = 460;
   const panelLeft = Math.min(Math.max(pos.x - PANEL_W + FAB, 8), window.innerWidth - PANEL_W - 8);
   const panelTop  = Math.min(Math.max(pos.y - PANEL_H - 12, 8), window.innerHeight - PANEL_H - 8);
 
@@ -150,6 +198,7 @@ export default function AIAssistant() {
 
           {/* Chat body */}
           <div
+            ref={bodyRef}
             className="overflow-y-auto px-4 py-4 scrollbar-hide flex flex-col gap-2"
             style={{ height: 272, background: 'rgba(5,13,26,0.95)' }}
           >
@@ -166,18 +215,17 @@ export default function AIAssistant() {
                     Hello! I'm ALTA AI. How can I help you with IT solutions, products, or services today?
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-1.5 pl-9">
-                  {CHIPS.map(({ label, icon: ChipIcon }) => (
+                <div className="flex flex-col gap-1.5 pl-9">
+                  {SUGGESTIONS.map((q) => (
                     <button
-                      key={label}
-                      onClick={() => setInput(label)}
-                      className="flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1.5 rounded-full transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue"
-                      style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)', color: 'rgba(148,163,184,0.9)' }}
-                      onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(27,79,216,0.25)'; e.currentTarget.style.borderColor = 'rgba(27,79,216,0.5)'; e.currentTarget.style.color = '#fff'; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'; e.currentTarget.style.color = 'rgba(148,163,184,0.9)'; }}
+                      key={q}
+                      onClick={() => handleSend(q)}
+                      className="text-left text-[12px] font-medium px-3 py-2 rounded-xl transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue"
+                      style={{ background: 'rgba(27,79,216,0.08)', border: '1px solid rgba(27,79,216,0.2)', color: 'rgba(148,163,184,0.9)' }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(27,79,216,0.22)'; e.currentTarget.style.borderColor = 'rgba(27,79,216,0.45)'; e.currentTarget.style.color = '#fff'; }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(27,79,216,0.08)'; e.currentTarget.style.borderColor = 'rgba(27,79,216,0.2)'; e.currentTarget.style.color = 'rgba(148,163,184,0.9)'; }}
                     >
-                      <ChipIcon size={10} aria-hidden="true" />
-                      {label}
+                      {q}
                     </button>
                   ))}
                 </div>
@@ -190,7 +238,7 @@ export default function AIAssistant() {
                       <AvatarIcon size={24} />
                     </div>
                     <div className="flex items-center gap-1 px-3.5 py-3 rounded-xl rounded-tl-sm" style={{ background: 'rgba(27,79,216,0.1)', border: '1px solid rgba(27,79,216,0.15)' }}>
-                      {[0,1,2].map((d) => (
+                      {[0, 1, 2].map((d) => (
                         <span key={d} className="w-1.5 h-1.5 rounded-full bg-slate-500 animate-bounce" style={{ animationDelay: `${d * 150}ms` }} aria-hidden="true" />
                       ))}
                     </div>
@@ -230,15 +278,16 @@ export default function AIAssistant() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
               aria-label="Message ALTA AI"
+              disabled={loading}
             />
             <button
-              onClick={handleSend}
-              disabled={!input.trim()}
+              onClick={() => handleSend()}
+              disabled={!input.trim() || loading}
               className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue"
-              style={{ background: input.trim() ? 'linear-gradient(135deg, #16A34A, #15803D)' : 'rgba(255,255,255,0.06)' }}
+              style={{ background: (input.trim() && !loading) ? 'linear-gradient(135deg, #16A34A, #15803D)' : 'rgba(255,255,255,0.06)' }}
               aria-label="Send message"
             >
-              <Send size={14} className={input.trim() ? 'text-white' : 'text-slate-600'} />
+              <Send size={14} className={(input.trim() && !loading) ? 'text-white' : 'text-slate-600'} />
             </button>
           </div>
 
@@ -256,7 +305,6 @@ export default function AIAssistant() {
         onMouseDown={startDrag}
         onTouchStart={startDrag}
       >
-        {/* Pulse rings — staggered, visible */}
         {!open && (
           <>
             <span className="absolute rounded-full pointer-events-none" style={{ inset: -8, borderRadius: '50%', border: '2px solid rgba(184,212,50,0.45)', animation: 'aiPulse 2.4s ease-out infinite' }} aria-hidden="true" />
@@ -264,7 +312,6 @@ export default function AIAssistant() {
           </>
         )}
 
-        {/* FAB tooltip */}
         {!open && (
           <div className="absolute left-1/2 -translate-x-1/2 pointer-events-none" style={{ bottom: FAB + 8 }} aria-hidden="true">
             <span className="whitespace-nowrap text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full" style={{ background: 'rgba(10,22,40,0.88)', border: '1px solid rgba(184,212,50,0.35)', color: 'rgba(184,212,50,0.9)', backdropFilter: 'blur(8px)', boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
@@ -273,7 +320,6 @@ export default function AIAssistant() {
           </div>
         )}
 
-        {/* Button */}
         <button
           onClick={() => setOpen((o) => !o)}
           className="relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
