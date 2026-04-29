@@ -98,7 +98,7 @@ export default async function handler(req, res) {
     if (!response.ok) {
       const err = await response.text();
       console.error('Groq API error:', response.status, err);
-      return res.status(502).json({ reply: 'Our AI assistant is temporarily unavailable. Please contact us at +251 11 550 2928.' });
+      return res.status(200).json({ reply: `Groq error ${response.status}: ${err.slice(0, 300)}` });
     }
 
     const data = await response.json();

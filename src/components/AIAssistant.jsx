@@ -124,10 +124,11 @@ export default function AIAssistant() {
     const pageLabel = PAGE_LABELS[pagePath] || pagePath;
     const pageCtx   = { role: 'user', content: `[Context: User is currently viewing the "${pageLabel}" page (${pagePath})]` };
 
-    // Full conversation history (last 10 real turns only — typing markers excluded)
+    // Strip time/display fields — only send role + content to the API
     const history = next
       .filter((m) => m.role === 'user' || m.role === 'assistant')
-      .slice(-10);
+      .slice(-10)
+      .map(({ role, content }) => ({ role, content }));
 
     const apiMessages = [pageCtx, ...history];
 
