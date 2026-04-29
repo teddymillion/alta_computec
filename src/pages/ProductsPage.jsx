@@ -276,7 +276,7 @@ function Field({ field, formData, onChange, errors }) {
   if (field.type === 'text' || field.type === 'email' || field.type === 'tel') {
     const isEmail = field.type === 'email';
     const errMsg = err
-      ? (isEmail ? (formData[field.id] ? 'Please enter a valid email address (e.g. name@company.com)' : 'Email address is required') : 'This field is required')
+      ? (isEmail ? (val ? 'Please enter a valid email address (e.g. name@company.com)' : 'Email address is required') : 'This field is required')
       : null;
     return (
       <div className={wrap}>
@@ -403,10 +403,13 @@ function ConfiguratorForm({ subcategory, accent }) {
     const config = FORM_CONFIGS[subcategory] || getGenericConfig(subcategory);
     const newErrors = {};
     config.sections.forEach(s => s.fields.forEach(f => {
-      if (f.required && !formData[f.id]) newErrors[f.id] = true;
+      if (f.required) {
+        const val = formData[f.id];
+        if (!val || (typeof val === 'string' && !val.trim())) newErrors[f.id] = true;
+      }
     }));
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!formData.email || !EMAIL_RE.test(formData.email)) newErrors.email = true;
+    if (!formData.email || !EMAIL_RE.test(String(formData.email).trim())) newErrors.email = true;
     if (Object.keys(newErrors).length) { setErrors(newErrors); return; }
     setErrors({});
     setLoading(true);
@@ -423,7 +426,13 @@ function ConfiguratorForm({ subcategory, accent }) {
       if (!res.ok) {
         if (data.errors?.email) {
           setErrors(prev => ({ ...prev, email: true }));
-          throw new Error('Please enter a valid email address');
+          setApiError('Please enter a valid email address (e.g. name@company.com)');
+          return;
+        }
+        if (data.errors) {
+          const firstMsg = Object.values(data.errors)[0]?.[0];
+          setApiError(firstMsg || 'Please check your inputs and try again.');
+          return;
         }
         throw new Error(data.message || 'Submission failed. Please try again.');
       }
