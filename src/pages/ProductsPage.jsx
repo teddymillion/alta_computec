@@ -275,8 +275,8 @@ function Field({ field, formData, onChange, errors }) {
 
   if (field.type === 'text' || field.type === 'email' || field.type === 'tel') {
     const isEmail = field.type === 'email';
-    const errMsg  = err
-      ? (isEmail && val ? 'Enter a valid email address' : 'This field is required')
+    const errMsg = err
+      ? (isEmail ? (formData[field.id] ? 'Please enter a valid email address (e.g. name@company.com)' : 'Email address is required') : 'This field is required')
       : null;
     return (
       <div className={wrap}>
@@ -420,7 +420,13 @@ function ConfiguratorForm({ subcategory, accent }) {
       });
       const text = await res.text();
       const data = text ? JSON.parse(text) : {};
-      if (!res.ok) throw new Error(data.message || 'Submission failed');
+      if (!res.ok) {
+        if (data.errors?.email) {
+          setErrors(prev => ({ ...prev, email: true }));
+          throw new Error('Please enter a valid email address');
+        }
+        throw new Error(data.message || 'Submission failed. Please try again.');
+      }
       setSubmitted(true);
     } catch (err) {
       setApiError(err.message);
