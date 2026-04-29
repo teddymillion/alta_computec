@@ -1,3 +1,12 @@
+async function getRawBody(req) {
+  return new Promise((resolve, reject) => {
+    let data = '';
+    req.on('data', (chunk) => { data += chunk; });
+    req.on('end', () => resolve(data));
+    req.on('error', reject);
+  });
+}
+
 const KNOWLEDGE_SECTIONS = [
   `COMPANY: Alta Computec PLC founded 1994 Addis Ababa Ethiopia. Ethiopia's ONLY Dell Platinum Partner. USD $25M revenue, 470+ enterprise clients, 640+ projects, 130+ certified engineers. Zero subcontracting.`,
 
@@ -13,14 +22,12 @@ const KNOWLEDGE_SECTIONS = [
 
   `SOLUTIONS: IT Infrastructure (data centers, LAN/WAN, 200+ projects, Dell+Cisco, 24/7 SLA). Banking ATM (exclusive Diebold Nixdorf, 99.9% uptime). Cloud (VMware, Azure, IBM, RTO under 4hrs). Cybersecurity (Kaspersky Platinum, Fortinet, SIEM, SOC, pen testing, 500+ endpoints). Enterprise Software & AI (Oracle ERP, 80+ deployments, 2000+ trained users). Smart Office (SHARP exclusive, 40+ deployments). Consulting (IT strategy, digital transformation). Data Center (Dell, Cisco, VMware, Fortinet). Technical Support (AMC, 4-hour SLA, 24/7 NOC).`,
 
-  `SOFTWARE & AI DIVISION (NEW) - Head: Kirubel Gebrehiwot: 1) AI as a Service: LLM integration, predictive analytics, process automation, computer vision. 2) ERP Solutions: SAP, Odoo, Oracle implementation. 3) Web & App Development: enterprise web, mobile apps. 4) Database Design & Management: architecture, optimisation, migration. 5) Cybersecurity: threat assessment, pen testing, SOC, compliance. 6) Custom Software Development: bespoke solutions.`,
+  `SOFTWARE & AI DIVISION (NEW) Head Kirubel Gebrehiwot: 1) AI as a Service: LLM integration, predictive analytics, process automation, computer vision. 2) ERP Solutions: SAP, Odoo, Oracle implementation. 3) Web & App Development: enterprise web, mobile apps. 4) Database Design & Management: architecture, optimisation, migration. 5) Cybersecurity: threat assessment, pen testing, SOC, compliance. 6) Custom Software Development: bespoke solutions.`,
 
   `ICT TRAINING CENTER at Ethiopian ICT Park Addis Ababa. Hands-on by active practitioners. Track 01: AI & ML 12 weeks Professional AI Practitioner. Track 02: Cybersecurity 10 weeks Certified Security Analyst. Track 03: Database Admin 8 weeks Certified DBA. Track 04: Full Stack Dev 16 weeks Full Stack Engineer. Track 05: ERP Implementation 10 weeks ERP Solutions Specialist. Custom corporate training available.`,
 
   `RFQ PROCESS: Use Product Configurator on Products page, submit, team responds within 24 hours. Or submit RFQ form with name, organisation, email, phone, product category, quantity. Direct: +251-115-50-29-28 or info@altacomputec.com. No commitment required, free consultation included.`,
 ];
-
-const KNOWLEDGE = KNOWLEDGE_SECTIONS.join('\n\n');
 
 const SYSTEM_PROMPT = `You are the official AI assistant of Alta Computec PLC, Ethiopia's only Dell Platinum Partner with over 30 years of experience in the ICT industry.
 
@@ -38,29 +45,31 @@ FORMATTING RULES:
 - End every response with one relevant follow-up offer, e.g. "Would you like me to help you request a quote?" or "Shall I connect you with our team for more details?"
 
 ALTA COMPUTEC KNOWLEDGE BASE:
-${KNOWLEDGE}`;
+${KNOWLEDGE_SECTIONS.join('\n\n')}`;
 
-module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-  if (req.method === 'OPTIONS') return res.status(200).end();
+export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).end();
 
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
-    console.error('GROQ_API_KEY is not set in environment variables');
+    console.error('GROQ_API_KEY missing from environment');
     return res.status(500).json({ reply: 'AI assistant is not configured. Please contact our team directly.' });
   }
 
-  const { messages = [] } = req.body || {};
-
-  if (!Array.isArray(messages)) {
-    return res.status(400).json({ reply: 'Invalid request format.' });
+  let body;
+  try {
+    const raw = await getRawBody(req);
+    body = JSON.parse(raw);
+  } catch {
+    return res.status(400).json({ reply: 'Invalid request.' });
   }
 
-  // messages[0] = page context, messages[1..] = conversation history (max 10)
+  const { messages = [] } = body;
+
+  if (!Array.isArray(messages)) {
+    return res.status(400).json({ reply: 'Invalid messages format.' });
+  }
+
   const pageCtx = messages[0] ?? null;
   const history = messages.slice(1).slice(-10);
   const trimmed = pageCtx ? [pageCtx, ...history] : history;
@@ -88,19 +97,19 @@ module.exports = async function handler(req, res) {
     if (!response.ok) {
       const err = await response.text();
       console.error('Groq API error:', response.status, err);
-      return res.status(502).json({ reply: 'Our AI assistant is temporarily unavailable. Please contact us at +251 11 550 2928.' });
+      return res.status(200).json({ reply: `[DEBUG] Groq error ${response.status}: ${err.slice(0, 200)}` });
     }
 
     const data = await response.json();
     const reply = data.choices?.[0]?.message?.content?.trim();
 
     if (!reply) {
-      return res.status(502).json({ reply: 'No response received. Please try again or contact our team directly.' });
+      return res.status(200).json({ reply: '[DEBUG] Groq returned no choices. Raw: ' + JSON.stringify(data).slice(0, 200) });
     }
 
     return res.status(200).json({ reply });
   } catch (err) {
     console.error('Assistant handler error:', err);
-    return res.status(500).json({ reply: 'Something went wrong. Please contact our team at +251 11 550 2928 or info@altacomputec.com.' });
+    return res.status(200).json({ reply: `[DEBUG] Caught error: ${err.message} | stack: ${err.stack?.slice(0, 300)}` });
   }
-};
+}
