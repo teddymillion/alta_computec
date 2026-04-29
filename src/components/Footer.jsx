@@ -25,6 +25,16 @@ const FOOTER_LINKS = {
   ],
 };
 
+const SOFTWARE_LINKS = [
+  { label: 'Software Division', to: '/software-division' },
+  { label: 'AI as a Service',   to: '/software-division#ai' },
+  { label: 'ERP Solutions',     to: '/software-division#erp' },
+  { label: 'Web & Apps',        to: '/software-division#webdev' },
+  { label: 'Database',          to: '/software-division#database' },
+  { label: 'Cybersecurity',     to: '/software-division#cyber' },
+  { label: 'Training Center',   to: '/software-division#training' },
+];
+
 const SOCIAL = [
   { icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com/company/alta-computec', color: '#0A66C2', bg: 'rgba(10,102,194,0.12)', border: 'rgba(10,102,194,0.25)' },
   { icon: Twitter,  label: 'Twitter / X', href: 'https://twitter.com/altacomputec', color: '#1DA1F2', bg: 'rgba(29,161,242,0.12)', border: 'rgba(29,161,242,0.25)' },
@@ -40,7 +50,7 @@ export default function Footer() {
       {/* Gradient separator */}
       <div className="h-px w-full" style={{ background: 'linear-gradient(90deg, transparent 0%, #1B4FD8 30%, #22C55E 70%, transparent 100%)' }} aria-hidden="true" />
       <div className="section-container py-16 lg:py-20">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-10 lg:gap-8">
 
           {/* Brand column */}
           <div className="lg:col-span-1 flex flex-col gap-6">
@@ -124,6 +134,40 @@ export default function Footer() {
               </ul>
             </div>
           ))}
+
+          {/* Software & AI column */}
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1.5">
+              <p className="overline-tag" style={{ color: '#6366F1' }}>Software &amp; AI</p>
+              <span
+                className="text-[9px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full w-fit"
+                style={{ background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.25)', color: '#818CF8' }}
+              >
+                New Division
+              </span>
+            </div>
+            <ul className="flex flex-col gap-2.5">
+              {SOFTWARE_LINKS.map((link) => (
+                <li key={link.label}>
+                  <Link
+                    to={link.to}
+                    className="text-[13px] transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue rounded"
+                    style={{ color: link.label === 'Software Division' ? '#818CF8' : undefined }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = '#818CF8'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = link.label === 'Software Division' ? '#818CF8' : ''; }}
+                  >
+                    {link.label === 'Software Division' ? (
+                      <span className="font-semibold flex items-center gap-1">
+                        {link.label} <ArrowRight size={11} />
+                      </span>
+                    ) : (
+                      <span className="text-slate-600 hover:text-white transition-colors">{link.label}</span>
+                    )}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           {/* Contact column */}
           <div className="flex flex-col gap-4">

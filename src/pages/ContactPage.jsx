@@ -18,12 +18,22 @@ export default function ContactPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setLoading(true);
     setError('');
     const body = Object.fromEntries(new FormData(e.target));
+
+    const fe = {};
+    if (!body.firstName?.trim())   fe.firstName    = 'First name is required';
+    if (!body.lastName?.trim())    fe.lastName     = 'Last name is required';
+    if (!body.organisation?.trim()) fe.organisation = 'Organisation is required';
+    if (!body.message?.trim())     fe.message      = 'Project brief is required';
+    if (Object.keys(fe).length) { setFieldErrors(fe); return; }
+    setFieldErrors({});
+
+    setLoading(true);
     try {
       const res = await fetch('/api/contact', {
         method: 'POST',
@@ -124,11 +134,13 @@ export default function ContactPage() {
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label className="form-label">First Name *</label>
-                    <input name="firstName" type="text" autoComplete="given-name" className="form-input" placeholder="Tadesse" />
+                    <input name="firstName" type="text" autoComplete="given-name" className={`form-input${fieldErrors.firstName ? ' !border-red-400' : ''}`} placeholder="Tadesse" onChange={() => setFieldErrors(p => ({ ...p, firstName: '' }))} />
+                    {fieldErrors.firstName && <p className="text-red-500 text-[11px] mt-1">{fieldErrors.firstName}</p>}
                   </div>
                   <div>
                     <label className="form-label">Last Name *</label>
-                    <input name="lastName" type="text" autoComplete="family-name" className="form-input" placeholder="Bekele" />
+                    <input name="lastName" type="text" autoComplete="family-name" className={`form-input${fieldErrors.lastName ? ' !border-red-400' : ''}`} placeholder="Bekele" onChange={() => setFieldErrors(p => ({ ...p, lastName: '' }))} />
+                    {fieldErrors.lastName && <p className="text-red-500 text-[11px] mt-1">{fieldErrors.lastName}</p>}
                   </div>
                 </div>
                 <div>
@@ -137,7 +149,8 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <label className="form-label">Organisation *</label>
-                  <input name="organisation" type="text" autoComplete="organization" className="form-input" placeholder="Commercial Bank of Ethiopia" />
+                  <input name="organisation" type="text" autoComplete="organization" className={`form-input${fieldErrors.organisation ? ' !border-red-400' : ''}`} placeholder="Commercial Bank of Ethiopia" onChange={() => setFieldErrors(p => ({ ...p, organisation: '' }))} />
+                  {fieldErrors.organisation && <p className="text-red-500 text-[11px] mt-1">{fieldErrors.organisation}</p>}
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div><label className="form-label">Job Title</label><input name="jobTitle" type="text" className="form-input" placeholder="IT Director" /></div>
@@ -156,7 +169,11 @@ export default function ContactPage() {
                     {['IT Infrastructure', 'Banking & ATM', 'Cloud', 'Cybersecurity', 'Software & AI', 'Smart Office', 'Enterprise Apps', 'Consulting', 'Products', 'General'].map((s) => <option key={s}>{s}</option>)}
                   </select>
                 </div>
-                <div><label className="form-label">Project Brief</label><textarea name="message" rows={4} className="form-input resize-none" placeholder="Describe your project requirements, timeline, and any specific technology needs..." /></div>
+                <div>
+                  <label className="form-label">Project Brief *</label>
+                  <textarea name="message" rows={4} className={`form-input resize-none${fieldErrors.message ? ' !border-red-400' : ''}`} placeholder="Describe your project requirements, timeline, and any specific technology needs..." onChange={() => setFieldErrors(p => ({ ...p, message: '' }))} />
+                  {fieldErrors.message && <p className="text-red-500 text-[11px] mt-1">{fieldErrors.message}</p>}
+                </div>
                 <div>
                   <label className="form-label">How did you hear about us?</label>
                   <select name="hearAboutUs" className="form-input">

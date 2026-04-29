@@ -37,6 +37,11 @@ const NAV_ITEMS = [
   },
   { label: 'Products', isProducts: true, activeFor: ['/products'] },
   {
+    label: 'Software & AI',
+    isSoftware: true,
+    activeFor: ['/software-division'],
+  },
+  {
     label: 'Industries',
     activeFor: ['/industries'],
     columns: [
@@ -297,6 +302,75 @@ export default function Navbar() {
                       </div>
                     )}
 
+                    {/* Software & AI mega menu */}
+                    {activeMenu === item.label && item.isSoftware && (
+                      <div
+                        className="absolute top-full left-1/2 -translate-x-1/2 mt-1.5 w-[520px] rounded-2xl shadow-2xl overflow-hidden"
+                        style={{ ...DARK_MEGA_STYLE, borderTop: '2px solid #6366F1', animation: 'slideDown 0.18s cubic-bezier(0.16,1,0.3,1)' }}
+                        role="region"
+                        aria-label="Software & AI menu"
+                      >
+                        <div className="grid grid-cols-2 gap-0 p-5">
+                          <div className="pr-4 border-r border-white/8">
+                            <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500 mb-3 px-2">Division</p>
+                            <ul className="space-y-0.5">
+                              <li>
+                                <Link
+                                  to="/software-division"
+                                  onClick={() => setActiveMenu(null)}
+                                  className="group flex flex-col px-2 py-2 rounded-xl hover:bg-white/5 transition-all duration-150"
+                                >
+                                  <span className="flex items-center gap-1.5 text-[13px] font-semibold text-alta-indigo">
+                                    Software Division <ArrowRight size={11} className="ml-auto opacity-60" />
+                                  </span>
+                                  <span className="text-[11px] text-slate-500 mt-0.5">Overview, services &amp; training</span>
+                                </Link>
+                              </li>
+                              <li>
+                                <Link to="/software-division#ai" onClick={() => setActiveMenu(null)} className="group flex flex-col px-2 py-2 rounded-xl hover:bg-white/5 transition-all duration-150">
+                                  <span className="text-[13px] font-medium text-slate-300 group-hover:text-white">AI as a Service</span>
+                                  <span className="text-[11px] text-slate-500 mt-0.5">LLM, automation, analytics</span>
+                                </Link>
+                              </li>
+                              <li>
+                                <Link to="/software-division#erp" onClick={() => setActiveMenu(null)} className="group flex flex-col px-2 py-2 rounded-xl hover:bg-white/5 transition-all duration-150">
+                                  <span className="text-[13px] font-medium text-slate-300 group-hover:text-white">ERP Solutions</span>
+                                  <span className="text-[11px] text-slate-500 mt-0.5">SAP, Odoo, Oracle-aligned</span>
+                                </Link>
+                              </li>
+                            </ul>
+                          </div>
+                          <div className="pl-4">
+                            <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500 mb-3 px-2">Services</p>
+                            <ul className="space-y-0.5">
+                              <li>
+                                <Link to="/software-division#webdev" onClick={() => setActiveMenu(null)} className="group flex flex-col px-2 py-2 rounded-xl hover:bg-white/5 transition-all duration-150">
+                                  <span className="text-[13px] font-medium text-slate-300 group-hover:text-white">Web &amp; App Development</span>
+                                </Link>
+                              </li>
+                              <li>
+                                <Link to="/software-division#cyber" onClick={() => setActiveMenu(null)} className="group flex flex-col px-2 py-2 rounded-xl hover:bg-white/5 transition-all duration-150">
+                                  <span className="text-[13px] font-medium text-slate-300 group-hover:text-white">Cybersecurity</span>
+                                </Link>
+                              </li>
+                              <li>
+                                <Link to="/software-division#training" onClick={() => setActiveMenu(null)} className="group flex flex-col px-2 py-2 rounded-xl hover:bg-white/5 transition-all duration-150">
+                                  <span className="text-[13px] font-medium text-slate-300 group-hover:text-white">Training Center</span>
+                                  <span className="text-[11px] text-slate-500 mt-0.5">Ethiopian ICT Park</span>
+                                </Link>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div className="px-5 py-3 border-t border-white/6 flex items-center justify-between" style={{ background: 'rgba(99,102,241,0.04)' }}>
+                          <span className="text-[11px] text-slate-500">New division — AI, ERP, Cybersecurity &amp; more</span>
+                          <Link to="/software-division" onClick={() => setActiveMenu(null)} className="text-[11px] font-semibold text-alta-indigo hover:underline underline-offset-2 flex items-center gap-1">
+                            Explore Division <ArrowRight size={10} />
+                          </Link>
+                        </div>
+                      </div>
+                    )}
+
                     {/* Standard mega menu */}
                     {activeMenu === item.label && !item.isProducts && !item.isGroup && item.columns && (
                       <div
@@ -405,6 +479,40 @@ export default function Navbar() {
                   </Link>
                 ) : item.isProducts ? (
                   <Link to="/products" className="flex items-center py-4 text-white font-semibold text-[15px]" onClick={() => setMobileOpen(false)}>Products</Link>
+                ) : item.isSoftware ? (
+                  <>
+                    <button
+                      className="w-full flex items-center justify-between py-4 text-white font-semibold text-[15px] focus-visible:outline-none"
+                      onClick={() => setMobileExpanded(mobileExpanded === item.label ? null : item.label)}
+                      aria-expanded={mobileExpanded === item.label}
+                    >
+                      <span style={{ color: mobileExpanded === item.label ? '#818CF8' : undefined }}>{item.label}</span>
+                      <ChevronDown size={16} className={`text-slate-500 transition-transform duration-200 ${mobileExpanded === item.label ? 'rotate-180' : ''}`} />
+                    </button>
+                    {mobileExpanded === item.label && (
+                      <div className="pb-4 space-y-1">
+                        {[
+                          { label: 'Software Division', to: '/software-division', highlight: true },
+                          { label: 'AI as a Service', to: '/software-division#ai' },
+                          { label: 'ERP Solutions', to: '/software-division#erp' },
+                          { label: 'Web & App Development', to: '/software-division#webdev' },
+                          { label: 'Cybersecurity', to: '/software-division#cyber' },
+                          { label: 'Training Center', to: '/software-division#training' },
+                        ].map((link) => (
+                          <Link
+                            key={link.label}
+                            to={link.to}
+                            className={`flex items-center min-h-[48px] py-2.5 px-2 text-[14px] rounded-xl transition-colors duration-150 ${
+                              link.highlight ? 'text-alta-indigo font-semibold' : 'text-slate-300 hover:text-white'
+                            }`}
+                            onClick={() => setMobileOpen(false)}
+                          >
+                            {link.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </>
                 ) : (
                   <>
                     <button

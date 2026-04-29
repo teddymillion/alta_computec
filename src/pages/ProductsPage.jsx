@@ -385,13 +385,15 @@ function Field({ field, formData, onChange, errors }) {
 // ConfiguratorForm component
 // ─────────────────────────────────────────────────────────────────────────────
 function ConfiguratorForm({ subcategory, accent }) {
-  const [formData, setFormData] = useState({});
+  const config = FORM_CONFIGS[subcategory] || getGenericConfig(subcategory);
+  const initialData = {};
+  config.sections.forEach(s => s.fields.forEach(f => { initialData[f.id] = ''; }));
+
+  const [formData, setFormData] = useState(initialData);
   const [errors,   setErrors]   = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [loading,   setLoading]   = useState(false);
   const [apiError,  setApiError]  = useState('');
-
-  const key = subcategory;
 
   const handleChange = useCallback((id, value) => {
     setFormData(prev => ({ ...prev, [id]: value }));
@@ -414,7 +416,10 @@ function ConfiguratorForm({ subcategory, accent }) {
     setErrors({});
     setLoading(true);
     setApiError('');
-    const { firstName, lastName, email, phone, ...specs } = formData;
+    const { firstName, lastName, email, phone, ...rawSpecs } = formData;
+    const specs = Object.fromEntries(
+      Object.entries(rawSpecs).filter(([, v]) => v !== '' && v !== undefined && !(Array.isArray(v) && v.length === 0))
+    );
     try {
       const res = await fetch('/api/quote', {
         method: 'POST',
@@ -424,13 +429,13 @@ function ConfiguratorForm({ subcategory, accent }) {
       const text = await res.text();
       const data = text ? JSON.parse(text) : {};
       if (!res.ok) {
-        if (data.errors?.email) {
-          setErrors(prev => ({ ...prev, email: true }));
-          setApiError('Please enter a valid email address (e.g. name@company.com)');
-          return;
-        }
         if (data.errors) {
-          const firstMsg = Object.values(data.errors)[0]?.[0];
+          const fieldErrs = {};
+          Object.entries(data.errors).forEach(([k, v]) => {
+            fieldErrs[k] = Array.isArray(v) && v.length ? true : true;
+          });
+          setErrors(prev => ({ ...prev, ...fieldErrs }));
+          const firstMsg = Object.values(data.errors).find(v => Array.isArray(v) && v[0])?.[0];
           setApiError(firstMsg || 'Please check your inputs and try again.');
           return;
         }
@@ -453,7 +458,7 @@ function ConfiguratorForm({ subcategory, accent }) {
           Our technical team will review your requirements and respond with tailored options within 24 hours.
         </p>
         <button
-          onClick={() => { setSubmitted(false); setFormData({}); setErrors({}); }}
+          onClick={() => { setSubmitted(false); setFormData(initialData); setErrors({}); }}
           className="btn-outline mt-6 !text-[13px]"
         >
           Submit Another Request
@@ -462,11 +467,10 @@ function ConfiguratorForm({ subcategory, accent }) {
     );
   }
 
-  const config = FORM_CONFIGS[subcategory] || getGenericConfig(subcategory);
   const FormIcon = config.icon || Package;
 
   return (
-    <div key={key} className="card-light p-8 mb-8" style={{ borderLeft: `4px solid ${accent}` }}>
+    <div className="card-light p-8 mb-8" style={{ borderLeft: `4px solid ${accent}` }}>
       {/* Header */}
       <div className="flex items-start gap-4 mb-6">
         <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: `${accent}18` }}>
@@ -630,12 +634,28 @@ export default function ProductsPage() {
   const [rfqLoading, setRfqLoading] = useState(false);
   const [rfqSuccess, setRfqSuccess] = useState(false);
   const [rfqError, setRfqError] = useState('');
+  const [rfqFieldErrors, setRfqFieldErrors] = useState({});
 
   async function handleRfqSubmit(e) {
     e.preventDefault();
-    setRfqLoading(true);
+    setRfqFieldErrors({});
     setRfqError('');
-    const body = Object.fromEntries(new FormData(e.target));
+
+    const formData = new FormData(e.target);
+    const body = Object.fromEntries(formData);
+
+    const errors = {};
+    if (!body.fullName?.trim()) errors.fullName = 'Full name is required';
+    if (!body.organisation?.trim()) errors.organisation = 'Organisation is required';
+    if (!body.email?.trim()) errors.email = 'Email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(body.email)) errors.email = 'Please enter a valid email address';
+
+    if (Object.keys(errors).length) {
+      setRfqFieldErrors(errors);
+      return;
+    }
+
+    setRfqLoading(true);
     try {
       const res = await fetch('/api/rfq', {
         method: 'POST',
@@ -643,7 +663,17 @@ export default function ProductsPage() {
         body: JSON.stringify(body),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Submission failed');
+      if (!res.ok) {
+        if (data.errors) {
+          const fieldErrs = {};
+          Object.entries(data.errors).forEach(([k, v]) => {
+            fieldErrs[k] = Array.isArray(v) ? v[0] : v;
+          });
+          setRfqFieldErrors(fieldErrs);
+          return;
+        }
+        throw new Error(data.message || 'Submission failed');
+      }
       setRfqSuccess(true);
     } catch (err) {
       setRfqError(err.message);
@@ -892,17 +922,20 @@ export default function ProductsPage() {
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="form-label">Full Name *</label>
-                  <input name="fullName" type="text" className="form-input" placeholder="Tadesse Bekele" />
+                  <input name="fullName" type="text" className={`form-input${rfqFieldErrors.fullName ? ' !border-red-400' : ''}`} placeholder="Tadesse Bekele" />
+                  {rfqFieldErrors.fullName && <p className="text-red-500 text-[11px] mt-1">{rfqFieldErrors.fullName}</p>}
                 </div>
                 <div>
                   <label className="form-label">Organisation *</label>
-                  <input name="organisation" type="text" className="form-input" placeholder="Commercial Bank of Ethiopia" />
+                  <input name="organisation" type="text" className={`form-input${rfqFieldErrors.organisation ? ' !border-red-400' : ''}`} placeholder="Commercial Bank of Ethiopia" />
+                  {rfqFieldErrors.organisation && <p className="text-red-500 text-[11px] mt-1">{rfqFieldErrors.organisation}</p>}
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="form-label">Email *</label>
-                  <input name="email" type="email" className="form-input" placeholder="tadesse@org.com" />
+                  <input name="email" type="email" className={`form-input${rfqFieldErrors.email ? ' !border-red-400' : ''}`} placeholder="tadesse@org.com" />
+                  {rfqFieldErrors.email && <p className="text-red-500 text-[11px] mt-1">{rfqFieldErrors.email}</p>}
                 </div>
                 <div><label className="form-label">Phone</label><input name="phone" type="tel" className="form-input" placeholder="+251 911 000 000" /></div>
               </div>

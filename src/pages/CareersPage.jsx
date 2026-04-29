@@ -82,9 +82,18 @@ export default function CareersPage() {
 
   const handleApply = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setApplyError('');
+
     const formData = new FormData(e.target);
+    const email = formData.get('email');
+    const cvFile = formData.get('cvFile');
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+      return setApplyError('Please enter a valid email address.');
+    if (cvFile && cvFile.size > 5 * 1024 * 1024)
+      return setApplyError('CV file must be under 5MB.');
+
+    setLoading(true);
     formData.set('jobTitle', selectedJob.title);
     formData.set('department', selectedJob.dept);
     try {

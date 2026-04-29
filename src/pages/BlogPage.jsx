@@ -24,6 +24,7 @@ export default function BlogPage() {
   const [newsletterSubmitted, setNewsletterSubmitted] = useState(false);
   const [newsletterLoading, setNewsletterLoading] = useState(false);
   const [newsletterError, setNewsletterError] = useState('');
+  const [newsletterAlready, setNewsletterAlready] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
   const filtered = ARTICLES.filter((a) => {
@@ -129,14 +130,17 @@ export default function BlogPage() {
         <div className="section-container relative z-10 text-center">
           <h2 className="text-[28px] font-black text-white mb-3">Stay Ahead of Ethiopia's Technology Landscape</h2>
           <p className="text-slate-400 text-[15px] mb-7">Join 2,000+ IT professionals. Weekly digest. No spam.</p>
-          {newsletterError && <p className="text-red-400 text-[13px] mt-2">{newsletterError}</p>}
-          {!newsletterSubmitted ? (
+          {!newsletterSubmitted && !newsletterAlready ? (
             <form
-              className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+              className="flex flex-col items-center gap-2 max-w-md mx-auto"
               onSubmit={async (e) => {
                 e.preventDefault();
-                setNewsletterLoading(true);
                 setNewsletterError('');
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newsletterEmail.trim())) {
+                  setNewsletterError('Please enter a valid email address.');
+                  return;
+                }
+                setNewsletterLoading(true);
                 try {
                   const res = await fetch('/api/newsletter', {
                     method: 'POST',
@@ -144,28 +148,37 @@ export default function BlogPage() {
                     body: JSON.stringify({ email: newsletterEmail }),
                   });
                   const data = await res.json();
-                  if (!res.ok) throw new Error(data.errors?.email?.[0] || data.message || 'Subscription failed');
+                  if (!res.ok) throw new Error(data.errors?.email?.[0] || data.message || 'Something went wrong, please try again.');
+                  if (data.alreadySubscribed) { setNewsletterAlready(true); return; }
                   setNewsletterSubmitted(true);
                 } catch (err) {
-                  setNewsletterError(err.message);
+                  setNewsletterError(err.message || 'Something went wrong, please try again.');
                 } finally {
                   setNewsletterLoading(false);
                 }
               }}
             >
-              <input
-                type="email"
-                value={newsletterEmail}
-                onChange={(e) => setNewsletterEmail(e.target.value)}
-                placeholder="your@email.com"
-                required
-                className="flex-1 px-4 py-3 rounded-xl border border-white/15 bg-white/8 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-alta-blue/30 focus:border-alta-blue text-[14px]"
-                aria-label="Email address"
-              />
-              <button type="submit" disabled={newsletterLoading} className="btn-primary !text-[14px] px-6 py-3">
-                {newsletterLoading ? 'Subscribing...' : 'Subscribe'} <ArrowRight size={14} />
-              </button>
+              <div className="flex w-full gap-3">
+                <input
+                  type="email"
+                  value={newsletterEmail}
+                  onChange={(e) => { setNewsletterEmail(e.target.value); setNewsletterError(''); }}
+                  placeholder="your@email.com"
+                  className={`flex-1 px-4 py-3 rounded-xl border bg-navy-800 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-alta-blue/40 text-[14px] ${
+                    newsletterError ? 'border-red-500' : 'border-white/20 focus:border-alta-blue'
+                  }`}
+                  aria-label="Email address"
+                />
+                <button type="submit" disabled={newsletterLoading} className="btn-primary !text-[14px] px-6 py-3 flex-shrink-0">
+                  {newsletterLoading ? 'Subscribing...' : 'Subscribe'} <ArrowRight size={14} />
+                </button>
+              </div>
+              {newsletterError && <p className="text-red-400 text-[12px] self-start">{newsletterError}</p>}
             </form>
+          ) : newsletterAlready ? (
+            <div className="flex items-center justify-center gap-2 text-amber-400 text-[15px] font-semibold">
+              <CheckCircle size={18} aria-hidden="true" /> You're already subscribed!
+            </div>
           ) : (
             <div className="flex items-center justify-center gap-2 text-alta-green-light text-[15px] font-semibold">
               <CheckCircle size={18} aria-hidden="true" /> You're subscribed!

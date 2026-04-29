@@ -1,4 +1,4 @@
-import { ArrowRight, Server, CreditCard, Cloud, ShieldCheck, Brain, Monitor } from 'lucide-react';
+import { ArrowRight, Server, CreditCard, Cloud, ShieldCheck, Brain, Monitor, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const SOLUTIONS = [
@@ -164,6 +164,86 @@ export default function Solutions() {
             <SolutionCard key={solution.title} solution={solution} index={i} />
           ))}
         </div>
+
+        {/* ── Software Solutions featured tile ── */}
+        <Link
+          to="/software-division"
+          className="group mt-4 relative flex flex-col sm:flex-row items-center gap-6 p-6 sm:p-8 rounded-2xl overflow-hidden transition-all duration-250 ease-out"
+          style={{
+            background: 'linear-gradient(135deg, rgba(99,102,241,0.12) 0%, rgba(27,79,216,0.08) 50%, rgba(34,197,94,0.06) 100%)',
+            border: '1px solid rgba(99,102,241,0.25)',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.border = '1px solid rgba(99,102,241,0.5)';
+            e.currentTarget.style.boxShadow = '0 16px 48px rgba(99,102,241,0.18), 0 0 0 1px rgba(99,102,241,0.3)';
+            e.currentTarget.style.transform = 'translateY(-2px)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.border = '1px solid rgba(99,102,241,0.25)';
+            e.currentTarget.style.boxShadow = 'none';
+            e.currentTarget.style.transform = 'translateY(0)';
+          }}
+          aria-label="Explore Software & AI Division"
+        >
+          {/* Animated glow orb */}
+          <div
+            className="absolute right-0 top-0 w-[300px] h-full rounded-2xl pointer-events-none"
+            style={{ background: 'radial-gradient(ellipse at right, rgba(99,102,241,0.10) 0%, transparent 70%)' }}
+            aria-hidden="true"
+          />
+          {/* Top accent bar */}
+          <div
+            className="absolute top-0 left-0 right-0 h-[2px] opacity-60 group-hover:opacity-100 transition-opacity duration-250"
+            style={{ background: 'linear-gradient(90deg, #6366F1, #22C55E)' }}
+            aria-hidden="true"
+          />
+
+          {/* Icon cluster */}
+          <div className="flex items-center gap-3 flex-shrink-0">
+            {[Brain, ShieldCheck, Monitor, Sparkles].map((Icon, i) => (
+              <div
+                key={i}
+                className="w-10 h-10 rounded-xl flex items-center justify-center transition-transform duration-250 group-hover:scale-110"
+                style={{
+                  background: ['rgba(99,102,241,0.15)', 'rgba(245,158,11,0.12)', 'rgba(14,165,233,0.12)', 'rgba(34,197,94,0.12)'][i],
+                  border: `1px solid ${ ['rgba(99,102,241,0.3)', 'rgba(245,158,11,0.25)', 'rgba(14,165,233,0.25)', 'rgba(34,197,94,0.25)'][i]}`,
+                  transitionDelay: `${i * 30}ms`,
+                }}
+              >
+                <Icon size={18} style={{ color: ['#818CF8', '#F59E0B', '#0EA5E9', '#22C55E'][i] }} aria-hidden="true" />
+              </div>
+            ))}
+          </div>
+
+          {/* Text */}
+          <div className="flex flex-col gap-1.5 flex-1 min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span
+                className="text-[10px] font-bold tracking-[0.12em] uppercase px-2 py-0.5 rounded-full"
+                style={{ background: 'rgba(99,102,241,0.15)', color: '#818CF8', border: '1px solid rgba(99,102,241,0.3)' }}
+              >
+                New Division
+              </span>
+              <span className="text-[10px] font-bold tracking-[0.12em] uppercase" style={{ color: '#818CF8' }}>
+                Software, AI &amp; Cybersecurity
+              </span>
+            </div>
+            <h3 className="text-[17px] font-bold text-white leading-snug">
+              Software Solutions — AI, ERP, Cybersecurity &amp; More
+            </h3>
+            <p className="text-[13px] text-slate-400 leading-relaxed">
+              Alta Computec now delivers end-to-end software capability alongside hardware. AI as a Service, custom development, database management, and Ethiopia's best ICT training center.
+            </p>
+          </div>
+
+          {/* CTA arrow */}
+          <div
+            className="flex items-center gap-2 text-[13px] font-semibold flex-shrink-0 transition-all duration-200 group-hover:translate-x-1"
+            style={{ color: '#818CF8' }}
+          >
+            Explore Division <ArrowRight size={14} />
+          </div>
+        </Link>
 
         {/* Bottom trust note */}
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6 pt-8 border-t border-white/6">

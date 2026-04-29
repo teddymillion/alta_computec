@@ -21,6 +21,7 @@ import AnnouncementBanner from './components/AnnouncementBanner';
 import TickerBar from './components/TickerBar';
 import LoadingScreen from './components/LoadingScreen';
 import CookieConsent from './components/CookieConsent';
+import DivisionAnnouncement from './components/DivisionAnnouncement';
 
 import AboutPage from './pages/AboutPage';
 import SolutionsPage from './pages/SolutionsPage';
@@ -31,6 +32,7 @@ import ContactPage from './pages/ContactPage';
 import CareersPage from './pages/CareersPage';
 import BlogPage from './pages/BlogPage';
 import GroupPage from './pages/GroupPage';
+import SoftwareDivisionPage from './pages/SoftwareDivisionPage';
 
 function HomePage() {
   return (
@@ -39,6 +41,7 @@ function HomePage() {
       <main id="main-content">
         <Hero />
         <Statistics />
+        <DivisionAnnouncement />
         <Solutions />
         <Partners />
         <TrustBadges />
@@ -94,6 +97,7 @@ export default function App() {
         <Route path="/careers" element={<CareersPage />} />
         <Route path="/blog" element={<BlogPage />} />
         <Route path="/group" element={<GroupPage />} />
+        <Route path="/software-division" element={<SoftwareDivisionPage />} />
       </Routes>
       <CookieConsent />
     </ThemeProvider>
