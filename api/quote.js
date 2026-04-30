@@ -16,8 +16,12 @@ export default async function handler(req, res) {
 
   let body;
   try {
-    const raw = await getRawBody(req);
-    body = JSON.parse(raw);
+    if (req.body && typeof req.body === 'object') {
+      body = req.body;
+    } else {
+      const raw = await getRawBody(req);
+      body = JSON.parse(raw);
+    }
   } catch {
     return res.status(400).json({ success: false, message: 'Invalid JSON body' });
   }

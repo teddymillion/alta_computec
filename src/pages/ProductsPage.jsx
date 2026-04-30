@@ -427,7 +427,8 @@ function ConfiguratorForm({ subcategory, accent }) {
         body: JSON.stringify({ subcategory, firstName, lastName, email, phone: phone || '', specs }),
       });
       const text = await res.text();
-      const data = text ? JSON.parse(text) : {};
+      let data = {};
+      try { data = text ? JSON.parse(text) : {}; } catch { /* non-JSON response */ }
       if (!res.ok) {
         if (data.errors) {
           const fieldErrs = {};
@@ -439,11 +440,11 @@ function ConfiguratorForm({ subcategory, accent }) {
           setApiError(firstMsg || 'Please check your inputs and try again.');
           return;
         }
-        throw new Error(data.message || 'Submission failed. Please try again.');
+        throw new Error(data.message || `Server error (${res.status}). Please try again or call us directly.`);
       }
       setSubmitted(true);
     } catch (err) {
-      setApiError(err.message);
+      setApiError(err.message || 'Something went wrong. Please try again or call us directly.');
     } finally {
       setLoading(false);
     }
@@ -662,7 +663,9 @@ export default function ProductsPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
-      const data = await res.json();
+      const text = await res.text();
+      let data = {};
+      try { data = text ? JSON.parse(text) : {}; } catch { /* non-JSON */ }
       if (!res.ok) {
         if (data.errors) {
           const fieldErrs = {};
@@ -672,11 +675,11 @@ export default function ProductsPage() {
           setRfqFieldErrors(fieldErrs);
           return;
         }
-        throw new Error(data.message || 'Submission failed');
+        throw new Error(data.message || `Server error (${res.status}). Please try again or call us directly.`);
       }
       setRfqSuccess(true);
     } catch (err) {
-      setRfqError(err.message);
+      setRfqError(err.message || 'Something went wrong. Please try again or call us directly.');
     } finally {
       setRfqLoading(false);
     }

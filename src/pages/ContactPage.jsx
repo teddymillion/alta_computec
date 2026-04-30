@@ -1,9 +1,15 @@
 import { useState } from 'react';
-import { Phone, Mail, MessageCircle, MapPin, CheckCircle2, ChevronDown, ArrowRight, Send, Linkedin, Twitter, Facebook, Youtube } from 'lucide-react';
+import { Phone, Mail, MessageCircle, MapPin, CheckCircle2, ChevronDown, ArrowRight, Send, Linkedin, Twitter, Facebook, Youtube, Clock, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import PageLayout from '../components/PageLayout';
 import PageHero from '../components/PageHero';
 
+const SOCIAL = [
+  { icon: Linkedin, label: 'LinkedIn',   href: 'https://linkedin.com/company/alta-computec', color: '#0A66C2', bg: 'rgba(10,102,194,0.12)',  border: 'rgba(10,102,194,0.25)' },
+  { icon: Twitter,  label: 'Twitter / X', href: 'https://twitter.com/altacomputec',           color: '#1DA1F2', bg: 'rgba(29,161,242,0.12)',  border: 'rgba(29,161,242,0.25)' },
+  { icon: Facebook, label: 'Facebook',   href: 'https://facebook.com/altacomputec',           color: '#1877F2', bg: 'rgba(24,119,242,0.12)',  border: 'rgba(24,119,242,0.25)' },
+  { icon: Youtube,  label: 'YouTube',    href: 'https://youtube.com/@altacomputec',           color: '#FF0000', bg: 'rgba(255,0,0,0.12)',     border: 'rgba(255,0,0,0.25)' },
+];
 const FAQS = [
   { q: 'How quickly can ALTA respond to a request for quotation?', a: 'Our sales team typically responds to RFQs within 24 hours on business days. For urgent government procurement deadlines, same-day response is available by calling directly.' },
   { q: 'Do you serve clients outside Addis Ababa?', a: 'Yes. ALTA has delivered projects across Ethiopia including Dire Dawa, Hawassa, Bahir Dar, Mekelle, and Jimma. We also support clients in neighbouring East African countries.' },
@@ -40,11 +46,13 @@ export default function ContactPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Submission failed');
+      const text = await res.text();
+      let data = {};
+      try { data = text ? JSON.parse(text) : {}; } catch { /* non-JSON */ }
+      if (!res.ok) throw new Error(data.message || `Server error (${res.status}). Please try again or call us directly.`);
       setSuccess(true);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || 'Something went wrong. Please try again or call us directly.');
     } finally {
       setLoading(false);
     }
@@ -197,53 +205,150 @@ export default function ContactPage() {
               )}
             </div>
 
-            {/* Office Info */}
-            <div className="card-dark rounded-2xl p-6 flex flex-col gap-6">
-              <img src="/alta_computec.jpg" alt="ALTA Computec PLC" className="h-10 object-contain self-start rounded-lg" loading="lazy" />
-              <div>
-                <p className="text-white font-black text-[16px] mb-4">ALTA Computec PLC</p>
-                <div className="flex flex-col gap-3.5">
+            {/* Office Info Card */}
+            <div
+              className="rounded-2xl flex flex-col gap-0 overflow-hidden"
+              style={{
+                background: 'linear-gradient(160deg, #0D1E38 0%, #0A1628 60%, #03080F 100%)',
+                border: '1px solid rgba(27,79,216,0.25)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.35), 0 0 0 1px rgba(27,79,216,0.08)',
+              }}
+            >
+              {/* Top accent bar */}
+              <div className="h-1 w-full" style={{ background: 'linear-gradient(90deg, #1B4FD8 0%, #22C55E 100%)' }} aria-hidden="true" />
+
+              <div className="p-6 flex flex-col gap-6">
+                {/* Brand */}
+                <div className="flex items-center gap-3">
+                  <img src="/alta_logo_light.svg" alt="ALTA Computec PLC" className="h-8 w-auto" loading="lazy" />
+                </div>
+
+                {/* Contact details */}
+                <div className="flex flex-col gap-3">
+                  <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500 mb-1">Contact Details</p>
                   {[
-                    { icon: MapPin, text: 'Mexico Road, Chad St., ALTA Building, Addis Ababa, Ethiopia' },
-                    { icon: Phone, text: '+251-115-50-29-28', href: 'tel:+251115502928' },
-                    { icon: Mail, text: 'info@altacomputec.com', href: 'mailto:info@altacomputec.com' },
-                  ].map(({ icon: Icon, text, href }) => (
-                    <div key={text} className="flex items-start gap-3">
-                      <Icon size={14} className="text-alta-blue flex-shrink-0 mt-0.5" aria-hidden="true" />
-                      {href ? (
-                        <a href={href} className="text-[13px] text-slate-400 hover:text-white transition-colors duration-150">{text}</a>
-                      ) : (
-                        <span className="text-[13px] text-slate-400">{text}</span>
-                      )}
+                    { icon: Phone, text: '+251-115-50-29-28', sub: 'Mon–Fri, 8AM–6PM EAT', href: 'tel:+251115502928', accent: '#1B4FD8' },
+                    { icon: Mail,  text: 'info@altacomputec.com', sub: 'Business inquiries', href: 'mailto:info@altacomputec.com', accent: '#22C55E' },
+                    { icon: Clock, text: 'Mon–Fri: 8:00 AM – 6:00 PM', sub: 'East Africa Time (EAT)', href: null, accent: '#6366F1' },
+                  ].map(({ icon: Icon, text, sub, href, accent }) => (
+                    <div key={text} className="flex items-start gap-3 group">
+                      <div
+                        className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                        style={{ background: `${accent}18`, border: `1px solid ${accent}30` }}
+                      >
+                        <Icon size={14} style={{ color: accent }} aria-hidden="true" />
+                      </div>
+                      <div className="min-w-0">
+                        {href ? (
+                          <a href={href} className="text-[13px] font-semibold text-slate-200 hover:text-white transition-colors duration-150 block">{text}</a>
+                        ) : (
+                          <span className="text-[13px] font-semibold text-slate-200 block">{text}</span>
+                        )}
+                        <span className="text-[11px] text-slate-500">{sub}</span>
+                      </div>
                     </div>
                   ))}
-                  <div className="flex items-start gap-3">
-                    <span className="text-slate-600 text-[12px] mt-0.5">🕐</span>
-                    <span className="text-[13px] text-slate-400">Mon–Fri: 8:00 AM – 6:00 PM EAT</span>
+                </div>
+
+                {/* Map block */}
+                <div
+                  className="rounded-xl overflow-hidden"
+                  style={{ border: '1px solid rgba(27,79,216,0.2)' }}
+                >
+                  {/* Map visual header */}
+                  <div
+                    className="relative h-28 flex items-center justify-center overflow-hidden"
+                    style={{ background: 'linear-gradient(135deg, #0D1E38 0%, #122444 100%)' }}
+                  >
+                    {/* Grid lines */}
+                    <div className="absolute inset-0 bg-grid-fine opacity-60" aria-hidden="true" />
+                    {/* Dot pattern */}
+                    <div className="absolute inset-0 bg-dot-pattern opacity-30" aria-hidden="true" />
+                    {/* Pulsing location pin */}
+                    <div className="relative z-10 flex flex-col items-center gap-2">
+                      <div className="relative">
+                        <span className="absolute inset-0 rounded-full bg-alta-blue/30 animate-ping" aria-hidden="true" />
+                        <div
+                          className="relative w-10 h-10 rounded-full flex items-center justify-center"
+                          style={{ background: 'linear-gradient(135deg, #1B4FD8, #2563EB)', boxShadow: '0 0 20px rgba(27,79,216,0.5)' }}
+                        >
+                          <MapPin size={18} className="text-white" aria-hidden="true" />
+                        </div>
+                      </div>
+                      <span className="text-[11px] font-bold text-white tracking-wide">ALTA Computec HQ</span>
+                    </div>
+                    {/* Coordinate lines */}
+                    <div className="absolute top-1/2 left-0 right-0 h-px" style={{ background: 'rgba(27,79,216,0.2)' }} aria-hidden="true" />
+                    <div className="absolute top-0 bottom-0 left-1/2 w-px" style={{ background: 'rgba(27,79,216,0.2)' }} aria-hidden="true" />
+                  </div>
+
+                  {/* Address details */}
+                  <div className="p-4" style={{ background: 'rgba(255,255,255,0.03)' }}>
+                    <p className="text-[12px] font-bold text-white mb-1">Mexico Road, Chad Street</p>
+                    <p className="text-[11px] text-slate-400 leading-relaxed mb-1">ALTA Building, Mexico Square Area</p>
+                    <p className="text-[11px] text-slate-500">Addis Ababa, Ethiopia · Near Mexico Square</p>
+                  </div>
+
+                  {/* Get directions CTA */}
+                  <a
+                    href="https://maps.google.com/?q=ALTA+Computec+Mexico+Road+Addis+Ababa+Ethiopia"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between px-4 py-3 transition-all duration-150 group"
+                    style={{
+                      background: 'rgba(27,79,216,0.12)',
+                      borderTop: '1px solid rgba(27,79,216,0.2)',
+                    }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(27,79,216,0.22)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(27,79,216,0.12)'; }}
+                    aria-label="Open ALTA Computec location in Google Maps"
+                  >
+                    <div className="flex items-center gap-2">
+                      <MapPin size={13} className="text-alta-blue" aria-hidden="true" />
+                      <span className="text-[12px] font-semibold text-alta-blue">Get Directions on Google Maps</span>
+                    </div>
+                    <ExternalLink size={12} className="text-slate-500 group-hover:text-alta-blue transition-colors duration-150" aria-hidden="true" />
+                  </a>
+                </div>
+
+                {/* Social media */}
+                <div>
+                  <p className="text-[10px] font-bold tracking-[0.12em] uppercase text-slate-500 mb-3">Follow Us</p>
+                  <div className="flex items-center gap-2.5">
+                    {SOCIAL.map(({ icon: Icon, label, href, color, bg, border }) => (
+                      <a
+                        key={label}
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-alta-blue"
+                        style={{ background: bg, border: `1px solid ${border}` }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = color;
+                          e.currentTarget.style.borderColor = color;
+                          e.currentTarget.style.boxShadow = `0 6px 16px -4px ${color}80`;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = bg;
+                          e.currentTarget.style.borderColor = border;
+                          e.currentTarget.style.boxShadow = 'none';
+                        }}
+                        aria-label={label}
+                      >
+                        <Icon size={16} style={{ color }} className="transition-colors duration-300 group-hover:!text-white" aria-hidden="true" />
+                      </a>
+                    ))}
                   </div>
                 </div>
-              </div>
 
-              {/* Map placeholder */}
-              <a
-                href="https://maps.google.com/?q=Mexico+Square+Addis+Ababa"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="h-40 rounded-xl flex flex-col items-center justify-center gap-2 transition-colors duration-150 hover:bg-navy-700"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
-                aria-label="View ALTA Computec on Google Maps"
-              >
-                <MapPin size={24} className="text-alta-blue" aria-hidden="true" />
-                <span className="text-[13px] text-slate-400 font-medium">View on Google Maps</span>
-              </a>
-
-              {/* Social */}
-              <div className="flex items-center gap-2.5">
-                {[{ icon: Linkedin, label: 'LinkedIn', href: 'https://linkedin.com' }, { icon: Twitter, label: 'Twitter', href: 'https://twitter.com' }, { icon: Facebook, label: 'Facebook', href: 'https://facebook.com' }, { icon: Youtube, label: 'YouTube', href: 'https://youtube.com' }].map(({ icon: Icon, label, href }) => (
-                  <a key={label} href={href} target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-xl bg-white/5 border border-white/8 flex items-center justify-center text-slate-500 hover:text-white hover:bg-white/10 transition-all duration-150" aria-label={label}>
-                    <Icon size={15} aria-hidden="true" />
-                  </a>
-                ))}
+                {/* Dell Platinum badge */}
+                <div
+                  className="flex items-center gap-2 px-3 py-2 rounded-xl"
+                  style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}
+                >
+                  <span className="text-amber-400 text-[11px] font-black">★</span>
+                  <span className="text-amber-400/80 text-[11px] font-semibold">Ethiopia's Only Dell Platinum Partner</span>
+                </div>
               </div>
             </div>
           </div>
