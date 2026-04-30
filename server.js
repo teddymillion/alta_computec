@@ -24,6 +24,7 @@ const PORT = 3001;
 
 async function start() {
   const app = express();
+  app.use(express.json());
 
   // Mount every api/*.js file at /api/<name>
   const apiDir = path.resolve('api');
