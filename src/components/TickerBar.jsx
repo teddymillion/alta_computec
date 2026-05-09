@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 
@@ -28,18 +29,43 @@ const ACHIEVEMENTS = [
   { value: '1994',     label: 'Founded in Addis Ababa'               },
   { value: '24 / 7',   label: 'Enterprise Support Coverage'          },
   { value: '99.9%',    label: 'Uptime SLA Guarantee'                 },
-  { value: '10+',      label: 'Global Technology Brands'             },
+  { value: '15+',      label: 'Global Technology Brands'             },
   { value: 'ISO 9001', label: 'Quality Management Certified'         },
-  { value: 'WCAG 2.1', label: 'Accessibility AA Compliant'          },
+  { value: 'WCAG 2.1', label: 'Accessibility AA Compliant'           },
 ];
 
-const D_PARTNERS    = [...PARTNERS,      ...PARTNERS];
-const D_ACHIEVEMENTS = [...ACHIEVEMENTS, ...ACHIEVEMENTS];
+function useTicker(ref, speed, direction = 1) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let x = direction === 1 ? 0 : -(el.scrollWidth / 2);
+    let raf;
+    const step = () => {
+      x -= speed * direction;
+      const half = el.scrollWidth / 2;
+      if (direction === 1 && x <= -half) x = 0;
+      if (direction === -1 && x >= 0) x = -half;
+      el.style.transform = `translateX(${x}px)`;
+      raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [ref, speed, direction]);
+}
 
 export default function TickerBar() {
+  const row1 = useRef(null);
+  const row2 = useRef(null);
+
+  useTicker(row1, 0.4, 1);
+  useTicker(row2, 0.3, -1);
+
+  const D_PARTNERS     = [...PARTNERS,      ...PARTNERS];
+  const D_ACHIEVEMENTS = [...ACHIEVEMENTS,  ...ACHIEVEMENTS];
+
   return (
     <div
-      className="relative w-full select-none"
+      className="relative w-full select-none overflow-hidden"
       style={{
         background: 'linear-gradient(180deg, #020709 0%, #060D1A 100%)',
         borderTop:    '1px solid rgba(27,79,216,0.22)',
@@ -47,35 +73,6 @@ export default function TickerBar() {
       }}
       aria-label="Partner network and company achievements"
     >
-      <style>{`
-        @keyframes alta-ltr {
-          0%   { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        @keyframes alta-rtl {
-          0%   { transform: translateX(-50%); }
-          100% { transform: translateX(0); }
-        }
-        .alta-ticker-ltr {
-          display: flex;
-          width: max-content;
-          animation: alta-ltr 55s linear infinite;
-          animation-play-state: running;
-          will-change: transform;
-        }
-        .alta-ticker-rtl {
-          display: flex;
-          width: max-content;
-          animation: alta-rtl 72s linear infinite;
-          animation-play-state: running;
-          will-change: transform;
-        }
-        .alta-ticker-wrap:hover .alta-ticker-ltr,
-        .alta-ticker-wrap:hover .alta-ticker-rtl {
-          animation-play-state: paused;
-        }
-      `}</style>
-
       {/* Top glow rule */}
       <div
         className="absolute top-0 left-0 right-0 h-px pointer-events-none"
@@ -83,7 +80,7 @@ export default function TickerBar() {
         aria-hidden="true"
       />
 
-      {/* Left label panel */}
+      {/* Left label panel — desktop only */}
       <div
         className="absolute left-0 inset-y-0 z-20 hidden lg:flex flex-col items-center justify-center gap-0.5 px-3"
         style={{
@@ -94,17 +91,14 @@ export default function TickerBar() {
         aria-hidden="true"
       >
         <div className="flex items-center gap-1.5 mb-0.5">
-          <span
-            className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-            style={{ background: '#22C55E', boxShadow: '0 0 8px #22C55E, 0 0 16px rgba(34,197,94,0.4)' }}
-          />
+          <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#22C55E', boxShadow: '0 0 8px #22C55E' }} />
           <span className="text-[8px] font-black tracking-[0.16em] uppercase text-slate-500">Live</span>
         </div>
         <span className="text-[8.5px] font-black tracking-[0.14em] uppercase text-slate-600 leading-tight text-center">Partner</span>
         <span className="text-[8.5px] font-black tracking-[0.14em] uppercase text-slate-600 leading-tight text-center">Network</span>
       </div>
 
-      {/* Right CTA panel */}
+      {/* Right CTA panel — desktop only */}
       <div
         className="absolute right-0 inset-y-0 z-20 hidden lg:flex items-center justify-center"
         style={{
@@ -115,8 +109,8 @@ export default function TickerBar() {
       >
         <Link
           to="/contact"
-          className="flex items-center gap-1 text-[10.5px] font-bold tracking-wide transition-colors duration-150 whitespace-nowrap"
-          style={{ color: '#60A5FA', textDecoration: 'none' }}
+          className="flex items-center gap-1 text-[10.5px] font-bold tracking-wide whitespace-nowrap"
+          style={{ color: '#60A5FA' }}
           onMouseEnter={e => { e.currentTarget.style.color = '#fff'; }}
           onMouseLeave={e => { e.currentTarget.style.color = '#60A5FA'; }}
         >
@@ -124,85 +118,40 @@ export default function TickerBar() {
         </Link>
       </div>
 
-      {/* Left + right edge fade overlays */}
-      <div
-        className="absolute inset-y-0 left-0 z-10 pointer-events-none lg:hidden"
-        style={{ width: '48px', background: 'linear-gradient(to right, #020709, transparent)' }}
-        aria-hidden="true"
-      />
-      <div
-        className="absolute inset-y-0 left-[108px] z-10 pointer-events-none hidden lg:block"
-        style={{ width: '48px', background: 'linear-gradient(to right, #020709, transparent)' }}
-        aria-hidden="true"
-      />
-      <div
-        className="absolute inset-y-0 right-0 z-10 pointer-events-none lg:hidden"
-        style={{ width: '48px', background: 'linear-gradient(to left, #020709, transparent)' }}
-        aria-hidden="true"
-      />
-      <div
-        className="absolute inset-y-0 right-[108px] z-10 pointer-events-none hidden lg:block"
-        style={{ width: '48px', background: 'linear-gradient(to left, #020709, transparent)' }}
-        aria-hidden="true"
-      />
+      {/* Edge fades */}
+      <div className="absolute inset-y-0 left-0 z-10 pointer-events-none lg:hidden" style={{ width: '40px', background: 'linear-gradient(to right, #020709, transparent)' }} aria-hidden="true" />
+      <div className="absolute inset-y-0 right-0 z-10 pointer-events-none lg:hidden" style={{ width: '40px', background: 'linear-gradient(to left, #020709, transparent)' }} aria-hidden="true" />
+      <div className="absolute inset-y-0 left-[108px] z-10 pointer-events-none hidden lg:block" style={{ width: '48px', background: 'linear-gradient(to right, #020709, transparent)' }} aria-hidden="true" />
+      <div className="absolute inset-y-0 right-[108px] z-10 pointer-events-none hidden lg:block" style={{ width: '48px', background: 'linear-gradient(to left, #020709, transparent)' }} aria-hidden="true" />
 
-      {/* Scrolling area */}
-      <div className="overflow-hidden alta-ticker-wrap lg:px-[108px]">
+      {/* Scrolling rows */}
+      <div className="lg:px-[108px]">
 
-        {/* Row 1 — Partners, scrolls left → */}
-        <div
-          className="overflow-hidden flex items-center"
-          style={{ height: '42px', borderBottom: '1px solid rgba(255,255,255,0.045)' }}
-          aria-hidden="true"
-        >
-          <div className="alta-ticker-ltr">
+        {/* Row 1 — Partners */}
+        <div className="overflow-hidden" style={{ height: '42px', borderBottom: '1px solid rgba(255,255,255,0.045)' }} aria-hidden="true">
+          <div ref={row1} className="flex items-center h-full" style={{ width: 'max-content' }}>
             {D_PARTNERS.map((p, i) => (
               <span key={i} className="flex items-center gap-2.5 px-5" style={{ whiteSpace: 'nowrap' }}>
                 <span style={{ color: 'rgba(255,255,255,0.13)', fontSize: '7px' }}>◆</span>
-                <span style={{ color: 'rgba(255,255,255,0.84)', fontSize: '12.5px', fontWeight: 600, letterSpacing: '-0.01em' }}>
-                  {p.name}
-                </span>
+                <span style={{ color: 'rgba(255,255,255,0.84)', fontSize: '12.5px', fontWeight: 600 }}>{p.name}</span>
                 <span style={{
-                  fontSize: '8px',
-                  fontWeight: 800,
-                  letterSpacing: '0.1em',
-                  textTransform: 'uppercase',
-                  padding: '2px 6px',
-                  borderRadius: '5px',
-                  color: p.tierColor,
-                  background: `${p.tierColor}1C`,
-                  border: `1px solid ${p.tierColor}38`,
-                  lineHeight: 1.5,
-                }}>
-                  {p.tier}
-                </span>
+                  fontSize: '8px', fontWeight: 800, letterSpacing: '0.1em', textTransform: 'uppercase',
+                  padding: '2px 6px', borderRadius: '5px', lineHeight: 1.5,
+                  color: p.tierColor, background: `${p.tierColor}1C`, border: `1px solid ${p.tierColor}38`,
+                }}>{p.tier}</span>
               </span>
             ))}
           </div>
         </div>
 
-        {/* Row 2 — Achievements, scrolls right ← */}
-        <div
-          className="overflow-hidden flex items-center"
-          style={{ height: '42px' }}
-          aria-hidden="true"
-        >
-          <div className="alta-ticker-rtl">
+        {/* Row 2 — Achievements */}
+        <div className="overflow-hidden" style={{ height: '42px' }} aria-hidden="true">
+          <div ref={row2} className="flex items-center h-full" style={{ width: 'max-content' }}>
             {D_ACHIEVEMENTS.map((a, i) => (
               <span key={i} className="flex items-center gap-2.5 px-6" style={{ whiteSpace: 'nowrap' }}>
                 <span style={{ color: 'rgba(255,255,255,0.12)', fontSize: '7px' }}>◆</span>
-                <span style={{
-                  color: '#60A5FA',
-                  fontSize: '13px',
-                  fontWeight: 900,
-                  letterSpacing: '-0.015em',
-                  fontVariantNumeric: 'tabular-nums',
-                }}>
-                  {a.value}
-                </span>
-                <span style={{ color: '#94A3B8', fontSize: '12px', fontWeight: 500 }}>
-                  {a.label}
-                </span>
+                <span style={{ color: '#60A5FA', fontSize: '13px', fontWeight: 900, fontVariantNumeric: 'tabular-nums' }}>{a.value}</span>
+                <span style={{ color: '#94A3B8', fontSize: '12px', fontWeight: 500 }}>{a.label}</span>
               </span>
             ))}
           </div>
