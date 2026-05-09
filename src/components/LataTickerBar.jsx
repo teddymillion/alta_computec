@@ -53,12 +53,14 @@ export default function LataTickerBar() {
           display: flex;
           width: max-content;
           animation: lata-ltr 52s linear infinite;
+          animation-play-state: running;
           will-change: transform;
         }
         .lata-ticker-rtl {
           display: flex;
           width: max-content;
           animation: lata-rtl 68s linear infinite;
+          animation-play-state: running;
           will-change: transform;
         }
         .lata-ticker-wrap:hover .lata-ticker-ltr,

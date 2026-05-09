@@ -554,6 +554,10 @@ export default function Navbar() {
               <a href="tel:+251115502928" className="flex items-center justify-center gap-2 text-slate-400 text-sm py-3 min-h-[48px] hover:text-white transition-colors">
                 <Phone size={15} /> +251 11 550 2928
               </a>
+              <div className="flex items-center justify-between px-1 py-3 border-t border-white/6">
+                <span className="text-[13px] text-slate-400 font-medium">Switch Theme</span>
+                <ThemeToggle />
+              </div>
             </div>
           </nav>
         </div>

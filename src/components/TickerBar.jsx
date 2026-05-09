@@ -60,12 +60,14 @@ export default function TickerBar() {
           display: flex;
           width: max-content;
           animation: alta-ltr 55s linear infinite;
+          animation-play-state: running;
           will-change: transform;
         }
         .alta-ticker-rtl {
           display: flex;
           width: max-content;
           animation: alta-rtl 72s linear infinite;
+          animation-play-state: running;
           will-change: transform;
         }
         .alta-ticker-wrap:hover .alta-ticker-ltr,
